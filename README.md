@@ -45,9 +45,8 @@ Drone :
 </ul>
 
 <h2>Schémas des composants communicants du drone et de la télécommande :</h2>
+<img src="images/telecommande.png" alt="Schéma de la télécommande"/>
 <img src="images/drone.png" alt="Schéma du drone"/>
-![Schéma de la télécommande](images/telecommande.png?raw=true)
-![Schéma du drone](images/drone.png?raw=true)
 
 <h2>Protocoles de communication utilisés :</h2>
 <ul>
@@ -80,10 +79,10 @@ Un bouton d’arrêt d’urgence sera présent et servira à arrêter les moteur
 </p>
 
 <h2>Diagramme d’activité :</h2>
-![Activité](images/activite.png)
+<img src="images/activite.png" alt="Activité"/>
 
 <h2>Diagramme de cas d’utilisation :</h2>
-![Cas d’utilisation](images/utilisation.png)
+<img src="images/utilisation.png" alt="Cas d’utilisation"/>
 
 <h2>Synopsis :</h2>
 <ul>
@@ -108,4 +107,4 @@ OU, suivant l’implémentation de certaines fonctionnalités :
 </ul>
 
 <h2>Diagramme de Gantt :</h2>
-![Gantt](images/gantt.png)
+<img src="images/gantt.png" alt="Gantt"/>
