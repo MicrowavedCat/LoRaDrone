@@ -50,7 +50,7 @@ Drone :
 
 <h2>Protocoles de communication utilisés :</h2>
 <ul>
-<li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) (https://fr.wikipedia.org/wiki/LoRaWAN),
+<li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) ([LoRa](https://fr.wikipedia.org/wiki/LoRaWAN)),
 <li>Entre les modules LoRa et les microcontrôleurs, communication bidirectionnelle : UART (avec 8 bits de données, pas de parité, 1 bit de fin et à une vitesse de 9600 bauds) (https://www.youtube.com/watch?v=kVd8Zj413l8),
 <li>Entre les joysticks/le bouton d’arrêt d’urgence/la LED RGB et l’ESP32, communication unidirectionnelle, réception uniquement : communication analogique : variation de la tension entre 0 et +3.3V,
 <li>Entre le télémètre ultrason et le Raspberry, communication bidirectionnelle : le protocole SPI ou I²C, le module supporte ces 2 protocoles) (SPI : https://www.youtube.com/watch?v=XJLVSVXcSic et I²C : https://www.youtube.com/watch?v=N0YtIzGIW4k)
