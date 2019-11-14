@@ -45,8 +45,8 @@ Drone :
 </ul>
 
 <h2>Schémas des composants communicants du drone et de la télécommande :</h2>
-[![Schéma de la télécommande](images/telecommande.png)]
-[![Schéma du drone](images/drone.png)]
+![Schéma de la télécommande](images/telecommande.png)
+![Schéma du drone](https://github.com/MicrowavedCat/LoRaDrone/blob/master/images/drone.png)
 
 <h2>Protocoles de communication utilisés :</h2>
 <ul>
