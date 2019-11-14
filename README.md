@@ -45,6 +45,7 @@ Drone :
 </ul>
 
 <h2>Schémas des composants communicants du drone et de la télécommande :</h2>
+<img src="images/drone.png" alt="Schéma du drone"/>
 ![Schéma de la télécommande](images/telecommande.png?raw=true)
 ![Schéma du drone](images/drone.png?raw=true)
 
