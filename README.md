@@ -9,7 +9,9 @@ La portée sera théoriquement de 8 km maximum.
 </p>
 
 <h2>Fonctionnalités :</h2>
+<p>
 Nous allons ici utiliser la méthode MoSCoW (https://fr.wikipedia.org/wiki/M%C3%A9thode_MoSCoW) pour prioriser les taches à effectuer :
+</p>
 Must :
 <ul>
 <li>communications entre les modules LoRa,</li>
