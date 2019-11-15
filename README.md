@@ -12,13 +12,12 @@ La portée sera théoriquement de 8 km maximum.
 Nous allons ici utiliser la méthode MoSCoW (https://fr.wikipedia.org/wiki/M%C3%A9thode_MoSCoW) pour prioriser les taches à effectuer :
 Must :
 <ul>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li>communications entre les modules LoRa,</li>
+<li>montage de la télécommande et du drone,</li>
+<li>communication avec les ESC (rotation des hélices),</li>
+<li>atterrissage "brutal",
+<li>arrêt d’urgence,</li>
+<li>récupération et transmission de données à tous les périphériques de la télécommande,</li>
 </ul>
 
 <h2>Liste des composants :</h2>
