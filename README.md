@@ -21,6 +21,19 @@ Must :
 <li>arrêt d’urgence,</li>
 <li>récupération et transmission de données à tous les périphériques de la télécommande,</li>
 </ul>
+Should :
+<ul>
+<li>atterrissage "intelligent" (détection de la distance au sol).</li>
+</ul>
+Could :
+<ul>
+<li>rotation à 360°.</li>
+</ul>
+Would :
+<ul>
+<li>Caméra (encodage vidéo et transmission du flux pour affichage dans une page HTML),</li>
+<li>GPS (retour au point de départ en cas de déconnexion de la télécommande).</li>
+</ul>
 
 <h2>Liste des composants :</h2>
 Télécommande :
