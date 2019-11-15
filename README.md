@@ -8,6 +8,19 @@ La télécommande communiquera avec le drone par ondes radio en utilisant le pro
 La portée sera théoriquement de 8 km maximum.
 </p>
 
+<h2>Fonctionnalités :</h2>
+Nous allons ici utiliser la méthode MoSCoW (https://fr.wikipedia.org/wiki/M%C3%A9thode_MoSCoW) pour prioriser les taches à effectuer :
+Must :
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+
 <h2>Liste des composants :</h2>
 Télécommande :
 <ul>
