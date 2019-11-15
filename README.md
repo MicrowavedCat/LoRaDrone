@@ -38,7 +38,7 @@ Drone :
 <li>Hélice 8x6 x4,</li>
 <li>Antenne PCB,</li>
 <li>Raspberry Pi Zero W + micro SD,</li>
-<li>télémètre ultrason GY-US42,</li>
+<li>Télémètre ultrason GY-US42,</li>
 <li>E32-868T30S (communication LoRa),</li>
 <li>GPS NEO-6M (présent ou non en fonction de ce qui sera implémenté),</li>
 <li>Caméra (présente ou non en fonction de ce qui sera implémenté).</li>
