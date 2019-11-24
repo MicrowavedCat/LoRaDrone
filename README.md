@@ -14,61 +14,62 @@ Nous allons ici utiliser la méthode MoSCoW (https://fr.wikipedia.org/wiki/M%C3%
 </p>
 Must :
 <ul>
-<li>communications entre les modules LoRa,</li>
-<li>montage de la télécommande et du drone,</li>
-<li>communication avec les ESC (rotation des hélices),</li>
-<li>atterrissage "brutal",
-<li>arrêt d’urgence,</li>
-<li>récupération et transmission de données à tous les périphériques de la télécommande,</li>
+    <li>communications entre les modules LoRa,</li>
+    <li>montage de la télécommande et du drone,</li>
+    <li>communication avec les ESC (rotation des hélices),</li>
+    <li>atterrissage "brutal",
+    <li>arrêt d’urgence,</li>
+    <li>récupération et transmission de données à tous les périphériques de la télécommande,</li>
 </ul>
 Should :
 <ul>
-<li>atterrissage "intelligent" (détection de la distance au sol).</li>
+    <li>atterrissage "intelligent" (détection de la distance au sol).</li>
 </ul>
 Could :
 <ul>
-<li>rotation à 360°.</li>
+    <li>rotation à 360°.</li>
 </ul>
 Would :
 <ul>
-<li>Caméra (encodage vidéo et transmission du flux pour affichage dans une page HTML),</li>
-<li>GPS (retour au point de départ en cas de déconnexion de la télécommande).</li>
+    <li>Caméra (encodage vidéo et transmission du flux pour affichage dans une page HTML),</li>
+    <li>GPS (retour au point de départ en cas de déconnexion de la télécommande).</li>
 </ul>
 
 <h2>Liste des composants :</h2>
 Télécommande :
 <ul>
-<li>PCB (Printed Circuit Board), circuit imprimé pour disposer les composants,</li>
-<li>batterie Li-Po 4000 mAh,</li>
-<li>module de charge de batterie au lithium,</li>
-<li>module de charge sans fil (à induction),</li>
-<li>joysticks (x2) KY-023,</li>
-<li>LED RGB KY-009,</li>
-<li>bouton ON/OFF momentané,</li>
-<li>bouton d’arrêt d’urgence momentané,</li>
-<li>ESP32-WROOM-32U 16MB (microcontrôleur),</li>
-<li>E32-868T30S (communication LoRa),</li>
-<li>PCB pour convertir les connecteurs de l’ESP32 vers 36 GPIO,</li>
-<li>antenne 868 MHz 17 cm SMA gain 5 dBi,</li>
-<li>connecteur SMA-KWE femelle coudé à 90°,</li>
-<li>antenne 2.4 GHz (présente ou non en fonction de ce qui sera implémenté),</li>
-<li>connecteur SMA-KWE mâle coudé à 90° (présent ou non en fonction de ce qui sera implémenté).</li>
+    <li>PCB (Printed Circuit Board), circuit imprimé pour disposer les composants,</li>
+    <li>batterie Li-Po 4000 mAh,</li>
+    <li>module de charge de batterie au lithium,</li>
+    <li>module de charge sans fil (à induction),</li>
+    <li>joysticks (x2) KY-023,</li>
+    <li>LED RGB KY-009,</li>
+    <li>bouton ON/OFF momentané,</li>
+    <li>bouton d’arrêt d’urgence momentané,</li>
+    <li>ESP32-WROOM-32U 16MB (microcontrôleur),</li>
+    <li>E32-868T30S (communication LoRa),</li>
+    <li>PCB pour convertir les connecteurs de l’ESP32 vers 36 GPIO,</li>
+    <li>antenne 868 MHz 17 cm SMA gain 5 dBi,</li>
+    <li>connecteur SMA-KWE femelle coudé à 90°,</li>
+    <li>accéléromètre ADXL345</li>
+    <li>antenne 2.4 GHz (présente ou non en fonction de ce qui sera implémenté),</li>
+    <li>connecteur SMA-KWE mâle coudé à 90° (présent ou non en fonction de ce qui sera implémenté).</li>
 </ul>
 
 Drone :
 <ul>
-<li>PCB,</li>
-<li>Armature F450,</li>
-<li>Batterie lithium 3 cellules (11.1 V) (capacité et nombre de "C" à déterminer),</li>
-<li>ESC SimonK 30A x4,</li>
-<li>Moteurs EMAX XA2212 1400KV x4,</li>
-<li>Hélice 8x6 x4,</li>
-<li>Antenne PCB,</li>
-<li>Raspberry Pi Zero W + micro SD,</li>
-<li>Télémètre ultrason GY-US42,</li>
-<li>E32-868T30S (communication LoRa),</li>
-<li>GPS NEO-6M (présent ou non en fonction de ce qui sera implémenté),</li>
-<li>Caméra (présente ou non en fonction de ce qui sera implémenté).</li>
+    <li>PCB,</li>
+    <li>Armature F450,</li>
+    <li>Batterie lithium 3 cellules (11.1 V) (capacité et nombre de "C" à déterminer),</li>
+    <li>ESC SimonK 30A x4,</li>
+    <li>Moteurs EMAX XA2212 1400KV x4,</li>
+    <li>Hélice 8x6 x4,</li>
+    <li>Antenne PCB,</li>
+    <li>Raspberry Pi Zero W + micro SD,</li>
+    <li>Télémètre ultrason GY-US42,</li>
+    <li>E32-868T30S (communication LoRa),</li>
+    <li>GPS NEO-6M (présent ou non en fonction de ce qui sera implémenté),</li>
+    <li>Caméra (présente ou non en fonction de ce qui sera implémenté).</li>
 </ul>
 
 <h2>Schémas des composants communicants du drone et de la télécommande :</h2>
@@ -77,16 +78,16 @@ Drone :
 
 <h2>Protocoles de communication utilisés :</h2>
 <ul>
-<li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) (https://fr.wikipedia.org/wiki/LoRaWAN),
-<li>Entre les modules LoRa et les microcontrôleurs, communication bidirectionnelle : UART (avec 8 bits de données, pas de parité, 1 bit de fin et à une vitesse de 9600 bauds) (https://www.youtube.com/watch?v=kVd8Zj413l8),
-<li>Entre les joysticks/le bouton d’arrêt d’urgence/la LED RGB et l’ESP32, communication unidirectionnelle, réception uniquement : communication analogique : variation de la tension entre 0 et +3.3V,
-<li>Entre le télémètre ultrason et le Raspberry, communication bidirectionnelle : le protocole SPI ou I²C, le module supporte ces 2 protocoles) (SPI : https://www.youtube.com/watch?v=XJLVSVXcSic et I²C : https://www.youtube.com/watch?v=N0YtIzGIW4k)
-<li>Entre le Raspberry et les ESC, communication unidirectionnelle, émission uniquement : PWM (Pulse Width Modulation, Modulation par Largeur d’Impulsion) (https://www.aeromodelisme-vemars.com/2016/04/26/pwm-ppm-s-bus-sumd-k%C3%A9sako/)
+    <li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) (https://fr.wikipedia.org/wiki/LoRaWAN),
+    <li>Entre les modules LoRa et les microcontrôleurs, communication bidirectionnelle : UART (avec 8 bits de données, pas de parité, 1 bit de fin et à une vitesse de 9600 bauds) (https://www.youtube.com/watch?v=kVd8Zj413l8),
+    <li>Entre les joysticks/le bouton d’arrêt d’urgence/la LED RGB et l’ESP32, communication unidirectionnelle, réception uniquement : communication analogique : variation de la tension entre 0 et +3.3V,
+    <li>Entre le télémètre ultrason et le Raspberry, communication bidirectionnelle : le protocole SPI ou I²C, le module supporte ces 2 protocoles) (SPI : https://www.youtube.com/watch?v=XJLVSVXcSic et I²C : https://www.youtube.com/watch?v=N0YtIzGIW4k)
+    <li>Entre le Raspberry et les ESC, communication unidirectionnelle, émission uniquement : PWM (Pulse Width Modulation, Modulation par Largeur d’Impulsion) (https://www.aeromodelisme-vemars.com/2016/04/26/pwm-ppm-s-bus-sumd-k%C3%A9sako/)
 </ul>
 Plus, en fonction de ce qui sera implémenté dans le drone :
 <ul>
-<li>Entre le drone et la télécommande et entre un smartphone/une tablette/un ordinateur et la télécommande, communication bidirectionnelle : Wi-Fi, sur 2.4 GHz (nécessite une caméra)
-<li>Entre le module GPS (un NEO-6M) et le drone, communication unidirectionnelle, réception uniquement : UART.
+    <li>Entre le drone et la télécommande et entre un smartphone/une tablette/un ordinateur et la télécommande, communication bidirectionnelle : Wi-Fi, sur 2.4 GHz (nécessite une caméra)
+    <li>Entre le module GPS (un NEO-6M) et le drone, communication unidirectionnelle, réception uniquement : UART.
 </ul>
 
 <h2>Explication de l’utilité des composants :</h2>
