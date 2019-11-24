@@ -51,7 +51,7 @@ Télécommande :
     <li>PCB pour convertir les connecteurs de l’ESP32 vers 36 GPIO,</li>
     <li>antenne 868 MHz 17 cm SMA gain 5 dBi,</li>
     <li>connecteur SMA-KWE femelle coudé à 90°,</li>
-    <li>accéléromètre ADXL345</li>
+    <li>accéléromètre ADXL345,</li>
     <li>antenne 2.4 GHz (présente ou non en fonction de ce qui sera implémenté),</li>
     <li>connecteur SMA-KWE mâle coudé à 90° (présent ou non en fonction de ce qui sera implémenté).</li>
 </ul>
