@@ -58,18 +58,18 @@ Télécommande :
 Drone :
 <ul>
     <li>PCB,</li>
-    <li>Armature F450,</li>
-    <li>Batterie lithium 3 cellules (11.1 V) (capacité et nombre de "C" à déterminer),</li>
+    <li>armature F450,</li>
+    <li>batterie lithium 3 cellules (11.1 V) (capacité et nombre de "C" à déterminer),</li>
     <li>ESC SimonK 30A x4,</li>
-    <li>Moteurs EMAX XA2212 1400KV x4,</li>
-    <li>Hélice 8x6 x4,</li>
-    <li>Antenne PCB,</li>
+    <li>moteurs EMAX XA2212 1400KV x4,</li>
+    <li>hélice 8x6 x4,</li>
+    <li>antenne PCB,</li>
     <li>Raspberry Pi Zero W + micro SD,</li>
-    <li>Télémètre ultrason GY-US42,</li>
+    <li>télémètre ultrason GY-US42,</li>
     <li>E32-868T30S (communication LoRa),</li>
     <li>accéléromètre ADXL345,</li>
     <li>GPS NEO-6M (présent ou non en fonction de ce qui sera implémenté),</li>
-    <li>Caméra (présente ou non en fonction de ce qui sera implémenté).</li>
+    <li>caméra (présente ou non en fonction de ce qui sera implémenté).</li>
 </ul>
 
 <h2>Schémas des composants communicants du drone et de la télécommande :</h2>
