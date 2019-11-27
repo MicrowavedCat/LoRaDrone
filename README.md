@@ -135,5 +135,4 @@ OU, suivant l’implémentation de certaines fonctionnalités :
 </ul>
 
 <h2>Diagramme de Gantt :</h2>
-À venir ...
 <img src="images/gantt.png" alt="Gantt"/>
