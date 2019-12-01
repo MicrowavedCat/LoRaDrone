@@ -47,15 +47,17 @@ void lecture(void) {
     }
 }
 
-void arret_urgence(unsigned char *msg_recu){
-   if(strcmp(msg_recu, STOP){
-      /* a venir */
-   }
-}
-
 void ecriture(unsigned char *message) {
     usleep(1000000);
     serialPrintf(fd, PAIR);
+}
+
+void arret_urgence(unsigned char *msg_recu){
+   if(strcmp(msg_recu, STOP){
+       /* a venir */
+       SerialClose(fd);
+       free(msg_recu);
+   }
 }
 
 void synchronisation(void){
