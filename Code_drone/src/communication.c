@@ -59,6 +59,7 @@ void arret_urgence(unsigned char *msg_recu){
        free(msg_recu);
        pthread_exit(NULL);
    }
+   exit(0);
 }
 
 void synchronisation(void){
