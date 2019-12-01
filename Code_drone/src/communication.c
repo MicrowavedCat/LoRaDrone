@@ -1,48 +1,78 @@
 #include "../header/communication.h"
+/* Taille Maximale du tableau */
+#define MAX 31
+/* Variables globales vérifiant les états de la connexion drone-télécommande */
+#define PAIR "PAIR\4"
+#define LINK "LINK\4"
+#define CONN "CONN\4"
+#define LOST "LOST\4"
+#define STOP "STOP\4" 
 
-unsigned short int continuation = 0;
+int fd;
 
-/* Vérifie l'ouverture du flux de communication série ttyAMA0 */
-/*void connexion(){
-    fd=serialOpen(FLUX, 9600);
-    // 9600 est le nombre de caractères par seconde transmis
-    // Problème d'ouverture série du flux de connexion
+/* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
+void connexion(void){
+    fd = serialOpen(FLUX, 9600);
+    /* 9600 est le nombre de caractères par seconde transmis
+    Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
-        fprintf(stderr, "Erreur d'ouverture de flux : %s\n", strerror(errno));
+        fprintf(stderr, "Erreur communication : %s\n", strerror(errno));
         exit(1);
     }
-    // Erreur de déploiement de la librairie wiringPiSetup
+    /* Erreur de déploiement de la librairie wiringPiSetup */
     if (wiringPiSetup() == -1) {
         fprintf(stderr, "Erreur de librairie : %s\n", strerror(errno));
         exit(2);
     }
-}*/
+}
 
+/* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void) {
-    unsigned char buffer[31];
+    unsigned short int continuation = 0;
+    /* Variable de récupération des caractères servant de tampon */
+    unsigned char buffer[MAX];
+    /* Message recu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
     unsigned short int i = 0;
-
     while(1) {
+        /* Si le flux de données et est lisibles */
         if(serialDataAvail(fd)) {
+            /* Renvoi en indice du buffer le code ascii entier correpondant aux données dans ttyAMA0 */
             buffer[i] = serialGetchar(fd);
-            if(buffer[i] == '\4' || i > 32) {
-                if(buffer[i] == '\4') {
-                    memcpy(msg_recu, buffer, sizeof(buffer));
-                    printf("%s\n", msg_recu);
-                }
-                for(i = 0 ; i < 31 ; i++) {
-                    buffer[i] = '\0';
-                }
-                i = 0;
-            } else {
-                i++;
-            }
+            /* S'il y a une fin de transmission, ou dépassement de la taille du message */
+            if((buffer[i] == '\4') || (i > MAX+1)) {
+                /* Réupèration du message en copiant le buffer dans la variable du message recu */
+                memcpy(msg_recu, buffer, sizeof(buffer));
+                /* Arrêt d'urgence du drone */
+                if(strcmp(msg_recu, STOP) { sortie(); }
+                /* Fin de la chaine de caractères */
+                for(i = 0 ; i < MAX ; i++){ buffer[i] = '\0'; }
+                i = 0; /* Réinitialisation du buffer */
+            } else { i++; }
         }
-     }
-    //continuation = 1;
+    }
 }
 
 void ecriture(unsigned char *message) {
-    serialPrintf(fd, message);
+    usleep(500000);
+    serialPrintf(fd, PAIR);
+    /**** A venir ... ****/
+}
+
+/* Permet de déterminer toutes les actions à effectuer,
+permettant de terminer la communciations drone-télécommande */
+void sortie(void){
+    free(msg_recu);
+    serialClose(fd);
+    pthread_exit(NULL);
+    exit(0);
+}
+
+void tache(void){
+    connexion();
+    pthread_t th[2];
+    pthread_create(&th[0], NULL, (void *)lecture, NULL);
+    pthread_create(&th[1], NULL, (void *)ecriture, &message);
+    for (unsigned short int i = 0; i < 2; i++)
+        pthread_join(th[i], NULL);
 }
