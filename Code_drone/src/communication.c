@@ -1,6 +1,7 @@
 #include "../header/communication.h"
 
 unsigned short int continuation = 0;
+const unsigned char* const etat[] = { "PAIR\4", "LINK\4", "CONN\4", "LOST\4", "STOP\4" };
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 void connexion(void){
