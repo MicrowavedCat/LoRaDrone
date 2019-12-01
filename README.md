@@ -131,7 +131,7 @@ La LED de la télécommande passe directement au vert fixe.
 Il décide de l’envoyer à nouveau loin mais cette fois-ci, une fois qu’il en a perdu le contrôle, Stéphane décide d’éteindre sa télécommande et de simplement observer le drone sans tenter d’interagir avec.
 [Au bout de quelques secondes, ce dernier descend progressivement, se rapprochant irrémédiablement de l’étang au dessus duquel il était. Juste avant qu’un gros "plouf !" retentisse, les moteurs du drone se coupent à quelques centimètres de la surface.]
 OU, suivant l’implémentation de certaines fonctionnalités :
-[Au bout de quelques secondes, ce dernier se met à nouveau en mouvement et se dirige vers Stéphane, plus exactement l’endroit d’où il a décollé. Arrivé là, il descend progressivement et se pose sur le sol, au sec et à l’abri.]</p>
+[Au bout de quelques secondes, ce dernier se met à nouveau en mouvement et se dirige vers Stéphane, plus exactement l’endroit d’où il a décollé. Arrivé là, il descend progressivement et se pose sur le sol, au sec et à l’abri.</p>
 </ul>
 
 <h2>Diagramme de Gantt :</h2>
