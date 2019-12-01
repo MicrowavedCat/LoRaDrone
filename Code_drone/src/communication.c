@@ -68,7 +68,7 @@ void sortie(void){
     exit(0);
 }
 
-void taches(void){
+void tache(void){
     connexion();
     pthread_t th[2];
     pthread_create(&th[0], NULL, (void *)lecture, NULL);
