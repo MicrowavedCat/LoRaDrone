@@ -6,6 +6,7 @@
 #define LOST "LOST\4"
 #define STOP "STOP\4" 
 
+int fd;
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 void connexion(void){
     fd = serialOpen(FLUX, 9600);
@@ -44,7 +45,7 @@ void lecture(void) {
                 i = 0; /* Réinitialisation du buffer */
             } else { i++; }
             /* Arrêt d'urgence du drone */
-            if(strcmp(msg_recu, STOP) { sortie(); }
+            if(strcmp(msg_recu, STOP) { sortie(fd); }
         }
     }
 }
@@ -54,9 +55,11 @@ void ecriture(unsigned char *message) {
     serialPrintf(fd, PAIR);
 }
 
+/* Permet de déterminer toutes les actions à effectuer,
+permettant de terminer la communciations drone-télécommande */
 void sortie(void){
-    SerialClose(fd);
     free(msg_recu);
+    SerialClose(fd);
     pthread_exit(NULL);
     exit(0);
 }
