@@ -7,7 +7,6 @@ void main(void){
     pthread_t th[2];
     pthread_create(&th[0], NULL, (void *)lecture, NULL);
     pthread_create(&th[1], NULL, (void *)ecriture, &message[0]);
-    for (i=0; i<2; i++) {
+    for (i=0; i<2; i++)
         pthread_join(th[i], NULL);
-    }
 }
