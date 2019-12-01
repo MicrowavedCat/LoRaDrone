@@ -36,7 +36,6 @@ void lecture(void) {
             } else { i++; }
         }
      }
-    // continuation = 1;
 }
 
 void ecriture(unsigned char *message) {
