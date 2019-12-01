@@ -12,7 +12,7 @@ void connexion(void){
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
-        fprintf(stderr, "Erreur d'ouverture de flux : %s\n", strerror(errno));
+        fprintf(stderr, "Erreur communication : %s\n", strerror(errno));
         exit(1);
     }
     /* Erreur de déploiement de la librairie wiringPiSetup */
