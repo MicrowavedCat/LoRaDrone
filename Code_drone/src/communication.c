@@ -6,13 +6,13 @@ const unsigned char* const etat[] = { "PAIR\4", "LINK\4", "CONN\4", "LOST\4", "S
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 void connexion(void){
     fd = serialOpen(FLUX, 9600);
-    // 9600 est le nombre de caractères par seconde transmis
-    // Problème d'ouverture série du flux de connexion
+    /* 9600 est le nombre de caractères par seconde transmis
+    Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
         fprintf(stderr, "Erreur d'ouverture de flux : %s\n", strerror(errno));
         exit(1);
     }
-    // Erreur de déploiement de la librairie wiringPiSetup
+    /* Erreur de déploiement de la librairie wiringPiSetup */
     if (wiringPiSetup() == -1) {
         fprintf(stderr, "Erreur de librairie : %s\n", strerror(errno));
         exit(2);
