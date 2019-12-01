@@ -43,12 +43,12 @@ void lecture(void) {
             if((buffer[i] == '\4') || (i > MAX+1)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
+                /* Arrêt d'urgence du drone */
+                if(strcmp(msg_recu, STOP) { sortie(fd); }
                 /* Fin de la chaine de caractères */
                 for(i = 0 ; i < MAX ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
             } else { i++; }
-            /* Arrêt d'urgence du drone */
-            if(strcmp(msg_recu, STOP) { sortie(fd); }
         }
     }
 }
