@@ -3,7 +3,7 @@
 unsigned short int continuation = 0;
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
-/*void connexion(){
+void connexion(){
     fd=serialOpen(FLUX, 9600);
     // 9600 est le nombre de caractères par seconde transmis
     // Problème d'ouverture série du flux de connexion
@@ -16,7 +16,7 @@ unsigned short int continuation = 0;
         fprintf(stderr, "Erreur de librairie : %s\n", strerror(errno));
         exit(2);
     }
-}*/
+}
 
 void lecture(void) {
     unsigned char buffer[31];
@@ -27,20 +27,15 @@ void lecture(void) {
         if(serialDataAvail(fd)) {
             buffer[i] = serialGetchar(fd);
             if(buffer[i] == '\4' || i > 32) {
-                if(buffer[i] == '\4') {
+                if(buffer[i] == '\4')
                     memcpy(msg_recu, buffer, sizeof(buffer));
-                    printf("%s\n", msg_recu);
-                }
-                for(i = 0 ; i < 31 ; i++) {
+                for(i = 0 ; i < 31 ; i++)
                     buffer[i] = '\0';
-                }
                 i = 0;
-            } else {
-                i++;
-            }
+            } else { i++; }
         }
      }
-    //continuation = 1;
+    // continuation = 1;
 }
 
 void ecriture(unsigned char *message) {
