@@ -57,6 +57,7 @@ void arret_urgence(unsigned char *msg_recu){
        /* a venir */
        SerialClose(fd);
        free(msg_recu);
+       pthread_exit(NULL);
    }
 }
 
