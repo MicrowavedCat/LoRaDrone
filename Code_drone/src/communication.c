@@ -40,7 +40,7 @@ void lecture(void) {
                 i = 0; /* et on réinitialise le buffer */
             } else { i++; }
         }
-     }
+    }
 }
 
 void ecriture(unsigned char *message) {
