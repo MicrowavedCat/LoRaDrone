@@ -50,7 +50,7 @@ void arret_urgence(void){
 }
 
 void ecriture(unsigned char *message) {
-    for(unsigned short j = 0; j <= 3; i++){
+    for(unsigned short j = 0; j < 3; i++){
         usleep(1000000);
         serialPrintf(fd, message[j]);
     }
