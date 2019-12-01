@@ -37,7 +37,8 @@ void lecture(void) {
 }
 
 void ecriture(unsigned char *message) {
-    for(unsigned short j = 0; j<strlen(message); i++){
+    for(unsigned short j = 0; j<3; i++){
+        usleep(1000000);
         serialPrintf(fd, message[j]);
     }
 }
