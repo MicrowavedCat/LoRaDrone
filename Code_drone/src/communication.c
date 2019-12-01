@@ -63,7 +63,7 @@ void ecriture(unsigned char *message) {
 permettant de terminer la communciations drone-télécommande */
 void sortie(void){
     free(msg_recu);
-    SerialClose(fd);
+    serialClose(fd);
     pthread_exit(NULL);
     exit(0);
 }
