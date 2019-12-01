@@ -7,6 +7,7 @@
 #define STOP "STOP\4" 
 
 int fd;
+
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 void connexion(void){
     fd = serialOpen(FLUX, 9600);
