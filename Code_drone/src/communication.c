@@ -43,6 +43,8 @@ void lecture(void) {
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
             } else { i++; }
+            /* Arrêt d'urgence du drone */
+            if(strcmp(msg_recu, STOP) { sortie(); }
         }
     }
 }
@@ -52,14 +54,11 @@ void ecriture(unsigned char *message) {
     serialPrintf(fd, PAIR);
 }
 
-void arret_urgence(unsigned char *msg_recu){
-   if(strcmp(msg_recu, STOP){
-       /* a venir */
-       SerialClose(fd);
-       free(msg_recu);
-       pthread_exit(NULL);
-   }
-   exit(0);
+void sortie(void){
+    SerialClose(fd);
+    free(msg_recu);
+    pthread_exit(NULL);
+    exit(0);
 }
 
 void synchronisation(void){
