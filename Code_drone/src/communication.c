@@ -1,7 +1,9 @@
 #include "../header/communication.h"
-
-unsigned short int continuation = 0;
-const unsigned char* const etat[] = { "PAIR\4", "LINK\4", "CONN\4", "LOST\4", "STOP\4" };
+#define PAIR "PAIR\4"
+#define LINK "LINK\4"
+#define CONN "CONN\4"
+#define LOST "LOST\4"
+#define STOP "STOP\4" 
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 void connexion(void){
@@ -21,6 +23,7 @@ void connexion(void){
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void) {
+    unsigned short int continuation = 0;
     /* variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* message recu par la télécommande */
@@ -32,28 +35,27 @@ void lecture(void) {
             /* Renvoi en indice du buffer le code ascii entier correpondant aux données dans ttyAMA0 */
             buffer[i] = serialGetchar(fd);
             /* S'il y a une fin de transmission, ou dépassement de la taille du message */
-            if(buffer[i] == '\4' || i > sizeof(buffer)+1) {
+            if((buffer[i] == '\4') || 5i > sizeof(buffer)+1)) {
                 /* on réupère le message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 /* on met fin à la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* et on réinitialise le buffer */
             } else { i++; }
+            arret_urgence(msg_recu);
         }
     }
 }
 
-void arret_urgence(void){
-   if(strcmp(ms_recu, etat[4]){
+void arret_urgence(unsigned char *msg_recu){
+   if(strcmp(msg_recu, STOP){
       /* a venir */
    }
 }
 
 void ecriture(unsigned char *message) {
-    for(unsigned short j = 0; j < 3; i++){
-        usleep(1000000);
-        serialPrintf(fd, message[j]);
-    }
+    usleep(1000000);
+    serialPrintf(fd, PAIR);
 }
 
 void synchronisation(void){
