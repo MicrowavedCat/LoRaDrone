@@ -36,7 +36,7 @@ void lecture(void) {
             /* Renvoi en indice du buffer le code ascii entier correpondant aux données dans ttyAMA0 */
             buffer[i] = serialGetchar(fd);
             /* S'il y a une fin de transmission, ou dépassement de la taille du message */
-            if((buffer[i] == '\4') || 5i > sizeof(buffer)+1)) {
+            if((buffer[i] == '\4') || i > sizeof(buffer)+1)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 /* Fin de la chaine de caractères */
