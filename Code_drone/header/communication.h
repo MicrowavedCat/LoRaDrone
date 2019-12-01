@@ -18,6 +18,7 @@ int fd;
 
 void ecriture(unsigned char *);
 void lecture(void);
+void synchronisation(void);
 
 unsigned char *msg_recu;
 
