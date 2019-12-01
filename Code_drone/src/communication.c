@@ -39,7 +39,9 @@ void lecture(void) {
 }
 
 void ecriture(unsigned char *message) {
-    serialPrintf(fd, message);
+    for(unsigned short j = 0; j<strlen(message); i++){
+        serialPrintf(fd, message[j]);
+    }
 }
 
 void synchronisation(void){
