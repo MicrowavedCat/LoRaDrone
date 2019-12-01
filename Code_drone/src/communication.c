@@ -3,8 +3,8 @@
 unsigned short int continuation = 0;
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
-void connexion(){
-    fd=serialOpen(FLUX, 9600);
+void connexion(void){
+    fd = serialOpen(FLUX, 9600);
     // 9600 est le nombre de caractères par seconde transmis
     // Problème d'ouverture série du flux de connexion
     if (fd < 0) {
@@ -40,4 +40,13 @@ void lecture(void) {
 
 void ecriture(unsigned char *message) {
     serialPrintf(fd, message);
+}
+
+void synchronisation(void){
+    connexion();
+    pthread_t th[2];
+    pthread_create(&th[0], NULL, (void *)lecture, NULL);
+    pthread_create(&th[1], NULL, (void *)ecriture, &message[0]);
+    for (unsigned short int i=0; i<2; i++)
+        pthread_join(th[i], NULL);
 }
