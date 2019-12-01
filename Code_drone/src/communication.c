@@ -28,7 +28,6 @@ void connexion(void){
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void) {
-    unsigned short int continuation = 0;
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[MAX];
     /* Message recu par la télécommande */
