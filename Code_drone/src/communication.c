@@ -25,9 +25,9 @@ void connexion(void){
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void) {
     unsigned short int continuation = 0;
-    /* variable de récupération des caractères servant de tampon */
+    /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
-    /* message recu par la télécommande */
+    /* Message recu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
     unsigned short int i = 0;
     while(1) {
@@ -37,11 +37,11 @@ void lecture(void) {
             buffer[i] = serialGetchar(fd);
             /* S'il y a une fin de transmission, ou dépassement de la taille du message */
             if((buffer[i] == '\4') || 5i > sizeof(buffer)+1)) {
-                /* on réupère le message en copiant le buffer dans la variable du message recu */
+                /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
-                /* on met fin à la chaine de caractères */
+                /* Fin de la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
-                i = 0; /* et on réinitialise le buffer */
+                i = 0; /* Réinitialisation du buffer */
             } else { i++; }
         }
     }
