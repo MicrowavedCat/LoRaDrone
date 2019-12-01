@@ -56,6 +56,7 @@ void lecture(void) {
 void ecriture(unsigned char *message) {
     usleep(1000000);
     serialPrintf(fd, PAIR);
+    /* A venir */
 }
 
 /* Permet de déterminer toutes les actions à effectuer,
