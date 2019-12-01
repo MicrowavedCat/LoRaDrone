@@ -28,10 +28,8 @@ void lecture(void) {
         if(serialDataAvail(fd)) {
             buffer[i] = serialGetchar(fd);
             if(buffer[i] == '\4' || i > 32) {
-                if(buffer[i] == '\4')
-                    memcpy(msg_recu, buffer, sizeof(buffer));
-                for(i = 0 ; i < 31 ; i++)
-                    buffer[i] = '\0';
+                memcpy(msg_recu, buffer, sizeof(buffer));
+                for(i = 0 ; i < 31 ; i++){ buffer[i] = '\0'; }
                 i = 0;
             } else { i++; }
         }
