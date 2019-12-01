@@ -54,7 +54,7 @@ void lecture(void) {
 }
 
 void ecriture(unsigned char *message) {
-    usleep(1000000);
+    usleep(500000);
     serialPrintf(fd, PAIR);
     /**** A venir ... ****/
 }
