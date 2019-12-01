@@ -43,7 +43,6 @@ void lecture(void) {
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* et on réinitialise le buffer */
             } else { i++; }
-            arret_urgence(msg_recu);
         }
     }
 }
