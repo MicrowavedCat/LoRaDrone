@@ -48,7 +48,7 @@ void synchronisation(void){
     connexion();
     pthread_t th[2];
     pthread_create(&th[0], NULL, (void *)lecture, NULL);
-    pthread_create(&th[1], NULL, (void *)ecriture, &message[0]);
+    pthread_create(&th[1], NULL, (void *)ecriture, &message);
     for (unsigned short int i=0; i<2; i++)
         pthread_join(th[i], NULL);
 }
