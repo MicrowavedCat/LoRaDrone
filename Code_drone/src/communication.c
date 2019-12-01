@@ -3,7 +3,7 @@
 unsigned short int continuation = 0;
 const unsigned char* const etat[] = { "PAIR\4", "LINK\4", "CONN\4", "LOST\4", "STOP\4" };
 
-/* Vérifie l'ouverture du flux de communication série ttyAMA0 */
+/* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 void connexion(void){
     fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
@@ -33,17 +33,18 @@ void lecture(void) {
             buffer[i] = serialGetchar(fd);
             /* S'il y a une fin de transmission, ou dépassement de la taille du message */
             if(buffer[i] == '\4' || i > sizeof(buffer)) {
-                /* on réupère le message */
+                /* on réupère le message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
-                for(i = 0 ; i < 31 ; i++){ buffer[i] = '\0'; }
-                i = 0;
+                /* on met fin à la chaine de caractères */
+                for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
+                i = 0; /* et on réinitialise le buffer */
             } else { i++; }
         }
      }
 }
 
 void ecriture(unsigned char *message) {
-    for(unsigned short j = 0; j<3; i++){
+    for(unsigned short j = 0; j < 3; i++){
         usleep(1000000);
         serialPrintf(fd, message[j]);
     }
