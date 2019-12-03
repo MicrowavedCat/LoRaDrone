@@ -7,27 +7,24 @@
 #define STOP "stop\4" 
 #define END "end\4" 
 
-int fd;
-
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
-void connexion(void){
-    fd = serialOpen(FLUX, 9600);
+int connexion(void){
+    int fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
         fprintf(stderr, "Erreur communication : %s\n", strerror(errno));
         exit(1);
-    }
     /* Erreur de déploiement de la librairie wiringPiSetup */
-    if (wiringPiSetup() == -1) {
+    } else if (wiringPiSetup() == -1) {
         fprintf(stderr, "Erreur de librairie : %s\n", strerror(errno));
         exit(2);
-    }
+    } else { return fd; }
 }
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
-void lecture(void) {
-    connexion();
+void lecture(void * args) {
+    int fd = connexion();
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* Message recu par la télécommande */
@@ -53,8 +50,8 @@ void lecture(void) {
     }
 }
 
-void ecriture(unsigned char *message) {
-    connexion();
+void *ecriture(void * args) {
+    int fd = connexion();
     while(1){
         usleep(500000);
         serialPrintf(fd, PAIR);
@@ -73,9 +70,10 @@ void sortie(void){
 
 /* Listing de tous les processus à créer et lancer en multitâche */
 void tache(void){
+    int fd = connexion();
     pthread_t th[2];
-    pthread_create(&th[0], NULL, (void *)lecture, NULL);
-    pthread_create(&th[1], NULL, (void *)ecriture, &message);
+    pthread_create(&th[0], NULL, lecture, (void *)fd);
+    pthread_create(&th[1], NULL, ecriture, (void*)fd);
     for (unsigned short int i = 0; i < 2; i++)
         pthread_join(th[i], NULL);
 }
