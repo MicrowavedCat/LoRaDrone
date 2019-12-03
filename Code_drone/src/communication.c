@@ -26,7 +26,7 @@ void connexion(void){
 }
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
-void lecture(void) {
+void *lecture(void) {
     connexion();
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
@@ -53,7 +53,7 @@ void lecture(void) {
     }
 }
 
-void ecriture(unsigned char *message) {
+void *ecriture(unsigned char *message) {
     connexion();
     usleep(500000);
     serialPrintf(fd, PAIR);
@@ -71,8 +71,8 @@ void sortie(void){
 
 void tache(void){
     pthread_t th[2];
-    pthread_create(&th[0], NULL, (void *)lecture, NULL);
-    pthread_create(&th[1], NULL, (void *)ecriture, &message);
+    pthread_create(&th[0], NULL, lecture, NULL);
+    pthread_create(&th[1], NULL, ecriture, &message);
     for (unsigned short int i = 0; i < 2; i++)
         pthread_join(th[i], NULL);
 }
