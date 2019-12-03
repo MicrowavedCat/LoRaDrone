@@ -2,11 +2,12 @@
 /* Taille Maximale du tableau */
 #define MAX 31
 /* Variables globales vérifiant les états de la connexion drone-télécommande */
-#define PAIR "PAIR\4"
-#define LINK "LINK\4"
-#define CONN "CONN\4"
-#define LOST "LOST\4"
-#define STOP "STOP\4" 
+#define PAIR "pair\4"
+#define LINK "link\4"
+#define CONNECTED "connected\4"
+#define LOST "lost\4"
+#define STOP "stop\4" 
+#define END "end\4" 
 
 int fd;
 
@@ -45,7 +46,7 @@ void lecture(void) {
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 /* Arrêt d'urgence du drone */
-                if(strcmp(msg_recu, STOP) { sortie(); }
+                if(strcmp(msg_recu, END) { sortie(); }
                 /* Fin de la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
