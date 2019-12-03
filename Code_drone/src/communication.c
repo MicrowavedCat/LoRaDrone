@@ -1,6 +1,4 @@
 #include "../header/communication.h"
-/* Taille Maximale du tableau */
-#define MAX 31
 /* Variables globales vérifiant les états de la connexion drone-télécommande */
 #define PAIR "pair\4"
 #define LINK "link\4"
@@ -31,7 +29,7 @@ void lecture(void) {
     fd = serialOpen(FLUX, 9600);
     connexion();
     /* Variable de récupération des caractères servant de tampon */
-    unsigned char buffer[MAX];
+    unsigned char buffer[31];
     /* Message recu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
     unsigned short int i = 0;
