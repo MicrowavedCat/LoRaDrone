@@ -43,6 +43,7 @@ void lecture(void) {
             if((buffer[i] == '\4') || (i > MAX+1)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
+                printf("%s\n", msg_recu);
                 /* Arrêt d'urgence du drone */
                 if(strcmp(msg_recu, STOP) { sortie(); }
                 /* Fin de la chaine de caractères */
