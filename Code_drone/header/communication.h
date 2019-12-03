@@ -14,8 +14,8 @@
 /* Flux de données permettant, sans fil et à distance, la communication série */
 #define FLUX "/dev/ttyAMA0"
 
-void ecriture(unsigned char *);
-void lecture(void);
+void *ecriture(unsigned char *);
+void *lecture(void);
 void tache(void);
 
 unsigned char *msg_recu;
