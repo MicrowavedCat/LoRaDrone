@@ -55,9 +55,11 @@ void *lecture(void) {
 
 void *ecriture(unsigned char *message) {
     connexion();
-    usleep(500000);
-    serialPrintf(fd, PAIR);
-    /**** A venir ... ****/
+    while(1){
+        usleep(500000);
+        serialPrintf(fd, PAIR);
+        /**** A venir ... ****/
+    }
 }
 
 /* Permet de déterminer toutes les actions à effectuer,
