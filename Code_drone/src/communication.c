@@ -11,6 +11,7 @@ int fd;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 void connexion(void){
+    fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
@@ -26,7 +27,6 @@ void connexion(void){
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void) {
-    fd = serialOpen(FLUX, 9600);
     connexion();
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
@@ -54,7 +54,6 @@ void lecture(void) {
 }
 
 void ecriture(unsigned char *message) {
-    fd = serialOpen(FLUX, 9600);
     connexion();
     usleep(500000);
     serialPrintf(fd, PAIR);
