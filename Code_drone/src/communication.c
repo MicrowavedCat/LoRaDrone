@@ -46,7 +46,7 @@ void lecture(void) {
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 /* Arrêt d'urgence du drone */
-                if(strcmp(msg_recu, END) { sortie(); }
+                if(strcmp(msg_recu, STOP) { sortie(); }
                 /* Fin de la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
