@@ -69,6 +69,7 @@ void sortie(void){
     exit(0);
 }
 
+/* Listing de tous les processus à créer en multitâche */
 void tache(void){
     pthread_t th[2];
     pthread_create(&th[0], NULL, lecture, NULL);
