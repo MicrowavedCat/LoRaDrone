@@ -26,7 +26,7 @@ unsigned short int connexion(void){
 }
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
-void lecture(void * args) {
+void lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* Message recu par la télécommande */
@@ -52,7 +52,7 @@ void lecture(void * args) {
     }
 }
 
-void *ecriture(void * args) {
+void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
         write(fd, PAIR, strlen(PAIR));
