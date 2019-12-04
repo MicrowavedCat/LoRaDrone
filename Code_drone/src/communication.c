@@ -1,5 +1,5 @@
 #include "../header/communication.h"
-/* Variables globales vérifiant les états de la connexion drone-télécommande */
+/* Variables globales définissant les états de la connexion drone-télécommande */
 #define PAIR "pair\4"
 #define LINK "link\4"
 #define CONNECTED "connected\4"
