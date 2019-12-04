@@ -77,8 +77,8 @@ void tache(void){
     connexion();
     pthread_t th[2];
     /* ecriture + lecture en simultané */
-    pthread_create(&th[0], NULL, lecture, (void *)fd);
-    pthread_create(&th[1], NULL, ecriture, (void*)fd);
+    pthread_create(&th[0], NULL, lecture, (void *)&fd);
+    pthread_create(&th[1], NULL, ecriture, (void *)&fd);
     for (unsigned short int i = 0; i < 2; i++)
         pthread_join(th[i], NULL);
 }
