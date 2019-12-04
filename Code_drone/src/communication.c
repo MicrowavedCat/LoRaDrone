@@ -55,11 +55,7 @@ void lecture(void * flux) {
 void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
-        write(fd, PAIR, strlen(PAIR));
-        /* C'est largement mieux de faire commen ça,
-        Mais si write ne marche pas faire :
-        serialPrintf(fd, PAIR); 
-        */
+        write(fd, PAIR, 1);
         /**** A venir ... ****/
     }
 }
