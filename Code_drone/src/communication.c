@@ -56,7 +56,8 @@ void *ecriture(void * args) {
     while(1){
         usleep(1000000);
         write(fd, PAIR, strlen(PAIR));
-        /* Si write ne marche pas faire :
+        /* C'est largement mieux de faire commen ça,
+        Mais si write ne marche pas faire :
         serialPrintf(fd, PAIR); 
         */
         /**** A venir ... ****/
