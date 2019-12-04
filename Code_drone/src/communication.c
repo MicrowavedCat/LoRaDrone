@@ -7,6 +7,9 @@
 #define STOP "stop\4" 
 #define END "end\4" 
 
+/* file descriptor permettant de stocker le flux de communication UART */
+int fd;
+
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 int connexion(void){
     int fd = serialOpen(FLUX, 9600);
@@ -24,7 +27,6 @@ int connexion(void){
 
 /* Fonction permettant de lire en UART le flux de données concernant la télécommade */
 void lecture(void * args) {
-    int fd = connexion();
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* Message recu par la télécommande */
@@ -51,10 +53,12 @@ void lecture(void * args) {
 }
 
 void *ecriture(void * args) {
-    int fd = connexion();
     while(1){
         usleep(500000);
-        serialPrintf(fd, PAIR);
+        write(fd, PAIR, strlen(PAIR);
+        /* Si write ne marche pas faire :
+        serialPrintf(fd, PAIR); 
+        */
         /**** A venir ... ****/
     }
 }
@@ -70,8 +74,9 @@ void sortie(void){
 
 /* Listing de tous les processus à créer et lancer en multitâche */
 void tache(void){
-    int fd = connexion();
+    connexion();
     pthread_t th[2];
+    /* ecriture + lecture en simultané */
     pthread_create(&th[0], NULL, lecture, (void *)fd);
     pthread_create(&th[1], NULL, ecriture, (void*)fd);
     for (unsigned short int i = 0; i < 2; i++)
