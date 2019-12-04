@@ -11,7 +11,7 @@
 int fd;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
-int connexion(void){
+unsigned short int connexion(void){
     int fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
