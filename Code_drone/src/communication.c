@@ -54,7 +54,7 @@ void lecture(void * args) {
 
 void *ecriture(void * args) {
     while(1){
-        usleep(500000);
+        usleep(1000000);
         write(fd, PAIR, strlen(PAIR));
         /* Si write ne marche pas faire :
         serialPrintf(fd, PAIR); 
