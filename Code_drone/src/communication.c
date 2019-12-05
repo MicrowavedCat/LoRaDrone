@@ -25,19 +25,19 @@ unsigned short int connexion(void){
     } else { return fd; }
 }
 
-/* Fonction permettant de lire en UART le flux de données concernant la télécommade */
+/* Fonction permettant de lire le flux de données UART */
 void lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
-    /* Message recu par la télécommande */
+    /* Message reçu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
     unsigned short int i = 0;
     while(1) {
-        /* Si le flux de données et est lisibles */
+        /* Si le flux de données est lisible */
         if(serialDataAvail(fd)) {
             /* Renvoi en indice du buffer le code ascii entier correpondant aux données dans ttyAMA0 */
             buffer[i] = serialGetchar(fd);
-            /* S'il y a une fin de transmission, ou dépassement de la taille du message */
+            /* S'il y a fin de transmission ou dépassement de la taille du message */
             if((buffer[i] == '\4') || (i > sizeof(buffer)+1)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
@@ -47,11 +47,13 @@ void lecture(void * flux) {
                 /* Fin de la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
+            /* Stockage des caractères dans le buffer */
             } else { i++; }
         }
     }
 }
 
+/* Fonction permettant d'écrire dans le flux de données UART */
 void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
@@ -73,7 +75,7 @@ void sortie(void){
 void tache(void){
     connexion();
     pthread_t th[2];
-    /* ecriture + lecture en simultané */
+    /* ecriture et lecture synchronisés */
     pthread_create(&th[0], NULL, lecture, (void *)&fd);
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
     for (unsigned short int i = 0; i < 2; i++)
