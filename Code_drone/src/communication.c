@@ -57,7 +57,7 @@ void lecture(void * flux) {
 void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
-        write(fd, PAIR, 1);
+        serialPrintf(fd, "CHANGE CE ****** DE MESSAGE ET LAISSE LE PRINTF");
         /**** A venir ... ****/
     }
 }
