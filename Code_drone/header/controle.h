@@ -9,7 +9,7 @@
 #include <fcntl.h>
 
 /* Flux de données permettant, sans fil et à distance, la communication série */
-#define BUS "i2c-1"
+#define BUS "dev/i2c-1"
 
 void i2c(void);
 
