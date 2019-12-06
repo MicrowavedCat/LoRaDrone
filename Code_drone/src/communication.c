@@ -58,6 +58,9 @@ void lecture(void * flux) {
 /* Fonction permettant d'écrire dans le flux de données UART */
 void *ecriture(void * flux) {
     while(1){
+        /* Test de la fonction de controle I2C 
+        pthread_create(&th, NULL, (void *)i2c, NULL);
+        */
         usleep(1000000);
         /* Ecriture en UART */
         serialPrintf(fd, PAIR);
