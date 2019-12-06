@@ -17,11 +17,11 @@ int connexion(void){
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
-        fprintf(stderr, "Erreur communication : %s\n", strerror(errno));
+        perror("Erreur communication ");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
-        fprintf(stderr, "Erreur : %s\n", strerror(errno));
+        perro("Erreur de librairie ");
         exit(2);
     } else { return fd; }
 }
