@@ -49,7 +49,7 @@ void i2c(void) {
     puis prend le bit de poid fort stocké dans x.
     */
     short int x = ((data[1] & 0x03) * 256 + data[0]);
-    /* 2^9-1 = 511 */
+    /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511 */
     if(x > 511){ x -= 1024; }
     /* --> lsb y, msb y
     Prend le bit de poid faible, stocké dans y.
