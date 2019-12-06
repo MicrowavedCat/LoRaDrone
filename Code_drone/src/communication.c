@@ -58,6 +58,7 @@ void lecture(void * flux) {
 void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
+        /* Ecriture en UART */
         serialPrintf(fd, PAIR);
         /**** A venir ... ****/
     }
