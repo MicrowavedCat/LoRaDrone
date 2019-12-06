@@ -34,10 +34,10 @@ void i2c(void) {
   write(fd, config, 2); /* Et 49 + 8 < 83 */
   usleep(1000000);
 
-  /* Définie la lecture 6 octets de données du registre, 
-  Permettera d'effectuer des opérations bit à bit */
+  /* Reservation d'une adresse de 32 bits */
   char registre[1] = {0x32};
   write(fd, registre, 1);
+  /* Allocation des 6 octets de données du registre à lire */
   char data[6];
   /* Problème de lecture du flux */
   if(read(fd, data, 6) != 6){
