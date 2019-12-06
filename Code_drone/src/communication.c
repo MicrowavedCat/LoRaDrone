@@ -21,7 +21,7 @@ int connexion(void){
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
-        perro("Erreur de librairie ");
+        perror("Erreur de librairie ");
         exit(2);
     } else { return fd; }
 }
