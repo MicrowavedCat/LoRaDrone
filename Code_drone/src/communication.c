@@ -5,8 +5,8 @@
 #define LINK "link\4"
 #define CONNECT "connect\4"
 #define LOST "lost\4"
-#define STOP "stop\4" 
-#define END "end\4" 
+#define STOP "stop\4"
+#define END "end\4"
 
 /* flux descriptor permettant de stocker le flux de communication UART */
 int fd;
