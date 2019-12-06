@@ -8,7 +8,7 @@ void i2c(void) {
   }
   /* Contrôle d'entrée-sortie vers le système esclave,
   7 bits que l’on complète par un 1 ou 0 final selon que le maître lit ou écrit sur cet esclave.
-  L'adresse est donc 0x53 soit 83 ou 1010011.
+  L'adresse est donc 0x53 soit 83 ou 1010011, et on (écrit dan le cas présent).
   L'utilisation d'une adresse qui n’est pas déjà utilisée sur les devices est nécessaires. */
   ioctl(fd, I2C_SLAVE, 0x53);
   char config[2];
@@ -38,7 +38,7 @@ void i2c(void) {
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
   char data[6];
-  /* Problème de lecture du flux */
+  /* Flux de lecture dépassant le nombre d'octets */
   if(read(fd, data, 6) != 6){
     perror("Erreur lecture : ");
     exit(2);
