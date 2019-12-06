@@ -77,7 +77,7 @@ void sortie(void){
 void tache(void){
     connexion();
     pthread_t th[2];
-    /* ecriture et lecture synchronisés */
+    /* Ecriture et lecture synchronisés */
     pthread_create(&th[0], NULL, lecture, (void *)&fd);
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
     for (unsigned short int i = 0; i < 2; i++)
