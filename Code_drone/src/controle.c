@@ -28,7 +28,7 @@ void i2c(void) {
 
   /* 0x31 (soit '1' et 49), sélectionne le format de données */
   config[0] = 0x31;
-  /* 0x08 (soit '\b' et 8), autotest désactivé, interface à 4 fils, plage = + ou - 2g */
+  /* 0x08 (soit '\b' et 8), autotest désactivé, plage + ou - équivalente à 2g */
   config[1] = 0x08;
   /* Ecrire la configuration dans le flux de taille 2 */
   write(fd, config, 2); /* Et 49 + 8 < 83 */
