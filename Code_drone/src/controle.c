@@ -30,7 +30,6 @@ void i2c(void) {
   config[0] = 0x31;
   /* (0x08 = 8), autotest désactivé, plage + ou - équivalente à 2g */
   config[1] = 0x08;
-  /* Ecrire la configuration dans le flux de taille 2 */
   write(fd, config, 2); /* Et 49 + 8 < 83 */
   usleep(1000000);
 
