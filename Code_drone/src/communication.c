@@ -19,9 +19,9 @@ int connexion(void){
     if (fd < 0) {
         fprintf(stderr, "Erreur communication : %s\n", strerror(errno));
         exit(1);
-    /* Erreur de déploiement de la librairie wiringPiSetup */
+    /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
-        fprintf(stderr, "Erreur de librairie : %s\n", strerror(errno));
+        fprintf(stderr, "Erreur : %s\n", strerror(errno));
         exit(2);
     } else { return fd; }
 }
