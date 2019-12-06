@@ -6,10 +6,10 @@ void i2c(void) {
     perror("Erreur communication ");
     exit(1);
   }
-  /* Contrôle d'entrée-sortie vers le système esclave,
-  7 bits que l’on complète par un 1 ou 0 final selon que le maître lit ou écrit sur cet esclave.
-  L'adresse est donc 0x53 soit 83 ou 1010011, et on (écrit dan le cas présent).
-  L'utilisation d'une adresse qui n’est pas déjà utilisée sur les devices est nécessaires. */
+  /* Contrôle d'entrée-sortie vers le système esclave par une adresse qui n’est pas déjà utilisée.
+  Le système maitre-esclave permet, sur 7 bits, de définir que le maitre lit ou ecrit sur l'esclave,
+  par la complétion d'un bit valant respectivement 1 ou 0 à la fin d'une adresse.
+  L'adresse est donc 0x53 soit 83 ou 1010011 (et on écrit dan le cas présent). */
   ioctl(fd, I2C_SLAVE, 0x53);
   char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
@@ -33,7 +33,8 @@ void i2c(void) {
   write(fd, config, 2); /* Et 49 + 8 < 83 */
   usleep(1000000);
 
-  /* Reservation d'une adresse de 32 bits */
+  /* Reservation d'une adresse de 32 bits,
+  (soit 00110010 avec un 0 final pour lire l'esclave)*/
   char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
@@ -45,7 +46,7 @@ void i2c(void) {
   }else{
     /* --> lsb x, msb x
     Prend le bit de poid faible, effectue un ET bit à bit,
-    puis prend le bit de poid fort stocké dans x. */
+    multiplié par 2^8 bits (capacité UART), puis on y ajoute le bit de poid fort. */
     short int x = ((data[1] & 0x03) * 256 + data[0]);
     /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511 */
     if(x > 511){ x -= 1024; }
