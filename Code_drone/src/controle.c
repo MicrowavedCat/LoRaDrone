@@ -44,12 +44,19 @@ void i2c(void) {
     perror("Erreur lecture : ");
     exit(2);
   }else{
+    /* --> lsb x, msb x
+    Prend le bit de poid faible, stocké dans x 
+    */
     short int x = ((data[1] & 0x03) * 256 + data[0]);
     if(x > 511){ x -= 1024; }
-
+    /* --> lsb y, msb y
+    Prend le bit de poid faible, stocké dans y 
+    */
     short int y = ((data[3] & 0x03) * 256 + data[2]);
     if(y > 511){ y -= 1024; }
-
+    /* --> lsb z, msb z 
+    Prend le bit de poid faible, stocké dans z 
+    */
     short int z = ((data[5] & 0x03) * 256 + data[4]);
     if(z > 511){ z -= 1024; }
 	  
