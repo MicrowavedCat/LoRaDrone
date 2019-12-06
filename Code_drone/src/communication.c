@@ -7,7 +7,7 @@
 #define STOP "stop\4" 
 #define END "end\4" 
 
-/* file descriptor permettant de stocker le flux de communication UART */
+/* flux descriptor permettant de stocker le flux de communication UART */
 int fd;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
