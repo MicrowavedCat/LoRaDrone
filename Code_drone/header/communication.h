@@ -17,6 +17,7 @@
 
 void tache(void);
 
+/* variable globale contenant le message envoyer par la télécommande */
 unsigned char *msg_recu;
 
 #endif
