@@ -33,8 +33,7 @@ void i2c(void) {
   write(fd, config, 2); /* Et 49 + 8 < 83 */
   usleep(1000000);
 
-  /* Reservation d'une adresse de 32 bits,
-  (soit 00110010 avec un bit final valant 0, on lit donc l'esclave) */
+  /* Reservation d'une adresse de 32 bits (soit 00110010) */
   char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
