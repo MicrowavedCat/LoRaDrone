@@ -9,7 +9,7 @@ OFILES = src/main.o \
 # Compilation
 CC = gcc
 
-# Argument de compilation
+# Arguments de compilation
 CFLAGS = -Ofast -flto
 
 ### 3] Dépedences à règles implicites des fichiers d'extension ".o" ###
