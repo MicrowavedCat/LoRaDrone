@@ -1,5 +1,5 @@
 #include "../header/controle.h"
-#define UART_SIZE 256
+#define BITS 256
 
 void i2c(void) {
   int fd;
@@ -47,14 +47,14 @@ void i2c(void) {
     /* --> lsb x, msb x
     Prend le bit de poid faible, effectue un ET bit à bit,
     multiplié par 2^8 bits (capacité UART), puis on y ajoute le bit de poid fort. */
-    short int x = ((data[1] & 0x03) * UART_SIZE + data[0]);
+    short int x = ((data[1] & 0x03) * BITS + data[0]);
     /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511 */
     if(x > 511){ x -= 1024; }
 	  
-    short int y = ((data[3] & 0x03) * UART_SIZE + data[2]);
+    short int y = ((data[3] & 0x03) * BITS + data[2]);
     if(y > 511){ y -= 1024; }
 	  
-    short int z = ((data[5] & 0x03) * UART_SIZE + data[4]);
+    short int z = ((data[5] & 0x03) * BITS + data[4]);
     if(z > 511){ z -= 1024; }
 	  
     printf("Controle X : %hd\nControle Y : %hd\nControle Z : %hd\n", x, y, z);
