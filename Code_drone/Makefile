@@ -6,6 +6,9 @@ OFILES = src/main.o \
          src/communication.o \
          src/controle.o
 
+# Compilation
+CC = gcc
+
 # Argument de compilation
 CFLAGS = -Ofast -flto
 
@@ -16,7 +19,7 @@ main.o : communication.o controle.o
 
 ### 4] Dépedences précédentes appliquées par commandes ###
 drone : $(OFILES)
-	gcc $(CFLAGS) -o drone $(OFILES) -lpthread
+	$(CC)  $(CFLAGS) -o drone $(OFILES) -lpthread
 
 ### 5] Nettoyage des fichiers d'extension ".o" générés ###
 clean :
