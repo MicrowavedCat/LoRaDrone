@@ -43,7 +43,7 @@ void i2c(void) {
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
   unsigned char data[6];
-  /* Flux de lecture dépassant le nombre d'octets */
+  /* Flux de lecture dépassant le nombre de bits */
   if(read(fd, data, 6) != 6){
     perror("Erreur lecture ");
     exit(2);
