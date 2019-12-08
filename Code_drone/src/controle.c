@@ -15,7 +15,7 @@ void i2c(void) {
   par la complétion d'un bit valant respectivement 1 ou 0 à la fin d'une adresse.
   L'adresse est donc 0x53 soit 83 ou 1010011 (et on écrit dan le cas présent). */
   ioctl(fd, I2C_SLAVE, 0x53);
-  char config[2];
+  unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
   config[0] = 0x2C;
   /* (0x0A = 10) correpond au débit de données de sortie (100 Hz) */
@@ -38,10 +38,10 @@ void i2c(void) {
   usleep(1000000);
 
   /* Reservation d'une adresse de 32 bits (soit 00110010) */
-  char registre[1] = {0x32};
+  unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
-  char data[6];
+  unsigned char data[6];
   /* Flux de lecture dépassant le nombre d'octets */
   if(read(fd, data, 6) != 6){
     perror("Erreur lecture : ");
