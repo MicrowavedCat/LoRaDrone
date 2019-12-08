@@ -10,7 +10,7 @@ void i2c(void) {
     perror("Erreur communication ");
     exit(1);
   }
-  /* 53 est l'adresse par défault de connection de l'ADXL345. 
+  /* 53 est l'adresse par défault de connection de l'ADXL345 (vérifiable en faisant "sudo i2cdetected -y l")
   Le système maitre-esclave permet, sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave,
   par la complétion d'un bit valant respectivement 1 ou 0 à la fin d'une adresse.
   L'adresse est donc 0x53 soit 83 ou 1010011 (et on écrit dan le cas présent). */
