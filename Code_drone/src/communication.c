@@ -3,7 +3,7 @@
 /* Variables globales définissant les états de la connexion drone-télécommande */
 #define PAIR "pair\4"
 #define LINK "link\4"
-#define CONNECT "connect\4"
+#define CONNECT "conn\4"
 #define LOST "lost\4"
 #define STOP "stop\4"
 #define END "end\4"
