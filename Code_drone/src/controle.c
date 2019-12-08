@@ -1,6 +1,9 @@
 #include "../header/controle.h"
+/* 2^8 = 256 bits (capacité d'interaction en lecture ou ecriture du UART) */
 #define BITS 256
 
+/* Fonction permettant de configurer,
+et de relever, les coordonnées de l'accéléromètre ADXL345 */
 void i2c(void) {
   int fd;
   if ((fd = open(BUS, O_RDWR)) < 0){
@@ -43,10 +46,12 @@ void i2c(void) {
   if(read(fd, data, 6) != 6){
     perror("Erreur lecture : ");
     exit(2);
+  /* L'accéléromètre utilisé ici est sur 3 axes, 
+  on effectue alors des opération pour les coordonnées x, y et z */
   }else{
     /* --> lsb x, msb x
     Prend le bit de poid faible, effectue un ET bit à bit,
-    multiplié par 2^8 bits (capacité UART), puis on y ajoute le bit de poid fort. */
+    puis on y ajoute le bit de poid fort. */
     short int x = ((data[1] & 0x03) * BITS + data[0]);
     /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511 */
     if(x > 511){ x -= 1024; }
