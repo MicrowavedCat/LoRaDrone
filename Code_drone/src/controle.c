@@ -48,7 +48,7 @@ void i2c(void) {
     exit(2);
   /* L'accéléromètre utilisé ici est sur 3 axes, 
   on effectue alors des opération pour les coordonnées x, y et z 
-  --> lsb axe = Prend le bit le moins significatif, effectue un ET bit à bit,
+  --> lsb axe = Prend le bit le moins significatif, effectue un ET bit à bit avec 011,
   --> msb axe = puis on y ajoute le plus significatif. */
   }else{
     short int x = ((data[1] & 0x03) * BITS + data[0]);
