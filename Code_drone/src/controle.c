@@ -45,7 +45,7 @@ void i2c(void) {
   unsigned char data[6];
   /* Flux de lecture dépassant le nombre d'octets */
   if(read(fd, data, 6) != 6){
-    perror("Erreur lecture : ");
+    perror("Erreur lecture ");
     exit(2);
   /* L'accéléromètre utilisé ici est sur 3 axes, 
   on effectue alors des opération pour les coordonnées x, y et z 
