@@ -54,7 +54,7 @@ void i2c(void) {
     --> msb x = puis on y ajoute le bit de poid fort. */
     short int x = ((data[1] & 0x03) * BITS + data[0]);
     /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511
-    On décrémente de 2^(9+1) = 1024 bits. */
+    On décrémente pour convertir les données sur 10 bits [2^(9+1) = 1024 bits] */
     if(x > 511){ x -= 1024; }
 	  
     short int y = ((data[3] & 0x03) * BITS + data[2]);
