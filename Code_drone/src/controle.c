@@ -10,8 +10,8 @@ void i2c(void) {
     perror("Erreur communication ");
     exit(1);
   }
-  /* Contrôle d'entrée-sortie vers le système esclave par une adresse qui n’est pas déjà utilisée.
-  Le système maitre-esclave permet, sur 7 bits, de définir que le maitre lit ou ecrit sur l'esclave,
+  /* 53 est l'adresse par défault de connection de l'ADXL345. 
+  Le système maitre-esclave permet, sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave,
   par la complétion d'un bit valant respectivement 1 ou 0 à la fin d'une adresse.
   L'adresse est donc 0x53 soit 83 ou 1010011 (et on écrit dan le cas présent). */
   ioctl(fd, I2C_SLAVE, 0x53);
@@ -50,7 +50,7 @@ void i2c(void) {
   on effectue alors des opération pour les coordonnées x, y et z */
   }else{
     /* Ici, on effectue sur les données de chaque axes 
-    --> lsb x = Prend le bit le moins significatif, effectue un ET bit à bit,
+    --> lsb x = Prend le bit le moins significatif, effectue un ET bit à bit, 2^
     --> msb x = puis on y ajoute le bit de poid fort. */
     short int x = ((data[1] & 0x03) * BITS + data[0]);
     /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511
