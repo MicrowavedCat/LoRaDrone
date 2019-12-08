@@ -47,11 +47,10 @@ void i2c(void) {
     perror("Erreur lecture : ");
     exit(2);
   /* L'accéléromètre utilisé ici est sur 3 axes, 
-  on effectue alors des opération pour les coordonnées x, y et z */
+  on effectue alors des opération pour les coordonnées x, y et z 
+  --> lsb axe = Prend le bit le moins significatif, effectue un ET bit à bit,
+  --> msb axe = puis on y ajoute le plus significatif. */
   }else{
-    /* Ici, on effectue sur les données de chaque axes :
-    --> lsb x = Prend le bit le moins significatif, effectue un ET bit à bit, 2^
-    --> msb x = puis on y ajoute le plus significatif. */
     short int x = ((data[1] & 0x03) * BITS + data[0]);
     /* Si l'on dépasse pour les données d'un axe 2^9-1 = 511,
     on décrémente pour convertir les données sur 10 bits [2^(9+1) = 1024 bits] */
