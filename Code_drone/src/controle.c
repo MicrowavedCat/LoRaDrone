@@ -49,11 +49,12 @@ void i2c(void) {
   /* L'accéléromètre utilisé ici est sur 3 axes, 
   on effectue alors des opération pour les coordonnées x, y et z */
   }else{
-    /* --> lsb x, msb x
-    Prend le bit de poid faible, effectue un ET bit à bit,
-    puis on y ajoute le bit de poid fort. */
+    /* Ici, on effectue sur les données de chaque axes 
+    --> lsb x = Prend le bit le moins significatif, effectue un ET bit à bit,
+    --> msb x = puis on y ajoute le bit de poid fort. */
     short int x = ((data[1] & 0x03) * BITS + data[0]);
-    /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511 */
+    /* On parcours la valeur des bits de 0 à 9, on a 2^9-1 = 511
+    On décrémente de 2^(9+1) = 1024 bits. */
     if(x > 511){ x -= 1024; }
 	  
     short int y = ((data[3] & 0x03) * BITS + data[2]);
@@ -62,6 +63,6 @@ void i2c(void) {
     short int z = ((data[5] & 0x03) * BITS + data[4]);
     if(z > 511){ z -= 1024; }
 	  
-    printf("Controle X : %hd\nControle Y : %hd\nControle Z : %hd\n", x, y, z);
+    printf("Axe X : %hd\nAxe Y : %hd\nAxe Z : %hd\n", x, y, z);
   }
 }
