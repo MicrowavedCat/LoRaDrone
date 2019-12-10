@@ -16,7 +16,7 @@ main.o : communication.o controle.o
 
 ### 4] Dépedences précédentes appliquées par commandes ###
 drone : $(OFILES)
-	$(CC) -o drone $(OFILES) -lpthread
+	$(CC) -o drone $(OFILES) -lpthread -lwiringPi
 
 ### 5] Nettoyage des fichiers d'extension ".o" générés ###
 clean :
