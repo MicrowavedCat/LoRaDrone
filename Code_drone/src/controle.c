@@ -1,3 +1,5 @@
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
 #include "../header/controle.h"
 /* 2^8 = 256 bits (capacité d'interaction en lecture ou ecriture du UART) */
 #define BITS 256
