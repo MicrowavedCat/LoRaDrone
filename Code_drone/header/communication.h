@@ -2,6 +2,8 @@
 #define COMMUNICATION_H
 
 #include <pthread.h>
+#include <wiringPi.h>
+#include <wringPiSetup.h>
 
 /* Flux de données permettant, sans fil et à distance, la communication série */
 #define FLUX "/dev/ttyAMA0"
