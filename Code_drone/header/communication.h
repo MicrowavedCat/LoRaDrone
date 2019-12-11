@@ -2,6 +2,7 @@
 #define COMMUNICATION_H
 
 #include <pthread.h>
+/* Librairie de communication série sur Raspberry */
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
