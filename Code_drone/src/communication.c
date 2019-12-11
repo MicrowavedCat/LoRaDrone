@@ -1,12 +1,12 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 /* Variables globales définissant les états de la connexion drone-télécommande */
-#define PAIR "pair\4"
-#define LINK "link\4"
-#define CONNECT "conn\4"
-#define LOST "lost\4"
-#define STOP "stop\4"
-#define END "end\4"
+#define PAIR static const "pair\4"
+#define LINK static const "link\4"
+#define CONNECT static const "connect\4"
+#define LOST static const "lost\4"
+#define STOP static const "stop\4" 
+#define END static const "end\4" 
 
 /* flux descriptor permettant de stocker le flux de communication UART */
 int fd;
@@ -75,7 +75,7 @@ void sortie(void){
 }
 
 /* Listing de tous les processus à créer et lancer en multitâche */
-void tache(void){
+const void tache(void){
     connexion();
     pthread_t th[2];
     /* Ecriture et lecture synchronisés */
