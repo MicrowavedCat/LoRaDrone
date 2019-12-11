@@ -60,7 +60,7 @@ void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
         /* Ecriture en UART */
-        serialPrintf(fd, PAIR);
+        serialPrintf(fd, CONNECT);
         /**** A venir ... ****/
     }
 }
