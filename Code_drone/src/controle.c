@@ -16,7 +16,9 @@ void i2c(void) {
   /* ioctl([1],[2],[3]) est un appel système particulier, 
   permettant d'effectuer des opérations d'entrée-sortie spécifiques à un périphérique,
   présentement ici un accéléromère branché sur des GPIOs d'un Rapsberry Pi0 :
-  -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1".
+  -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1",
+  fichier permettant d'accéder à tous les appareils d'un adaptateur depuis l'espace utilisateur,
+  car habituellement les périphériques i2c sont contrôlés par un driver du noyau (Kernel).
   -> L'argument [2] est une requête relative à un périphérique, ici il s'agit du système maitre-esclave permettant,
   sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave.   
   -> L'argument [3] est l'adresse 53 est l'adresse par défault de connection de l'ADXL345,
