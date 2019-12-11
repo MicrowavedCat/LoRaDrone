@@ -2,7 +2,7 @@
 #include <sys/ioctl.h>
 #include "../header/controle.h"
 /* Les 256 numéros d'appareil mineurs sont réservés à i2c. */
-#define BITS 256
+#define RESERVED 256
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
@@ -60,15 +60,15 @@ void i2c(void) {
   --> lsb axe = Par du bit le moins significatif, effectue un ET bit à bit avec 11,
   --> msb axe = puis on y ajoute le bit le plus significatif. */
   }else{
-    short int x = ((data[1] & 0x03) * BITS + data[0]);
+    short int x = ((data[1] & 0x03) * RESERVED + data[0]);
     /* Si l'on dépasse, pour les données d'un axe, 2^9-1 = 511,
     on convertit les données sur 10 bits [2^(9+1) = 2^10 = 1024 bits] */
     if(x > 511){ x -= 1024; }
 	  
-    short int y = ((data[3] & 0x03) * BITS + data[2]);
+    short int y = ((data[3] & 0x03) * RESERVED + data[2]);
     if(y > 511){ y -= 1024; }
 	  
-    short int z = ((data[5] & 0x03) * BITS + data[4]);
+    short int z = ((data[5] & 0x03) * RESERVED + data[4]);
     if(z > 511){ z -= 1024; }
 	  
     printf("Axe X : %hd\nAxe Y : %hd\nAxe Z : %hd\n", x, y, z);
