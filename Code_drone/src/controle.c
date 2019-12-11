@@ -17,11 +17,10 @@ void i2c(void) {
   permettant d'effectuer des opérations d'entrée-sortie spécifiques à un périphérique,
   présentement ici un accéléromère branché sur des GPIOs d'un Rapsberry Pi0 :
   -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1".
-  -> L'argument [2] est Le système maitre-esclave permet, sur 7 bits, 
-  de définir si le maitre lit ou ecrit sur l'esclave.   
+  -> L'argument [2] est une requête relative à un périphérique, ici il s'agit du système maitre-esclave permettant,
+  sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave.   
   -> L'argument [3] est l'adresse 53 est l'adresse par défault de connection de l'ADXL345,
-  (vérifiable en faisant "sudo i2cdetected -y 1" sur Raspberry). */
-	
+  (vérifiable en faisant "sudo i2cdetect -y l" sur Raspberry). */
   ioctl(fd, I2C_SLAVE, 0x53);
   unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
