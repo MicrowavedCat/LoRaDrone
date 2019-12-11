@@ -24,8 +24,8 @@ void i2c(void) {
   -> L'argument [3] est est l'adresse par défault de connection de l'ADXL345,
   en vérifiant dans le chemin d'accés "/sys/class/i2c-adapter/", on obtient 53. */
   if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
-  	printf("Erreur communication i2c\n");
-  	exit(2);
+    printf("Erreur communication i2c\n");
+    exit(2);
   }
   unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
