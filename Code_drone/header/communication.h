@@ -7,7 +7,7 @@
 #include <wiringSerial.h>
 
 /* Flux de données permettant, sans fil et à distance, la communication série */
-#define FLUX static const "/dev/ttyAMA0"
+#define FLUX "/dev/ttyAMA0"
 
 const void tache(void);
 
