@@ -31,7 +31,7 @@ void i2c(void) {
   config[0] = 0x2C;
   /* (0x0A = 10) correpond au débit de données de sortie (100 Hz) */
   config[1] = 0x0A;
-  /* Ecrire la configuration dans le flux de taille 2 */
+  /* Ecrirture de l'adresse 0x0A2C de la configuration */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
@@ -41,7 +41,7 @@ void i2c(void) {
   config[0] = 0x2D;
   /* (0x08 = 8), mise en veille automatique */
   config[1] = 0x08;
-  /* Ecrirture de la configuration dans le flux de taille 2 */
+  /* Ecrirture de l'adresse 0x2D08 de la configuration */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
@@ -51,6 +51,7 @@ void i2c(void) {
   config[0] = 0x31;
   /* (0x08 = 8), autotest désactivé, plage + ou - équivalente à 2g */
   config[1] = 0x08;
+  /* Ecrirture de l'adresse 0x3108 de la configuration */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
