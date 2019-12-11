@@ -57,8 +57,7 @@ void i2c(void) {
     exit(2);
   }
   usleep(1000000);
-
-  /* Reservation d'une adresse de 32 bits (soit 00110010) */
+	
   __u8 registre;
   write(fd, registre, 1);
   /* Lecture des 3 adresses par les 6 paramètres de configurations écris dans le flux */
