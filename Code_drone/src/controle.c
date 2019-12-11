@@ -1,11 +1,11 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include "../header/controle.h"
-/* 2^8 = 256 bits (capacité d'interaction en lecture ou ecriture du UART) */
+/* 2^8 = 256 bits (capacité pour lire ou écrire en UART) */
 #define BITS 256
 
-/* Fonction permettant de configurer,
-et de relever, les coordonnées de l'accéléromètre ADXL345 */
+/* Fonction permettant de configurer, et de relever, 
+les coordonnées de l'accéléromètre ADXL345. */
 void i2c(void) {
   int fd;
   /* Ouverture du bus i2c en lecutre et écriture */
@@ -13,10 +13,15 @@ void i2c(void) {
     perror("Erreur communication ");
     exit(1);
   }
-  /* 53 est l'adresse par défault de connection de l'ADXL345 (vérifiable en faisant "sudo i2cdetected -y l")
-  Le système maitre-esclave permet, sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave,
-  par la complétion d'un bit valant respectivement 1 ou 0 à la fin d'une adresse.
-  L'adresse est donc 0x53 soit 83 ou 1010011 (et on écrit dan le cas présent). */
+  /* ioctl([1],[2],[3]) est un appel système particulier, 
+  permettant d'effectuer des opérations d'entrée-sortie spécifiques à un périphérique,
+  présentement ici un accéléromère branché sur des GPIOs d'un Rapsberry Pi0 :
+  -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1".
+  -> L'argument [2] est Le système maitre-esclave permet, sur 7 bits, 
+  de définir si le maitre lit ou ecrit sur l'esclave.   
+  -> L'argument [3] est l'adresse 53 est l'adresse par défault de connection de l'ADXL345,
+  (vérifiable en faisant "sudo i2cdetected -y 1" sur Raspberry). */
+	
   ioctl(fd, I2C_SLAVE, 0x53);
   unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
