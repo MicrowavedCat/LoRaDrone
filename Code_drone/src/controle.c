@@ -58,7 +58,7 @@ void i2c(void) {
   }
   usleep(1000000);
 	
-  __u8 registre;
+  unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Lecture des 3 adresses par les 6 paramètres de configurations écris dans le flux */
   unsigned char data[6];
