@@ -14,7 +14,7 @@ void i2c(void) {
     exit(1);
   }
   /* ioctl([1],[2],[3]) est un appel système particulier, 
-  permettant d'effectuer des opérations d'entrée-sortie spécifiques à un périphérique,
+  permettant d'effectuer des opérations de communication d'entrée-sortie spécifiques à un périphérique,
   présentement ici un accéléromère branché sur des GPIOs d'un Rapsberry Pi0 :
   -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1",
   fichier permettant d'accéder à tous les appareils d'un adaptateur depuis l'espace utilisateur,
@@ -51,7 +51,7 @@ void i2c(void) {
   /* Reservation d'une adresse de 32 bits (soit 00110010) */
   unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
-  /* Allocation des 6 octets de données du registre à lire */
+  /* Lecture des 6 paramètres de configurations écris */
   unsigned char data[6];
   /* Problème de transaction i2c */
   if(read(fd, data, 6) != 6){
