@@ -7,9 +7,9 @@
 #include <wiringSerial.h>
 
 /* Flux de données permettant, sans fil et à distance, la communication série */
-#define FLUX "/dev/ttyAMA0"
+#define FLUX static const "/dev/ttyAMA0"
 
-void tache(void);
+const void tache(void);
 
 /* variable globale contenant le message envoyer par la télécommande */
 unsigned char *msg_recu;
