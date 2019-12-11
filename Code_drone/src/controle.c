@@ -6,7 +6,7 @@
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-void i2c(void) {
+const void i2c(void) {
   int fd;
   /* Ouverture du bus i2c en lecutre et écriture */
   if ((fd = open(BUS, O_RDWR)) < 0){
