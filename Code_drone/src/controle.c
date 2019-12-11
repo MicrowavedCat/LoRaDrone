@@ -1,7 +1,7 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include "../header/controle.h"
-/* 2^8 = 256 bits (capacité pour lire ou écrire en UART) */
+/* Les 256 numéros d'appareil mineurs sont réservés à i2c. */
 #define BITS 256
 
 /* Fonction permettant de configurer, et de relever, 
