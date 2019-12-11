@@ -10,7 +10,7 @@ void i2c(void) {
   int fd;
   /* Ouverture du bus i2c en lecutre et écriture */
   if ((fd = open(BUS, O_RDWR)) < 0){
-    perror("Erreur communication ");
+    printf("Erreur communication\n");
     exit(1);
   }
   /* ioctl([1],[2],[3]) est un appel système particulier, 
@@ -23,7 +23,10 @@ void i2c(void) {
   sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave.   
   -> L'argument [3] est est l'adresse par défault de connection de l'ADXL345,
   en vérifiant dans le chemin d'accés "/sys/class/i2c-adapter/", on obtient 53. */
-  ioctl(fd, I2C_SLAVE, 0x53);
+  if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
+  	printf("Erreur communication i2c\n");
+  	exit(2);
+  }
   unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
   config[0] = 0x2C;
@@ -51,9 +54,9 @@ void i2c(void) {
   write(fd, registre, 1);
   /* Allocation des 6 octets de données du registre à lire */
   unsigned char data[6];
-  /* Flux de lecture dépassant le nombre de bits */
+  /* Problème de transaction i2c */
   if(read(fd, data, 6) != 6){
-    perror("Erreur lecture ");
+    printf("Erreur de transaction i2c\n");
     exit(2);
   /* L'accéléromètre utilisé ici est sur 3 axes, 
   on effectue alors des opération pour les coordonnées x, y et z 
