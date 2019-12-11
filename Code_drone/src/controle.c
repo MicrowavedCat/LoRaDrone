@@ -59,7 +59,7 @@ void i2c(void) {
   usleep(1000000);
 
   /* Reservation d'une adresse de 32 bits (soit 00110010) */
-  unsigned char registre[1] = {0x32};
+  __u8 registre;
   write(fd, registre, 1);
   /* Lecture des 3 adresses par les 6 paramètres de configurations écris dans le flux */
   unsigned char data[6];
@@ -82,7 +82,7 @@ void i2c(void) {
 	  
     short int z = ((data[5] & 0x03) * RESERVED + data[4]);
     if(z > 511){ z -= 1024; }
-	  
+    
     printf("Axe X : %hd\nAxe Y : %hd\nAxe Z : %hd\n", x, y, z);
   }
 }
