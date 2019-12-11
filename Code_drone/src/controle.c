@@ -16,12 +16,12 @@ void i2c(void) {
   /* ioctl([1],[2],[3]) est un appel système particulier, 
   permettant d'effectuer des opérations de communication d'entrée-sortie spécifiques à un périphérique,
   présentement ici un accéléromère branché sur des GPIOs d'un Rapsberry Pi0 :
-  -> L'argument [1] est un descripteur de flux de donnée, en l'occurence pour le fichier "/dev/i2c-1",
-  fichier permettant d'accéder à tous les appareils d'un adaptateur depuis l'espace utilisateur,
+  -> L'argument [1] est un descripteur de flux de données, en l'occurence pour le fichier "/dev/i2c-1",
+  permettant d'accéder à tous les appareils d'un adaptateur depuis l'espace utilisateur,
   car habituellement les périphériques i2c sont contrôlés par un driver du noyau (Kernel).
   -> L'argument [2] est une requête relative à un périphérique.   
   -> L'argument [3] est est l'adresse par défault de connection de l'ADXL345,
-  en vérifiant dans le chemin d'accés "/sys/class/i2c-adapter/", on obtient 53. */
+  que l'on peut touver dans le chemin d'accés "/sys/class/i2c-adapter/", on obtient 53. */
   if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
     printf("Erreur communication i2c\n");
     exit(2);
