@@ -44,8 +44,6 @@ void lecture(void * flux) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
-                /* Arrêt d'urgence du drone */
-                if(strcmp(msg_recu, STOP)) { sortie(); }
                 /* Fin de la chaine de caractères */
                 for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
@@ -67,7 +65,7 @@ void *ecriture(void * flux) {
 
 /* Permet de déterminer toutes les actions à effectuer,
 permettant de terminer la communciations drone-télécommande */
-static const void sortie(void){
+const void sortie(void){
     free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
