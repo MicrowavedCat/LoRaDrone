@@ -20,7 +20,7 @@ void i2c(void) {
   fichier permettant d'accéder à tous les appareils d'un adaptateur depuis l'espace utilisateur,
   car habituellement les périphériques i2c sont contrôlés par un driver du noyau (Kernel).
   -> L'argument [2] est une requête relative à un périphérique, ici il s'agit du système maitre-esclave permettant,
-  sur 7 bits, de définir si le maitre lit ou ecrit sur l'esclave.   
+  sur 7 bits, de changer l'adresse d'un périphérique.   
   -> L'argument [3] est est l'adresse par défault de connection de l'ADXL345,
   en vérifiant dans le chemin d'accés "/sys/class/i2c-adapter/", on obtient 53. */
   if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
