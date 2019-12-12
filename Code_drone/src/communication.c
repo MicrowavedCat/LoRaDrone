@@ -79,6 +79,6 @@ const void tache(void){
     /* Ecriture et lecture synchronisés */
     pthread_create(&th[0], NULL, lecture, (void *)&fd);
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
-    for (unsigned short int i = 0; i < 2; i++)
+    for(unsigned short int i = 0; i < 2; i++)
         pthread_join(th[i], NULL);
 }
