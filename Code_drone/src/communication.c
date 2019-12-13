@@ -22,7 +22,7 @@ static int connexion(void){
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
-        printf("Erreur de librairi\n");
+        printf("Erreur de librairie\n");
         exit(2);
     } else { return fd; }
 }
