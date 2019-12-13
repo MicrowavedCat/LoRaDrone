@@ -31,8 +31,7 @@ const void i2c(void) {
   config[0] = 0x2C;
   /* (0x0A = 10) correpond au débit de données de sortie (100 Hz) */
   config[1] = 0x0A;
-  /* Ecrirture de l'adresse 0x0A2C dans le flux de données.
-  0x0A2C = 101000101100 */
+  /* Ecrirture de l'adresse 0x0A2C dans le flux de données. */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
@@ -42,8 +41,7 @@ const void i2c(void) {
   config[0] = 0x2D;
   /* (0x08 = 8), mise en veille automatique */
   config[1] = 0x08;
-  /* Ecrirture de l'adresse 0x2D08 dans le flux de données.
-  0x2D08 = 10110100001000 */
+  /* Ecrirture de l'adresse 0x2D08 dans le flux de données. */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
@@ -53,8 +51,7 @@ const void i2c(void) {
   config[0] = 0x31;
   /* (0x08 = 8), autotest désactivé, plage + ou - équivalente à 2g */
   config[1] = 0x08;
-  /* Ecrirture de l'adresse 0x3108 dans le flux de données.
-  0x3108 = 11000100001000 */
+  /* Ecrirture de l'adresse 0x3108 dans le flux de données. */
   if(write(fd, config, 2) != 2){
     printf("Erreur de transaction i2c\n");
     exit(2);
@@ -63,10 +60,9 @@ const void i2c(void) {
   
   unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
-  /* Lecture des 3 adresses par les 6 paramètres de configurations écris dans le flux.
-  0x0A2C2D083108 => 10100010110000101101000010000011000100001000 */
+  /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
   unsigned char data[6];
-  /* Problème de transaction i2c */
+  /* Problème de transaction i2c. */
   if(read(fd, data, 6) != 6){
     printf("Erreur de transaction i2c\n");
     exit(3);
