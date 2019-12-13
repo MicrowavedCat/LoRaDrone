@@ -75,7 +75,7 @@ const void sortie(void){
 /* Listing de tous les processus à créer et lancer en multitâche */
 const void tache(void){
     connexion();
-    pthread_t th[2];
+    static pthread_t th[2];
     /* Ecriture et lecture synchronisés */
     pthread_create(&th[0], NULL, lecture, (void *)&fd);
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
