@@ -9,7 +9,7 @@
 #define END "end\4" 
 
 /* flux descriptor permettant de stocker le flux de communication UART */
-int fd;
+static int fd;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 static int connexion(void){
@@ -28,7 +28,7 @@ static int connexion(void){
 }
 
 /* Fonction permettant de lire le flux de données UART */
-void lecture(void * flux) {
+static void lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* Message reçu par la télécommande */
@@ -54,7 +54,7 @@ void lecture(void * flux) {
 }
 
 /* Fonction permettant d'écrire dans le flux de données UART */
-void *ecriture(void * flux) {
+static void *ecriture(void * flux) {
     while(1){
         usleep(1000000);
         /* Ecriture en UART */
