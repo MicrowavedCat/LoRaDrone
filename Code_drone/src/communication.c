@@ -65,7 +65,7 @@ static void *ecriture(void * flux) {
 
 /* Permet de déterminer toutes les actions à effectuer,
 permettant de terminer la communciations drone-télécommande */
-const void sortie(void){
+static const void sortie(void){
     free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
