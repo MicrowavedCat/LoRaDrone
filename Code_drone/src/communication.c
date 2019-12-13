@@ -18,11 +18,11 @@ static int connexion(void){
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
-        printf("Erreur communication !\n");
+        printf("Erreur communication\n");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
-        perror("Erreur de librairie ");
+        printf("Erreur de librairi\n");
         exit(2);
     } else { return fd; }
 }
