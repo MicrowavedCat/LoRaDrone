@@ -12,13 +12,13 @@
 int fd;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
-int connexion(void){
+static int connexion(void){
     /* Dispositif d'entrée et nombre de bits par seconde */
     fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
     if (fd < 0) {
-        perror("Erreur communication ");
+        printf("Erreur communication !\n");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if (wiringPiSetup() == -1) {
