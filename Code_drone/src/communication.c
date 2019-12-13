@@ -33,7 +33,7 @@ static void lecture(void * flux) {
     unsigned char buffer[31];
     /* Message reçu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
-    unsigned short int i = 0;
+    static unsigned short int i = 0;
     while(1) {
         /* Si le flux de données est lisible */
         if(serialDataAvail(fd)) {
