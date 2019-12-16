@@ -1,7 +1,6 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 /* Variables globales définissant les états de la connexion drone-télécommande */
-#define PAIR "pair\4"
 #define LINK "link\4"
 #define CONNECT "connect\4"
 #define LOST "lost\4"
@@ -59,7 +58,6 @@ static void *ecriture(void * flux) {
         usleep(1000000);
         /* Ecriture en UART */
         serialPrintf(fd, CONNECT);
-        /**** A venir ... ****/
     }
 }
 
