@@ -57,7 +57,7 @@ static void *ecriture(void * flux) {
     if(strcmp(msg_recu, "pair\4")) { validation = 1; }
     else { validation = 0; }
     while(validation == 1){
-        usleep(1000000);
+        usleep(3000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
         serialPrintf(fd, CONNECT);
