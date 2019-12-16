@@ -55,7 +55,7 @@ static void lecture(void * flux) {
 
 /* Fonction permettant d'écrire dans le flux de données UART */
 static void *ecriture(void * flux) {
-    if(strcmp(msg_recu, "pair\4")){ continuation = 1; }
+    if(strcmp(msg_recu, "pair")){ continuation = 1; }
     else{ continuation = 0; }
     while(continuation == 1){
         usleep(1000000);
