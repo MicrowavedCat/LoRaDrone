@@ -54,11 +54,13 @@ static void lecture(void * flux) {
 
 /* Fonction permettant d'écrire dans le flux de données UART */
 static void *ecriture(void * flux) {
-    while(1){
-        usleep(1000000);
-        /* Ecriture en UART */
-        serialPrintf(fd, CONNECT);
-    }
+    if(strcmp(msg_recu, "pair\4")){
+        while(1){
+            usleep(1000000);
+            /* Ecriture en UART */
+            serialPrintf(fd, CONNECT);
+        }
+    }else{ /* truc */ }
 }
 
 /* Permet de déterminer toutes les actions à effectuer,
