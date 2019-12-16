@@ -79,4 +79,5 @@ const void tache(void){
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
     for(unsigned short int i = 0; i < 2; i++)
         pthread_join(th[i], NULL);
+    sortie();
 }
