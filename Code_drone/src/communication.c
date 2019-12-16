@@ -58,7 +58,8 @@ static void *ecriture(void * flux) {
     else{ continuation = 0; }
     while(continuation == 1){
         usleep(1000000);
-        /* Ecriture en UART */
+        /* Ecriture en UART d'un message de connexion à rythme régulier,
+        pour s'assurer que la communication fonctionne. */
         serialPrintf(fd, CONNECT);
     }
 }
