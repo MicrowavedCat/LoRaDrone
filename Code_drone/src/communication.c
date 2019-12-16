@@ -8,6 +8,7 @@
 
 /* flux descriptor permettant de stocker le flux de communication UART */
 static int fd;
+/* Variable booléenne servant d'indice d'intégrité */
 static unsigned short int validation;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
