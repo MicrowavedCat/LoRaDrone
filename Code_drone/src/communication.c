@@ -8,7 +8,7 @@
 
 /* flux descriptor permettant de stocker le flux de communication UART */
 static int fd;
-static unsigned short int continuation;
+static unsigned short int validation;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
 static int connexion(void){
@@ -54,9 +54,9 @@ static void lecture(void * flux) {
 
 /* Fonction permettant d'écrire dans le flux de données UART */
 static void *ecriture(void * flux) {
-    if(strcmp(msg_recu, "pair")) { continuation = 1; }
-    else { continuation = 0; }
-    while(continuation == 1){
+    if(strcmp(msg_recu, "pair\4")) { validation = 1; }
+    else { validation = 0; }
+    while(validation == 1){
         usleep(1000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
