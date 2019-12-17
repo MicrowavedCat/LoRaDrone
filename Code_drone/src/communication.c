@@ -12,7 +12,7 @@ static int fd;
 static unsigned short int validation;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
-static int connexion(void){
+static int connexion(void) {
     /* Dispositif d'entrée et nombre de bits par seconde */
     fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
@@ -57,7 +57,7 @@ static void lecture(void * flux) {
 static void *ecriture(void * flux) {
     if(strcmp(msg_recu, "pair\4")) { validation = 1; }
     else { validation = 0; }
-    while(validation == 1){
+    while(validation == 1) {
         usleep(3000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
@@ -67,7 +67,7 @@ static void *ecriture(void * flux) {
 
 /* Permet de déterminer toutes les actions à effectuer,
 permettant de terminer la communciations drone-télécommande */
-static const void sortie(void){
+static const void sortie(void) {
     free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
@@ -75,7 +75,7 @@ static const void sortie(void){
 }
 
 /* Listing de tous les processus à créer et lancer en multitâche */
-const void tache(void){
+const void tache(void) {
     connexion();
     static pthread_t th[2];
     /* Ecriture et lecture synchronisés */
