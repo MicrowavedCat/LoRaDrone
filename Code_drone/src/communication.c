@@ -4,7 +4,7 @@
 #define LINK "link\4"
 #define CONNECT "connect\4"
 #define LOST "lost\4"
-#define STOP "stop\4" 
+#define STOP "stop\4"
 
 /* flux descriptor permettant de stocker le flux de communication UART */
 static int fd;
@@ -17,11 +17,11 @@ static int connexion(void){
     fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
     Problème d'ouverture série du flux de connexion */
-    if (fd < 0) {
+    if(fd < 0) {
         printf("Erreur communication\n");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
-    } else if (wiringPiSetup() == -1) {
+    } else if(wiringPiSetup() == -1) {
         printf("Erreur de librairie\n");
         exit(2);
     } else { return fd; }
