@@ -26,7 +26,7 @@ const void i2c(void) {
     printf("Erreur communication i2c\n");
     exit(2);
   }
-  static char config[2];
+  static unsigned char config[2];
   /* (0x2C = 44) sélectionne du registre de taux de bande passante */
   config[0] = 0x2C;
   /* (0x0A = 10) correpond au débit de données de sortie (100 Hz) */
