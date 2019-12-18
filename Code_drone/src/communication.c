@@ -1,6 +1,7 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 /* Variables globales définissant les états de la connexion drone-télécommande */
+#define CONNECTED "connect\4"
 #define LOST "lost\4"
 
 /* flux descriptor permettant de stocker le flux de communication */
@@ -61,7 +62,7 @@ static void *ecriture(void * flux) {
         /* Ecriture d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
         usleep(3000000);
-        serialPrintf(fd, "connect\4");
+        serialPrintf(fd, CONNECTED);
     }
 }
 
