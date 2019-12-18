@@ -9,7 +9,7 @@
 /* Flux de données permettant, sans fil et à distance, la communication série */
 #define FLUX "/dev/ttyAMA0"
 
-const void tache(void);
+extern const void tache(void);
 
 /* variable globale contenant le message envoyer par la télécommande */
 volatile unsigned char *msg_recu;
