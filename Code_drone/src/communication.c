@@ -55,8 +55,10 @@ static void lecture(void * flux) {
 
 /* Fonction permettant d'écrire dans le flux de données UART */
 static void *ecriture(void * flux) {
-    if(strcmp(msg_recu, "pair\4")) { validation = 1; }
-    else { validation = 0; }
+    if(strcmp(msg_recu, "pair\4")) { 
+        validation = 1; 
+        serialPrintf(fd, LINKED);
+    } else { validation = 0; }
     while(validation == 1) {
         usleep(3000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
