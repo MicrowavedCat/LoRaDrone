@@ -27,7 +27,7 @@ static const int connexion(void) {
     } else { return fd; }
 }
 
-/* Fonction permettant de lire le flux de données UART */
+/* Fonction permettant de lire le flux de données UART envoyé par la télécommande */
 static void lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
@@ -53,8 +53,9 @@ static void lecture(void * flux) {
     }
 }
 
-/* Fonction permettant d'écrire dans le flux de données UART */
+/* Fonction permettant d'écrire dans le flux de données UART à la télécommande */
 static void *ecriture(void * flux) {
+    /* Si la télécommande est appairée au drone */
     if(strcmp(msg_recu, "pair\4")) { 
         validation = 1; 
         serialPrintf(fd, LINKED);
