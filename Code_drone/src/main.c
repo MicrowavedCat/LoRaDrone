@@ -2,6 +2,6 @@
 #include <stdlib.h>
 #include "../header/communication.h"
 
-const void main(void){
+extern const void main(void){
    tache();
 }
