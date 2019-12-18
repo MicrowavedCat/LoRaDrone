@@ -1,8 +1,6 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 /* Variables globales définissant les états de la connexion drone-télécommande */
-#define LINKED "link\4"
-#define CONNECTED "connect\4"
 #define LOST "lost\4"
 
 /* flux descriptor permettant de stocker le flux de communication */
@@ -57,13 +55,13 @@ static void *ecriture(void * flux) {
     /* Si la télécommande est appairée au drone */
     if(strcmp(msg_recu, "pair\4")) { 
         validation = 1; 
-        serialPrintf(fd, LINKED);
+        serialPrintf(fd, "link\4");
     } else { validation = 0; }
     while(validation == 1) {
         usleep(3000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
-        serialPrintf(fd, CONNECTED);
+        serialPrintf(fd, "connect\4");
     }
 }
 
