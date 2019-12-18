@@ -7,12 +7,12 @@
 #define STOP "stop\4"
 
 /* flux descriptor permettant de stocker le flux de communication UART */
-static int fd;
+static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
-static unsigned short int validation;
+static volatile unsigned short int validation;
 
 /* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
-static int connexion(void) {
+static const int connexion(void) {
     /* Dispositif d'entrée et nombre de bits par seconde */
     fd = serialOpen(FLUX, 9600);
     /* 9600 est le nombre de caractères par seconde transmis
@@ -33,7 +33,7 @@ static void lecture(void * flux) {
     unsigned char buffer[31];
     /* Message reçu par la télécommande */
     msg_recu = malloc(sizeof(buffer));
-    static unsigned short int i = 0;
+    static volatile unsigned short int i = 0;
     while(1) {
         /* Si le flux de données est lisible */
         if(serialDataAvail(fd)) {
@@ -75,7 +75,7 @@ static const void sortie(void) {
 }
 
 /* Listing de tous les processus à créer et lancer en multitâche */
-const void tache(void) {
+extern const void tache(void) {
     connexion();
     static pthread_t th[2];
     /* Ecriture et lecture synchronisés */
