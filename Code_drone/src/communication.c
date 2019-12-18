@@ -6,7 +6,7 @@
 #define LOST "lost\4"
 #define STOP "stop\4"
 
-/* flux descriptor permettant de stocker le flux de communication UART */
+/* flux descriptor permettant de stocker le flux de communication */
 static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
 static volatile unsigned short int validation;
@@ -27,7 +27,7 @@ static const int connexion(void) {
     } else { return fd; }
 }
 
-/* Fonction permettant de lire le flux de données UART envoyé par la télécommande */
+/* Fonction permettant de lire le flux de données envoyé par la télécommande */
 static void lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
@@ -53,7 +53,7 @@ static void lecture(void * flux) {
     }
 }
 
-/* Fonction permettant d'écrire dans le flux de données UART à la télécommande */
+/* Fonction permettant d'écrire dans le flux de données à la télécommande */
 static void *ecriture(void * flux) {
     /* Si la télécommande est appairée au drone */
     if(strcmp(msg_recu, "pair\4")) { 
