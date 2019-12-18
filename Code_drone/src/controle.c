@@ -6,8 +6,8 @@
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-const void i2c(void) {
-  int fd;
+extern const void i2c(void) {
+  static volatile int fd;
   /* Ouverture du bus i2c en lecutre et écriture */
   if ((fd = open(BUS, O_RDWR)) < 0){
     printf("Erreur communication\n");
@@ -71,15 +71,15 @@ const void i2c(void) {
   --> lsb axe = Par du bit le moins significatif, effectue un ET bit à bit avec 11,
   --> msb axe = puis on y ajoute le bit le plus significatif. */
   }else{
-    short int x = ((data[1] & 0x03) * RESERVED + data[0]);
+    volatile short int x = ((data[1] & 0x03) * RESERVED + data[0]);
     /* Si l'on dépasse, pour les données d'un axe, 2^9-1 = 511,
     on convertit les données sur 10 bits [2^(9+1) = 2^10 = 1024 bits] */
     if(x > 511){ x -= 1024; }
     
-    short int y = ((data[3] & 0x03) * RESERVED + data[2]);
+    volatile short int y = ((data[3] & 0x03) * RESERVED + data[2]);
     if(y > 511){ y -= 1024; }
     
-    short int z = ((data[5] & 0x03) * RESERVED + data[4]);
+    volatile short int z = ((data[5] & 0x03) * RESERVED + data[4]);
     if(z > 511){ z -= 1024; }
     
     printf("-> Axe X : %hd\n-> Axe Y : %hd\n-> Axe Z : %hd\n", x, y, z);
