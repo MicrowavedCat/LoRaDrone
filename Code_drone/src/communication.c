@@ -61,8 +61,6 @@ static void *ecriture(void * flux) {
         serialPrintf(fd, LINKED);
     } else { validation = 0; }
     while(validation == 1) {
-        if(!(strcmp(msg_recu, CONNECTED)))
-            validation = 0;
         usleep(3000000);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
