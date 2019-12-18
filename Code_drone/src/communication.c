@@ -5,6 +5,7 @@
 #define CONNECTED "connect\4"
 #define LOST "lost\4"
 #define STOP "stop\4"
+#define LATENCE 3000000
 
 /* flux descriptor permettant de stocker le flux de communication */
 static volatile int fd;
@@ -61,10 +62,11 @@ static void *ecriture(void * flux) {
         serialPrintf(fd, LINKED);
     } else { validation = 0; }
     while(validation == 1) {
-        usleep(3000000);
+        usleep(LATENCE);
         /* Ecriture en UART d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
         serialPrintf(fd, CONNECTED);
+        if(LATENCE > 3000000) { serialPrintf(fd, LOST); }
     }
 }
 
