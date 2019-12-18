@@ -61,7 +61,7 @@ extern const void i2c(void) {
   static const unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
-  unsigned char data[6];
+  static volatile unsigned char data[6];
   /* Problème de transaction i2c. */
   if(read(fd, data, 6) != 6){
     printf("Erreur de transaction i2c\n");
