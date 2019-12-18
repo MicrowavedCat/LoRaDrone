@@ -10,6 +10,6 @@
 /* Flux de données permettant la détection des dipositifs branchés au Raspberry. */
 #define BUS "/dev/i2c-1"
 
-const void i2c(void);
+extern const void i2c(void);
 
 #endif
