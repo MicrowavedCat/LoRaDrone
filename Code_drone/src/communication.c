@@ -26,7 +26,7 @@ static const int connexion(void) {
 }
 
 /* Fonction permettant de lire le flux de données envoyé par la télécommande */
-static void lecture(void * flux) {
+static void *lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
     /* Message reçu par la télécommande */
@@ -68,7 +68,7 @@ static void *ecriture(void * flux) {
 
 /* Permet de déterminer toutes les actions à effectuer,
 permettant de terminer la communciations drone-télécommande */
-static const void sortie(void) {
+static void sortie(void) {
     free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
@@ -76,13 +76,14 @@ static const void sortie(void) {
 }
 
 /* Listing de tous les processus à créer et lancer en multitâche */
-extern const void tache(void) {
+extern void tache(void) {
     connexion();
-    static pthread_t th[2];
+    pthread_t th[2];
     /* Ecriture et lecture synchronisés */
     pthread_create(&th[0], NULL, lecture, (void *)&fd);
     pthread_create(&th[1], NULL, ecriture, (void *)&fd);
-    for(unsigned short int i = 0; i < 2; i++)
+    unsigned short int i = 0;
+    for(; i < 2; i++)
         pthread_join(th[i], NULL);
     sortie();
 }
