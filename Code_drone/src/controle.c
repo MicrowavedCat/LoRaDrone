@@ -6,10 +6,10 @@
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-extern const void i2c(void) {
+extern void i2c(void) {
   static volatile int fd;
   /* Ouverture du bus i2c en lecutre et écriture */
-  if ((fd = open(BUS, O_RDWR)) < 0){
+  if((fd = open(BUS, O_RDWR)) < 0){
     printf("Erreur communication\n");
     exit(1);
   }
@@ -61,7 +61,7 @@ extern const void i2c(void) {
   static const unsigned char registre[1] = {0x32};
   write(fd, registre, 1);
   /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
-  static volatile unsigned char data[6];
+  unsigned char data[6];
   /* Problème de transaction i2c. */
   if(read(fd, data, 6) != 6){
     printf("Erreur de transaction i2c\n");
