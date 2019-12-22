@@ -34,7 +34,7 @@ static void *lecture(void * flux) {
     while(1) {
         /* Si le flux de données est lisible */
         if(serialDataAvail(fd)) {
-            /* Renvoi en indice du buffer le code ascii entier correpondant aux données dans ttyAMA0 */
+            /* Renvoie un caractère correspondant au code ascii entier */
             buffer[i] = serialGetchar(fd);
             /* S'il y a fin de transmission ou dépassement de la taille du message */
             if((buffer[i] == '\4') || (i > sizeof(buffer)+1)) {
