@@ -1,7 +1,7 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include "../header/controle.h"
-/* Les 256 numéros d'appareil mineurs sont réservés à i2c. */
+/* Nombre d'appareils mineurs déjà réservés à l'i2c. */
 #define RESERVED 256
 
 /* Fonction permettant de configurer, et de relever, 
