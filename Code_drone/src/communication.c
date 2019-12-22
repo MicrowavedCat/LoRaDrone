@@ -28,7 +28,7 @@ static const int connexion(void) {
 static void *lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
     unsigned char buffer[31];
-    /* Message reçu par la télécommande */
+    /* Message reçu par le drone */
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
     while(1) {
