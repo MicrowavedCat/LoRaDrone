@@ -6,7 +6,7 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
-/* Flux de données permettant, sans fil et à distance, la communication série */
+/* Flux de données permettant, avec les modules Lora, la communication série */
 #define FLUX "/dev/ttyAMA0"
 
 extern void tache(void);
