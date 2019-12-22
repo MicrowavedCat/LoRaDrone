@@ -4,7 +4,7 @@
 #define CONNECTED "connect\4"
 #define LOST "lost\4"
 
-/* flux descriptor permettant de stocker le flux de communication */
+/* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
 static volatile unsigned short int validation;
