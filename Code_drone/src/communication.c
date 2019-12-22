@@ -9,12 +9,11 @@ static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
 static volatile unsigned short int validation;
 
-/* Vérifie l'ouverture du flux UART de communication série ttyAMA0 */
+/* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 static const int connexion(void) {
-    /* Dispositif d'entrée et nombre de bits par seconde */
+    /* Dispositif d'entrée et nombre de caractères par seconde */
     fd = serialOpen(FLUX, 9600);
-    /* 9600 est le nombre de caractères par seconde transmis
-    Problème d'ouverture série du flux de connexion */
+    /* Problème d'ouverture série du flux de connexion */
     if(fd < 0) {
         printf("Erreur communication\n");
         exit(1);
