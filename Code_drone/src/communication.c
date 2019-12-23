@@ -57,10 +57,10 @@ static void *ecriture(void * flux) {
         validation = 1; 
         serialPrintf(fd, "link\4");
     } else { validation = 0; }
-    while(validation == 1) {
+    while((validation = 1) && (strcmp(msg_recu, CONNECTED))) {
         /* Ecriture d'un message de connexion à rythme régulier,
         pour s'assurer que la communication fonctionne. */
-        usleep(3000000);
+        sleep(3);
         serialPrintf(fd, CONNECTED);
     }
 }
