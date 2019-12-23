@@ -56,7 +56,7 @@ extern void i2c(void) {
   
   config[0] = 0x2C; /* (0x2C = 44), determine le taux de bande passante */
   config[1] = 0x0A; /* (0x0A = 10), determine le débit de données de sortie à 100 Hz */
-  /* Ecrirture de l'adresse 0x0A2C dans le flux de données. */
+  /* Ecrirture de l'adresse 0x2C0A dans le flux de données. */
   adressage(fd, config, 2);
 
   config[0] = 0x2D; /* (0x2D = 45), determine le controle de puissance */
