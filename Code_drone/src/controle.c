@@ -5,9 +5,9 @@
 #define RESERVED 256
 
 /* Permet de vérifier la validation d'une transaction i2c d'adressage */
-static void adressage(volatile int flux, unsigned char *configuration,
+static void adressage(volatile int flux, unsigned char *config,
                       const unsigned short int taille){
-  if(write(flux, configuration, taille) != taille){
+  if(write(flux, config, taille) != taille){
     printf("Erreur transaction i2c\n");
     exit(2);
   }
