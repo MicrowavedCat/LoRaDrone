@@ -7,7 +7,7 @@ OFILES = src/main.o \
          src/controle.o
 
 # Compilation et arguments de compilation
-CC = gcc -Ofast -flto
+CC = gcc -ansi -Ofast -flto
 
 ### 3] Dépedences à règles implicites des fichiers d'extension ".o" ###
 communication.o : ../header/communication.h
