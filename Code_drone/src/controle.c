@@ -6,8 +6,8 @@
 
 /* Permet de vérifier la validation d'une transaction i2c d'adressage */
 static void adressage(volatile int flux, unsigned char *config,
-                      const unsigned short int taille){
-  if(write(flux, config, taille) != taille){
+                      const unsigned short int espace){
+  if(write(flux, config, espace) != espace){
     printf("Erreur transaction i2c\n");
     exit(2);
   }
