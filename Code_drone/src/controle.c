@@ -4,7 +4,7 @@
 /* Nombre d'appareils déjà réservés */
 #define RESERVED 256
 
-/**/
+/* Permet de vérifier la validation d'une transaction i2c d'adressage */
 static void adressage(volatile int flux, unsigned char *configuration,
                       const unsigned short int taille){
   if((write(flux, configuration, taille) != taille)){
@@ -13,11 +13,16 @@ static void adressage(volatile int flux, unsigned char *configuration,
   }
 }
 
-/**/
+/* Permet de définir le fromat des valeurs des axes de l'accéléromètre ADXL345 */
 volatile short int position(volatile short int axe,
                             unsigned char *data, const unsigned short int i){
+  /*
+  - On détermine le bit de poid faible de l'adresse données sur 32 bits,
+  avec un ET bit à bit de 11, multiplié par le nombre d'appareils déjà réservés.
+  - Puis on y ajoute le bit de poid fort en gardant l'identité.
+  */
   axe = (data[i+1] & 0x03) * RESERVED + data[i];
-  /* Si l'on dépasse, pour les données d'un axe, 2^9-1 = 511,
+  /* Si on dépasse, pour les données d'un axe, 2^9-1 = 511,
   on convertit les données sur 2^(9+1) = 2^10 = 1024. */
   if(axe > 511){ axe -= 1024; }
   return axe;
@@ -27,7 +32,8 @@ volatile short int position(volatile short int axe,
 les coordonnées de l'accéléromètre ADXL345. */
 extern void i2c(void) {
   static volatile int fd;
-  /* Ouverture du bus i2c en lecutre et écriture */
+  /* Ouverture du bus i2c en lecutre et écriture,
+  permettant de connaitre les périphériques branchés. */
   if((fd = open(BUS, O_RDWR)) < 0){
     printf("Erreur communication\n");
     exit(1);
