@@ -8,7 +8,7 @@
 static void adressage(volatile int flux, unsigned char *configuration,
                       const unsigned short int taille){
   if(write(flux, configuration, taille) != taille){
-    printf("Erreur transaction i2c");
+    printf("Erreur transaction i2c\n");
     exit(2);
   }
 }
