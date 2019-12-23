@@ -32,6 +32,14 @@ extern void i2c(void) {
     printf("Erreur communication\n");
     exit(1);
   }
+  /*
+  On effectue des opérations de communication d'entrée-sortie spécifiques à un périphérique,
+  - Le flux de données du bus i2c permet d'assigner des adresses aux périphériques branchés.
+  - On passe le périphérique en esclave, le système maitre-esclave, en i2c, 
+  permet de déterminer un périphérique comme étant récépteur à son maitre
+  (le récépteur étant en l'occurence l'ADXL345, et l'émetteur étant le Rapsberry Pi Zero).
+  - L'adresse de l'accéléromètre est 53 (Cela se vérifie en faisant "sudo i2cdetect -y 1").
+  */
   if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
     printf("Erreur communication i2c\n");
     exit(2);
