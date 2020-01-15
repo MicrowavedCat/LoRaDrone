@@ -1,13 +1,20 @@
 #include "../header/moteur.h"
 
-/* Pin sur lequel on branche le moteur */
+/* GPIO du raspberry sur lequel on branche le moteur */
 #define PIN 4
-
+/**
+* @param
+* qdqz
+*/
 extern void main(void){
   unsigned short int position = 0, angle = 0;
+  /* Définie sur quel pin on effectue le calcule */
   pinMode(PIN, PWM_OUTPUT);
+  /* On passe en mode mark:space */
   pwmSetMode(PWM_MOD_MS);
-  pwmSetClock(192); /* Soit 10.24 ms */
+  /* Diviseur de l'horloge par le timer de rotation d'une hélice, 
+  soit 10.24 ms */
+  pwmSetClock(192);
   
   printf("Entrer une valeur entre 10 et 360 : ");
   scanf("%hu", angle);
