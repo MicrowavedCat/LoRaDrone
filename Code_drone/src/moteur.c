@@ -2,10 +2,7 @@
 
 /* GPIO du raspberry sur lequel on branche le moteur */
 #define PIN 4
-/**
-* @param
-* qdqz
-*/
+
 extern void main(void){
   unsigned short int position = 0, angle = 0;
   /* Définie sur quel pin on effectue le calcule */
