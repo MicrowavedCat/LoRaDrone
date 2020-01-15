@@ -3,7 +3,7 @@
 /* Pin sur lequel on branche le moteur */
 #define PIN 4
 
-void main(int argc, char const argv*[]){
+extern void main(int argc, char const argv*[]){
   int position = 0, angle = 0;
   pinMode(PIN, PWM_OUTPUT);
   pwmSetMode(PWM_MOD_MS);
