@@ -13,7 +13,7 @@ extern void main(void){
   soit 10.24 ms */
   pwmSetClock(192);
   
-  printf("Entrer une valeur entre 10 et 360 : ");
+  printf("Entrer une valeur : ");
   scanf("%hu", angle);
   
   position = angle + 60;
