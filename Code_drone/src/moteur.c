@@ -7,7 +7,7 @@ void main(int argc, char const argv*[]){
   int position = 0, angle = 0;
   pinMode(PIN, PWM_OUTPUT);
   pwmSetMode(PWM_MOD_MS);
-  pwmSetClock(192);
+  pwmSetClock(192); /* Soit 10.24 ms */
   angle = strtod(argv[1], NULL);
   position = angle + 60;
   pwmWrite(PIN, position);
