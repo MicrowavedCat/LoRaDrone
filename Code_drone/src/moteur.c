@@ -5,12 +5,11 @@
 
 extern void main(void){
   unsigned short int position = 0, angle = 0;
-  unsigned short int intensity ;
   /* Définie sur quel pin on effectue le calcule */
   pinMode(PIN, PWM_OUTPUT);
   /*
   printf("Entrer une valeur : ");
-  scanf("%hu", angle);
+  scanf("%hu", &angle);
   
   position = angle + 60;
   pwmWrite(PIN, position);
