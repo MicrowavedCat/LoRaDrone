@@ -15,10 +15,12 @@ extern void main(void){
   /* Ecrire la puissance que l'on veut fournir
   pwmWrite(PIN, position); */
   while(1) {
-      pwmWrite(PIN, 450);
-      sleep(1);
-      pwmWrite(PIN, 0);
-      sleep(2);
+    /* Allumé pendant 1 sec */
+    pwmWrite(PIN, 450);
+    sleep(1);
+    /* Eteint pendant 2 sec */
+    pwmWrite(PIN, 0);
+    sleep(2);
   }
   exit(0);
 }
