@@ -14,7 +14,6 @@ extern void main(void){
   position = angle + 60;
   /* Ecrire la puissance que l'on veut fournir */
   pwmWrite(PIN, position);
-  */
   while(1) {
       pwmWrite(PIN, 450);
       sleep(1);
