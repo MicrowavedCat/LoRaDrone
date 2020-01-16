@@ -1,22 +1,25 @@
 #include "../header/moteur.h"
 
 /* GPIO du raspberry sur lequel on branche le moteur */
-#define PIN 4
+#define PIN 1
 
 extern void main(void){
   unsigned short int position = 0, angle = 0;
+  unsigned short int intensity ;
   /* Définie sur quel pin on effectue le calcule */
   pinMode(PIN, PWM_OUTPUT);
-  /* On passe en mode mark:space */
-  pwmSetMode(PWM_MOD_MS);
-  /* Diviseur de l'horloge par le timer de rotation d'une hélice, 
-  soit 10.24 ms */
-  pwmSetClock(192);
-  
+  /*
   printf("Entrer une valeur : ");
   scanf("%hu", angle);
   
   position = angle + 60;
   pwmWrite(PIN, position);
+  */
+  while(1) {
+      pwmWrite (PIN, 450);
+      sleep(1);
+      pwmWrite (PIN, 0);
+      sleep(2);
+  }
   exit(0);
 }
