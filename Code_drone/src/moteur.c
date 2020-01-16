@@ -7,19 +7,17 @@ extern void main(void){
   unsigned short int position = 0, angle = 0;
   /* Définie sur quel pin on effectue le calcule */
   pinMode(PIN, PWM_OUTPUT);
-  /*
+  
   printf("Entrer une valeur : ");
   scanf("%hu", &angle);
   
   position = angle + 60;
-  /* Ecrire la puissance que l'on veut fournir
-  pwmWrite(PIN, position); */
+  
   while(1) {
-    /* Allumé pendant 1 sec */
-    pwmWrite(PIN, 450);
+    /* Ecrire la puissance en impulsion que l'on veut fournir */
+    pwmWrite(PIN, 450); /* Allumé pendant 1 sec */
     sleep(1);
-    /* Eteint pendant 2 sec */
-    pwmWrite(PIN, 0);
+    pwmWrite(PIN, 0); /* Eteint pendant 2 sec */
     sleep(2);
   }
   exit(0);
