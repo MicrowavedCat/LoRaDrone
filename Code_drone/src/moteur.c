@@ -12,13 +12,14 @@ void configuration(void) {
     exit(1) ;
   }
   
-  /* Définie sur quel pin on effectue le calcul */
+  /* Définie sur quel PIN on effectue des opérations */
   pinMode(PIN1, PWM_OUTPUT);
   pinMode(PIN2, PWM_OUTPUT);
   pinMode(PIN3, PWM_OUTPUT);
   pinMode(PIN4, PWM_OUTPUT);
   
   static unsigned short int puissance ;
+  /* Configuration de la puissance par impulsions jusqu'au maximum */
   for (puissance = 0 ; puissance < 1024 ; puissance++) {
     /* Ecrire la puissance en impulsion que l'on veut fournir */
     pwmWrite (PIN1, puissance);
@@ -30,6 +31,7 @@ void configuration(void) {
     pwmWrite (PIN4, puissance);
     delay (1);
   }
+  /* Configuration de la puissance par impulsions jusqu'au minimum */
   for (puissance = 1023 ; puissance >= 0 ; puissance--) {
     pwmWrite (PIN1, puissance);
     delay(1);
@@ -66,6 +68,5 @@ extern void main(void) {
     delay(1);
     pwmWrite (PIN4, 0);
     sleep(off);
-    
   }
 }
