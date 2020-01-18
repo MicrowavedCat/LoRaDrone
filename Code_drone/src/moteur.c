@@ -16,7 +16,7 @@ void configuration(void) {
     printf("Erreur de librairie\n");
     exit(1) ;
   }
-  
+  /* Configuration des 4 ESC pour les 4 moteurs */
   for(unsigned short int i = 0; i < sizeof(PIN); i++){
     /* Branchement des ESC sur les différents GPIO du raspberry */
     if(i == 0){ PIN[0] = 1; }
