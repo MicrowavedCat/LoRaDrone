@@ -42,7 +42,7 @@ extern void i2c(void) {
   On effectue des opérations de communication d'entrée-sortie spécifiques à un périphérique,
   - Le flux de données du bus i2c permet d'assigner une adresse aux périphériques branchés.
   - On passe le périphérique en esclave, le système maitre-esclave, en i2c, 
-  permet de déterminer un périphérique comme étant récépteur à son maitre, qui est émetteur
+  permet de déterminer un périphérique comme étant récépteur à son maitre qui est émetteur
   (le récépteur étant en l'occurence l'ADXL345, et l'émetteur étant le Rapsberry Pi Zero).
   - L'adresse de l'accéléromètre est 53 (Cela se vérifie en faisant "sudo i2cdetect -y 1").
   */
