@@ -10,6 +10,7 @@ void configuration(void) {
   }
   
   for(unsigned short int i = 0; i < sizeof(PIN); i++){
+    /* Branchement des ESC sur les différents GPIO du raspberry */
     if(i == 0){ PIN[0] = 1; }
     else if(i == 1){ PIN[1] = 23; }
     else if(i == 2){ PIN[2] = 24; }
