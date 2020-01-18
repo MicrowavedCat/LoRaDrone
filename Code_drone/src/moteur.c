@@ -58,7 +58,7 @@ extern void main(void) {
     sleep(on);
 
     for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite(PIN[i], vitesse);
+      pwmWrite(PIN[i], 0);
       delay(1);
     }
     sleep(off);
