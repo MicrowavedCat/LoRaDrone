@@ -5,13 +5,14 @@
 #define PIN2 24
 #define PIN3 26
 #define PIN4 23
+#define PIN[4]
 
 void configuration(void) {
   if (wiringPiSetup() == -1) {
     printf("Erreur de déploiement de librairie\n");
     exit(1) ;
   }
-  
+ 
   /* Définie sur quel PIN on effectue des opérations */
   pinMode(PIN1, PWM_OUTPUT);
   pinMode(PIN2, PWM_OUTPUT);
