@@ -13,7 +13,7 @@ void cycle(unsigned short int valeur){
 
 void configuration(void) {
   if (wiringPiSetup() == -1) {
-    printf("Erreur de déploiement de librairie\n");
+    printf("Erreur de librairie\n");
     exit(1) ;
   }
   
