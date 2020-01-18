@@ -12,36 +12,31 @@ void configuration(void) {
     printf("Erreur de déploiement de librairie\n");
     exit(1) ;
   }
- 
-  /* Définie sur quel PIN on effectue des opérations */
-  pinMode(PIN1, PWM_OUTPUT);
-  pinMode(PIN2, PWM_OUTPUT);
-  pinMode(PIN3, PWM_OUTPUT);
-  pinMode(PIN4, PWM_OUTPUT);
   
-  static unsigned short int puissance ;
+  for(unsigned short int i = 0; i < sizeof(PIN); i++){
+    if(i == 0){ PIN[0] = 1; }
+    else if(i == 1){ PIN[1] = 23; }
+    else if(i == 2){ PIN[2] = 24; }
+    else{ PIN[3] = 26; }
+    /* Définie sur quel PIN on effectue des opérations */
+    pinMode(PIN[i], PWM_OUTPUT);
+  }
+  
+  static unsigned short int puissance;
   /* Configuration de la puissance par impulsions jusqu'au maximum */
   for (puissance = 0 ; puissance < 1024 ; puissance++) {
     /* Ecrire la puissance en impulsion que l'on veut fournir */
-    pwmWrite (PIN1, puissance);
-    delay(1);
-    pwmWrite (PIN2, puissance);
-    delay(1);
-    pwmWrite (PIN3, puissance);
-    delay (1);
-    pwmWrite (PIN4, puissance);
-    delay (1);
+    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+      pwmWrite (PIN[i], puissance);
+      delay(1);
+    }
   }
   /* Configuration de la puissance par impulsions jusqu'au minimum */
   for (puissance = 1023 ; puissance >= 0 ; puissance--) {
-    pwmWrite (PIN1, puissance);
-    delay(1);
-    pwmWrite (PIN2, puissance);
-    delay(1);
-    pwmWrite (PIN3, puissance);
-    delay (1);
-    pwmWrite (PIN4, puissance);
-    delay (1);
+    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+      pwmWrite (PIN[i], puissance);
+      delay(1);
+    }
   }
   delay(1);
 }
@@ -52,22 +47,16 @@ extern void main(void) {
   static const unsigned short int on = 1, off = 3;
 
   while (1) {
-    pwmWrite (PIN1, vitesse);
-    delay(1);
-    pwmWrite (PIN2, vitesse);
-    delay(1);
-    pwmWrite (PIN3, vitesse);
-    delay(1);
-    pwmWrite (PIN4, vitesse);
+    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+      pwmWrite (PIN[i], vitesse);
+      delay(1);
+    }
     sleep(on);
 
-    pwmWrite (PIN1, 0);
-    delay(1);
-    pwmWrite (PIN2, 0);
-    delay(1);
-    pwmWrite (PIN3, 0);
-    delay(1);
-    pwmWrite (PIN4, 0);
+    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+      pwmWrite (PIN[i], vitesse);
+      delay(1);
+    }
     sleep(off);
   }
 }
