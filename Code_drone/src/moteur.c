@@ -3,6 +3,13 @@
 /* GPIO du raspberry sur lequel on branche le moteur */
 #define PIN[4]
 
+void cycle(unsigned short int valeur){
+  for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+    pwmWrite(PIN[i], valeur);
+    delay(1);
+  }
+}
+
 void configuration(void) {
   if (wiringPiSetup() == -1) {
     printf("Erreur de déploiement de librairie\n");
@@ -24,14 +31,14 @@ void configuration(void) {
   for (puissance = 0 ; puissance < 1024 ; puissance++) {
     /* Ecrire la puissance en impulsion que l'on veut fournir */
     for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite (PIN[i], puissance);
+      pwmWrite(PIN[i], puissance);
       delay(1);
     }
   }
   /* Configuration de la puissance par impulsions jusqu'au minimum */
   for (puissance = 1023 ; puissance >= 0 ; puissance--) {
     for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite (PIN[i], puissance);
+      pwmWrite(PIN[i], puissance);
       delay(1);
     }
   }
@@ -45,13 +52,13 @@ extern void main(void) {
 
   while (1) {
     for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite (PIN[i], vitesse);
+      pwmWrite(PIN[i], vitesse);
       delay(1);
     }
     sleep(on);
 
     for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite (PIN[i], vitesse);
+      pwmWrite(PIN[i], vitesse);
       delay(1);
     }
     sleep(off);
