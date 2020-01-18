@@ -1,10 +1,6 @@
 #include "../header/moteur.h"
 
 /* GPIO du raspberry sur lequel on branche le moteur */
-#define PIN1 1
-#define PIN2 24
-#define PIN3 26
-#define PIN4 23
 #define PIN[4]
 
 void configuration(void) {
