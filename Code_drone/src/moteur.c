@@ -5,6 +5,7 @@
 
 void cycle(unsigned short int valeur){
   for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
+    /* Ecrire la puissance en impulsion que l'on veut fournir */
     pwmWrite(PIN[i], valeur);
     delay(1);
   }
@@ -28,20 +29,11 @@ void configuration(void) {
   
   static unsigned short int puissance;
   /* Configuration de la puissance par impulsions jusqu'au maximum */
-  for (puissance = 0 ; puissance < 1024 ; puissance++) {
-    /* Ecrire la puissance en impulsion que l'on veut fournir */
-    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite(PIN[i], puissance);
-      delay(1);
-    }
-  }
+  for (puissance = 0 ; puissance < 1024 ; puissance++)
+    cycle(puissance);
   /* Configuration de la puissance par impulsions jusqu'au minimum */
-  for (puissance = 1023 ; puissance >= 0 ; puissance--) {
-    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite(PIN[i], puissance);
-      delay(1);
-    }
-  }
+  for (puissance = 1023 ; puissance >= 0 ; puissance--)
+    cycle(puissance);
   delay(1);
 }
 
@@ -51,16 +43,11 @@ extern void main(void) {
   static const unsigned short int on = 1, off = 3;
 
   while (1) {
-    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite(PIN[i], vitesse);
-      delay(1);
-    }
+    /* Allumé */
+    cycle(vitesse);
     sleep(on);
-
-    for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
-      pwmWrite(PIN[i], 0);
-      delay(1);
-    }
+    /* Eteint */
+    cycle(0);
     sleep(off);
   }
 }
