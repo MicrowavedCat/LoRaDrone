@@ -1,7 +1,7 @@
 #include "../header/moteur.h"
 
 /* GPIO du raspberry sur lequel on branche l'ESC d'un moteur */
-#define PIN[] = {
+#define PIN[4] = {
     1, 23, 24, 26, 
 };
 
