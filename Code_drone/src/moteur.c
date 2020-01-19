@@ -2,10 +2,7 @@
 
 /* GPIO du raspberry sur lequel on branche l'ESC d'un moteur */
 #define PIN[] = {
-    1, 
-    23,
-    24, 
-    26, 
+    1, 23, 24, 26, 
 };
 
 void cycle(unsigned short int valeur){
