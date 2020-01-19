@@ -1,7 +1,7 @@
 #include "../header/moteur.h"
 
 /* GPIO du raspberry sur lequel on branche l'ESC d'un moteur */
-#define PIN[4] = {
+#define PIN[] = {
     1, 
     23,   
     24,    
@@ -23,11 +23,6 @@ void configuration(void) {
   }
   /* Configuration des 4 ESC pour les 4 moteurs */
   for(unsigned short int i = 0; i < sizeof(PIN); i++){
-    /* Branchement des ESC sur les différents GPIO du raspberry */
-    if(i == 0){ PIN[0] = 1; }
-    else if(i == 1){ PIN[1] = 23; }
-    else if(i == 2){ PIN[2] = 24; }
-    else{ PIN[3] = 26; }
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
   }
