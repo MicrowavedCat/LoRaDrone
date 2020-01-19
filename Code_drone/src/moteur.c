@@ -1,7 +1,12 @@
 #include "../header/moteur.h"
 
 /* GPIO du raspberry sur lequel on branche l'ESC d'un moteur */
-#define PIN[4]
+#define PIN[4] = {
+    1, 
+    23,   
+    24,    
+    26,
+};
 
 void cycle(unsigned short int valeur){
   for(unsigned short int i = 0; i < sizeof(PIN); i++){ 
