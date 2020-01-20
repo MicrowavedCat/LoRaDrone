@@ -2,7 +2,10 @@
 
 /* GPIO du raspberry sur lequel on branche l'ESC d'un moteur */
 #define PIN[] = {
-    1, 23, 24, 26, 
+    1, /* Correspond au pin physique 12 (BCM18) */
+    23, /* Correspond au pin physique 33 (BCM13) */
+    24, /* Correspond au pin physique 35 (BCM19) */
+    26, /* Correspond au pin physique 32 (BCM12) */
 };
 
 void cycle(unsigned short int valeur){
