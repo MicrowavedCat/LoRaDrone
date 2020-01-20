@@ -19,10 +19,9 @@ void configuration(void) {
     exit(1) ;
   }
   /* Configuration des 4 ESC pour les 4 moteurs */
-  for(unsigned short int i = 0; i < sizeof(PIN); i++){
+  for(unsigned short int i = 0; i < sizeof(PIN); i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
-  }
   
   static unsigned short int puissance;
   /* Configuration de la puissance par impulsions jusqu'au maximum */
