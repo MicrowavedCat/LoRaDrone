@@ -37,11 +37,11 @@ extern void configuration(void) {
 On définit une valeur minimale et maximale qu'on émet sur une période,
 pour un certain temps données dans chacun des 2 états définits par ces valeurs.
 
-          MAX                     MAX
- 2s  _____________ 2s     2s _____________ 2s
-     |           |           |           |
- MIN |           |    MIN    |           |  MIN
-_____|           |___________|           |________
+          MAX                       MAX
+ 2s  _____________ 2s       2s _____________ 2s
+     |           |             |           |
+ MIN |           |     MIN     |           |   MIN
+_____|           |_____________|           |_________
 
 */
 extern void main(void) {
