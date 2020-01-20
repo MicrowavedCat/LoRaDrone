@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <wiringPi.h>
 
 /* variable globale contenant le message envoyer par la télécommande */
