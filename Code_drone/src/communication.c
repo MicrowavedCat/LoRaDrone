@@ -37,12 +37,12 @@ static void *lecture(void * flux) {
             /* Renvoie un caractère correspondant au code ascii entier */
             buffer[i] = serialGetchar(fd);
             /* S'il y a fin de transmission ou dépassement de la taille du message */
-            if((buffer[i] == '\4') || (i > sizeof(buffer)+1)) {
+            if((buffer[i] == '\4') || (i > 32)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 /* Fin de la chaine de caractères */
-                for(i = 0 ; i < sizeof(buffer) ; i++){ buffer[i] = '\0'; }
+                for(i = 0 ; i < 31 ; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
             /* Stockage des caractères dans le buffer */
             } else { i++; }
