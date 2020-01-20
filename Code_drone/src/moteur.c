@@ -35,12 +35,13 @@ extern void configuration(void) {
 
 /* Permet la calibration des ESC par transmission.
 On définit une valeur minimale et maximale qu'on émet sur une période,
-pour un certain temps données dans chacun des 2 états définit par ces valeurs.
+pour un certain temps données dans chacun des 2 états définits par ces valeurs.
 
-  MAX                MAX
-   --------------------
-   |                  | 
-___| MIN          MIN |___
+          MAX                     MAX
+ 2s  _____________ 2s     2s _____________ 2s
+     |           |           |           |
+ MIN |           |    MIN    |           |  MIN
+_____|           |___________|           |________
 
 */
 extern void main(void) {
