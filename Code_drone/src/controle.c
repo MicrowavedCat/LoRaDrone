@@ -13,7 +13,7 @@ static void adressage(volatile int flux, unsigned char *config,
   }
 }
 
-/* Permet de définir le fromat des valeurs des axes de l'accéléromètre ADXL345 */
+/* Permet de définir le format des valeurs des axes de l'accéléromètre ADXL345 */
 volatile short int position(volatile short int axe,
                             unsigned char *data, const unsigned short int i){
   /*
@@ -30,7 +30,7 @@ volatile short int position(volatile short int axe,
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-extern void i2c(void) {
+extern void accelerometre(void) {
   static volatile int fd;
   /* Ouverture du bus i2c en lecutre et écriture,
   permettant de connaitre les périphériques branchés. */
