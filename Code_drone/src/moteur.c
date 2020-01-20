@@ -24,7 +24,7 @@ extern void configuration(void) {
   /* Erreur de librairie */
   if (wiringPiSetup() == -1) {
     printf("Erreur de librairie\n");
-    exit(1) ;
+    exit(1);
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
   for(unsigned short int i = 0; i < (sizeof(PIN))/4; i++)
