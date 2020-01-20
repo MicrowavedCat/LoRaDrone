@@ -45,9 +45,13 @@ ___| MIN          MIN |___
 */
 extern void main(void) {
   configuration();
+  
   static volatile unsigned short int test;
   static const unsigned short int on = 2, off = 5;
-  printf("Entrer valeur : "); scanf("%hu", &test);
+  
+  printf("Entrer valeur : ");
+  scanf("%hu", &test);
+
   /* Définition de la période et des valeurs pour le calibrage */
   cycle(MAX);
   sleep(on);
