@@ -26,12 +26,12 @@ void configuration(void) {
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
   
-  static unsigned short int puissance;
+  static volatile unsigned short int puissance;
   /* Configuration de la puissance par impulsions jusqu'au maximum */
-  for(puissance = 0 ; puissance < 1024 ; puissance++)
+  for(puissance = 0; puissance < 1024; puissance++)
     cycle(puissance);
   /* Configuration de la puissance par impulsions jusqu'au minimum */
-  for(puissance = 1023 ; puissance >= 0 ; puissance--)
+  for(puissance = 1023; puissance >= 0; puissance--)
     cycle(puissance);
   delay(1);
 }
