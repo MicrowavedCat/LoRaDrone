@@ -51,7 +51,6 @@ static void *moteur(void *puissance) {
   sleep(1);
   cycle(MIN);
   sleep(1);
-  
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = NULL;
   while(1){
