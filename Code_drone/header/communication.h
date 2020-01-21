@@ -6,6 +6,9 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+/* Variables globales définissant les états de la connexion drone-télécommande */
+#define CONNECTED "connect\4"
+#define LOST "lost\4"
 /* Flux de données permettant, avec les modules Lora, la communication série */
 #define FLUX "/dev/ttyAMA0"
 
