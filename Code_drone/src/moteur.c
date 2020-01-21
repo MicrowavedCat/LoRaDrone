@@ -11,7 +11,7 @@
 }
 
 extern void cycle(unsigned short int valeur){
-  for(unsigned short int i = 0; i < (sizeof(PIN))/4; i++){
+  for(unsigned short int i = 0; i < 4; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
     pwmWrite(PIN[i], valeur);
     delay(1);
@@ -26,13 +26,13 @@ extern void configuration(void) {
     exit(1);
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
-  for(unsigned short int i = 0; i < (sizeof(PIN))/4; i++)
+  for(unsigned short int i = 0; i < 4; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
   delay(1);
 }
 
-static unsigned short int puissance[4] = {0};
+unsigned short int puissance[4] = {0};
 
 /* Permet la calibration des ESC par transmission.
 On définit une valeur minimale et maximale qu'on émet sur une période,
@@ -46,15 +46,16 @@ _____|           |_____________|           |_________
   1s                   1s                       1s
 */
 static void *moteur(void *arg) {
-  unsigned short int *vitesse = (unsigned short int *) arg;
+  static volatile unsigned short int *vitesse = (unsigned short int *) arg;
   cycle(MAX);
   sleep(1);
   cycle(MIN);
   sleep(2);
 
   printf("%d\n", *vitesse);
-  short int tmp = -1;
+  volatile short int tmp = -1;
   while(1){
+    /* Si la vitesse est différente de l'initialisation */
     if(*vitesse != tmp){
       cycle(*vitesse);
       tmp = *vitesse;
@@ -65,7 +66,7 @@ static void *moteur(void *arg) {
 
 extern void main(void) {
   configuration();
-  static pthread_t th_moteur[4];
+  pthread_t th_moteur[4];
   /* Puissance de rotation configurée sur chaque hélice */
   for (int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
