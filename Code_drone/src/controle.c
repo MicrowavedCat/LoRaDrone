@@ -83,8 +83,6 @@ extern void accelerometre(void) {
       volatile short int x = position(x, data, 0);
       volatile short int y = position(y, data, 2);
       volatile short int z = position(z, data, 4);
-      
-      printf("X = %hd Y = %hd Z = %hd\n", x, y, z);
     }
   }
 }
