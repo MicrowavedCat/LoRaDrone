@@ -1,6 +1,10 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 
+/* Variables globales définissant les états de la connexion drone-télécommande */
+#define CONNECTED "connect\4"
+#define LOST "lost\4"
+
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
