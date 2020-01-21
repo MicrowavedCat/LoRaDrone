@@ -68,6 +68,7 @@ static void *moteur(void *puissance) {
 extern void main(void) {
   configuration();
   pthread_t th_moteur[4];
+  /* On initialise la puissance de rotation à 0 */
   static volatile unsigned short int puissance[4] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
   for (unsigned short int i = 0; i < 4; i++)
