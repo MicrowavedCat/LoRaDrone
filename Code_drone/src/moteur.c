@@ -32,27 +32,25 @@ extern void configuration(void) {
   delay(1);
 }
 
-unsigned short int puissance[4] = {0};
-
-/* Permet la calibration des ESC par transmission.
-On définit une valeur minimale et maximale qu'on émet sur une période,
-pour un certain temps données dans chacun des 2 états définits par ces valeurs.
-
-          MAX                       MAX
- 2s  _____________ 2s       2s _____________ 2s
-     |           |             |           |
- MIN |           |     MIN     |           |   MIN
-_____|           |_____________|           |_________
-  1s                   1s                       1s
-*/
 static void *moteur(void *arg) {
   static volatile unsigned short int *vitesse = (unsigned short int *) arg;
+  
+  /* Permet la calibration des ESC par transmission.
+  On définit une valeur minimale et maximale qu'on émet sur une période,
+  pour un certain temps données dans chacun des 2 états définits par ces valeurs.
+
+            MAX                       MAX
+   2s  _____________ 2s       2s _____________ 2s
+       |           |             |           |
+   MIN |           |     MIN     |           |   MIN
+  _____|           |_____________|           |_________
+    1s                   1s                       1s
+  */
   cycle(MAX);
   sleep(1);
   cycle(MIN);
   sleep(2);
 
-  printf("%d\n", *vitesse);
   volatile short int tmp = -1;
   while(1){
     /* Si la vitesse est différente de l'initialisation */
@@ -67,6 +65,7 @@ static void *moteur(void *arg) {
 extern void main(void) {
   configuration();
   pthread_t th_moteur[4];
+  static volatile unsigned short int puissance[4] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
   for (int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
