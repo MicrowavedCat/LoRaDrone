@@ -65,23 +65,22 @@ void *moteur(void *arg) {
 
 extern void main(void) {
   configuration();
-  pthread_t th_moteur[4];
+  static pthread_t th_moteur[4];
 
-  for (int j = 0; j < 4; j++)
-    pthread_create(&th_moteur[j], NULL, moteur, (void *) &vitesses[j]);
+  for (int i = 0; i < 4; i++)
+    pthread_create(&th_moteur[i], NULL, moteur, (void *) &vitesses[i]);
 
   delay(5000);
   
   /* Descendre la puissance des moteurs*/
-  for (int i = 505; i >= 480; i--){
-    for (int j = 0; j < 4; j++){ vitesses[j] = i; }
+  for (unsigned short int i = 505; i >= 480; i--){
+    for (unsigned short int j = 0; j < 4; j++){ vitesses[j] = i; }
     delay(100);
   }
   
-  for (int j = 0; j < 4; j++){ vitesses[j] = 0; }
+  for (unsigned short int i = 0; i < 4; i++){ vitesses[i] = 0; }
 
-
-  for (int j = 0; j < 4; j++) 
+  for (unsigned short int i = 0; i < 4; i++) 
     pthread_join(th_moteur[j], NULL);
 
   pthread_exit(NULL);
