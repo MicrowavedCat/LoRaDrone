@@ -32,7 +32,7 @@ extern void configuration(void) {
   delay(1);
 }
 
-static unsigned short int vitesses[4] = {0};
+static unsigned short int puissance[4] = {0};
 
 /* Permet la calibration des ESC par transmission.
 On définit une valeur minimale et maximale qu'on émet sur une période,
@@ -68,17 +68,17 @@ extern void main(void) {
   static pthread_t th_moteur[4];
     
   for (int i = 0; i < 4; i++)
-    pthread_create(&th_moteur[i], NULL, moteur, (void *) &vitesses[i]);
+    pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
 
   delay(5000);
   
   /* Descendre la puissance des moteurs*/
   for (unsigned short int i = 505; i >= 480; i--){
-    for (unsigned short int j = 0; j < 4; j++){ vitesses[j] = i; }
+    for (unsigned short int j = 0; j < 4; j++){ puissance[j] = i; }
     delay(100);
   }
   
-  for (unsigned short int i = 0; i < 4; i++){ vitesses[i] = 0; }
+  for (unsigned short int i = 0; i < 4; i++){ puissance[i] = 0; }
 
   for (unsigned short int i = 0; i < 4; i++) 
     pthread_join(th_moteur[j], NULL);
