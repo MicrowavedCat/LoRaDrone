@@ -33,9 +33,9 @@ extern void configuration(void) {
   delay(1);
 }
 
+/* Définie l'action pouvant être effectué sur un moteur */
 static void *moteur(void *puissance) {
   static volatile unsigned short int *vitesse = (unsigned short int *) puissance;
-  
   /* Permet la calibration des ESC par transmission.
   On définit une valeur minimale et maximale qu'on émet sur une période,
   pour un certain temps données dans chacun des 2 états définits par ces valeurs.
@@ -51,6 +51,7 @@ static void *moteur(void *puissance) {
   sleep(1);
   cycle(MIN);
   sleep(1);
+  
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = NULL;
   while(1){
