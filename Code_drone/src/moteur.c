@@ -66,19 +66,19 @@ static void *moteur(void *arg) {
 extern void main(void) {
   configuration();
   static pthread_t th_moteur[4];
-    
+  /* Puissance de rotation configurée sur chaque hélice */
   for (int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
 
   delay(5000);
   
-  /* Descendre la puissance des moteurs*/
-  for (unsigned short int i = 505; i >= 480; i--){
+  /* Descendre la puissance des moteurs, après s'être lancé à 511 */
+  for (unsigned short int i = MAX; i >= 480; i--){
     for (unsigned short int j = 0; j < 4; j++){ puissance[j] = i; }
     delay(100);
   }
-  
-  for (unsigned short int i = 0; i < 4; i++){ puissance[i] = 0; }
+  /* Réinitialisation de la puissance de chaque hélice */
+  for (unsigned short int i = 0; i < 4; i++){ puissance[i] = MIN; }
 
   for (unsigned short int i = 0; i < 4; i++) 
     pthread_join(th_moteur[j], NULL);
