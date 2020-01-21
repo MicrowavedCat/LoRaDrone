@@ -1,6 +1,6 @@
 #include "../header/moteur.h"
 
-#define MAX 511 /* 2^9 = 511 */
+#define MAX 511 /* 2^9 = 511 valeurs */
 #define MIN 0
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
@@ -8,7 +8,7 @@ static const int PIN[] = {
     1, /* Correspond au PIN physique 12 (BCM18) */
     23, /* Correspond au PIN physique 33 (BCM13) */
     24, /* Correspond au PIN physique 35 (BCM19) */
-    26, /* Correspond au PIN physique 32 (BCM12) */
+    26 /* Correspond au PIN physique 32 (BCM12) */
 };
 
 extern void cycle(unsigned short int valeur){
