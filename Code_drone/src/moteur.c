@@ -2,14 +2,13 @@
 
 #define MAX 511 /* 2^9 = 511 valeurs */
 #define MIN 0
-
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
-static const int PIN[] = {
+#define int PIN[] = {
     1, /* Correspond au PIN physique 12 (BCM18) */
     23, /* Correspond au PIN physique 33 (BCM13) */
     24, /* Correspond au PIN physique 35 (BCM19) */
     26 /* Correspond au PIN physique 32 (BCM12) */
-};
+}
 
 extern void cycle(unsigned short int valeur){
   for(unsigned short int i = 0; i < (sizeof(PIN))/4; i++){
@@ -33,38 +32,57 @@ extern void configuration(void) {
   delay(1);
 }
 
+static unsigned short int vitesses[4] = {0};
+
 /* Permet la calibration des ESC par transmission.
 On définit une valeur minimale et maximale qu'on émet sur une période,
 pour un certain temps données dans chacun des 2 états définits par ces valeurs.
 
           MAX                       MAX
- 2s  _____________ 2s       2s _____________ 2s
+ Xs  _____________ Xs       Xs _____________ Xs
      |           |             |           |
  MIN |           |     MIN     |           |   MIN
 _____|           |_____________|           |_________
 
 */
+void *moteur(void *arg) {
+  int *vitesse = (int *) arg;
+  cycle(MAX);
+  sleep(1);
+  cycle(MIN);
+  sleep(2);
+
+  printf("%d\n", *vitesse);
+  short int tmp = -1;
+  while(1){
+    if(*vitesse != tmp){
+      cycle(*vitesse);
+      tmp = *vitesse;
+    }
+    delay(10);
+  }
+}
+
 extern void main(void) {
   configuration();
-  
-  static volatile unsigned short int test;
-  static const unsigned short int on = 2, off = 5;
-  
-  printf("Entrer valeur : ");
-  scanf("%hu", &test);
+  pthread_t th_moteur[4];
 
-  /* Définition de la période et des valeurs pour le calibrage */
-  cycle(MAX);
-  sleep(on);
-  cycle(MIN);
-  sleep(off);
-  /* Valeurs récupérées par la télécommande */
-  while(1){
-    /* Allumer pendant 2 secondes */
-    cycle(test);
-    sleep(on);
-    /* Eteindre pendant 5 secondes */
-    cycle(MIN);
-    sleep(off);
+  for (int j = 0; j < 4; j++)
+    pthread_create(&th_moteur[j], NULL, moteur, (void *) &vitesses[j]);
+
+  delay(5000);
+  
+  /* Descendre la puissance des moteurs*/
+  for (int i = 505; i >= 480; i--){
+    for (int j = 0; j < 4; j++){ vitesses[j] = i; }
+    delay(100);
   }
+  
+  for (int j = 0; j < 4; j++){ vitesses[j] = 0; }
+
+
+  for (int j = 0; j < 4; j++) 
+    pthread_join(th_moteur[j], NULL);
+
+  pthread_exit(NULL);
 }
