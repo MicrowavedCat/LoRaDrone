@@ -50,16 +50,17 @@ static void *moteur(void *puissance) {
   sleep(1);
   cycle(MIN);
   sleep(1);
-
-  volatile short int tmp = -1;
+  /* Variable tampon servant à définir si la vitesse est constante */
+  volatile short int tmp = NULL;
   while(1){
-    /* Si la vitesse est différente de l'initialisation */
+    /* On ne change la vitesse que si elle est différente de l'initialisation */
     if(*vitesse != tmp){
       cycle(*vitesse);
       tmp = *vitesse;
     }
     delay(10);
   }
+  exit(0);
 }
 
 extern void main(void) {
@@ -79,9 +80,9 @@ extern void main(void) {
   }
   /* Réinitialisation de la puissance de chaque hélice */
   for (unsigned short int i = 0; i < 4; i++){ moteur[i] = MIN; }
-
+  /* Lancement de toutes les tâches */
   for (unsigned short int i = 0; i < 4; i++) 
     pthread_join(th_moteur[j], NULL);
-
+  /* Détacher les tâches */
   pthread_exit(NULL);
 }
