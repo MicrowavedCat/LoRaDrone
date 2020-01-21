@@ -1,5 +1,6 @@
 #include "../header/moteur.h"
 
+/* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
   for(unsigned short int i = 0; i < 4; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
@@ -59,7 +60,7 @@ extern void main(void) {
   static volatile unsigned short int vitesse_moteur[4] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
   for (int i = 0; i < 4; i++)
-    pthread_create(&th_moteur[i], NULL, vitesse_moteur, (void *) &moteur[i]);
+    pthread_create(&th_moteur[i], NULL, moteur, (void *) &vitesse_moteur[i]);
 
   sleep(3);
   
