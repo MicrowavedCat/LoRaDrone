@@ -4,10 +4,10 @@
 #define MIN 0
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
 #define PIN[] = {
-    1, /* Correspond au PIN physique 12 (BCM18) */
-    23, /* Correspond au PIN physique 33 (BCM13) */
-    24, /* Correspond au PIN physique 35 (BCM19) */
-    26 /* Correspond au PIN physique 32 (BCM12) */
+  1, /* Correspond au PIN physique 12 (BCM18) */
+  23, /* Correspond au PIN physique 33 (BCM13) */
+  24, /* Correspond au PIN physique 35 (BCM19) */
+  26 /* Correspond au PIN physique 32 (BCM12) */
 }
 
 extern void cycle(unsigned short int valeur){
@@ -49,7 +49,7 @@ static void *moteur(void *puissance) {
   cycle(MAX);
   sleep(1);
   cycle(MIN);
-  sleep(2);
+  sleep(1);
 
   volatile short int tmp = -1;
   while(1){
@@ -70,7 +70,7 @@ extern void main(void) {
   for (int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &moteur[i]);
 
-  delay(5000);
+  sleep(3);
   
   /* Descendre la puissance des moteurs, après s'être lancé à 511 */
   for (unsigned short int i = MAX; i >= 480; i--){
