@@ -70,7 +70,7 @@ extern void main(void) {
   pthread_t th_moteur[4];
   static volatile unsigned short int vitesse_moteur[4] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
-  for (int i = 0; i < 4; i++)
+  for (unsigned short int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &vitesse_moteur[i]);
 
   sleep(3);
