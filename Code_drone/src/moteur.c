@@ -39,14 +39,14 @@ On définit une valeur minimale et maximale qu'on émet sur une période,
 pour un certain temps données dans chacun des 2 états définits par ces valeurs.
 
           MAX                       MAX
- Xs  _____________ Xs       Xs _____________ Xs
+ 2s  _____________ 2s       2s _____________ 2s
      |           |             |           |
  MIN |           |     MIN     |           |   MIN
 _____|           |_____________|           |_________
-
+  1s                   1s                       1s
 */
-void *moteur(void *arg) {
-  int *vitesse = (int *) arg;
+static void *moteur(void *arg) {
+  unsigned short int *vitesse = (unsigned short int *) arg;
   cycle(MAX);
   sleep(1);
   cycle(MIN);
@@ -66,7 +66,7 @@ void *moteur(void *arg) {
 extern void main(void) {
   configuration();
   static pthread_t th_moteur[4];
-
+    
   for (int i = 0; i < 4; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &vitesses[i]);
 
