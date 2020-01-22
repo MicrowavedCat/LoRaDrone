@@ -1,6 +1,6 @@
 #include "../header/controle.h"
 /* Nombre d'appareils déjà réservés */
-#define RESERVED 256
+#define RESERVE 256
 
 /* Permet de vérifier la validation d'une transaction i2c d'adressage */
 static void adressage(volatile int flux, unsigned char *config,
@@ -19,7 +19,7 @@ volatile short int position(volatile short int axe,
   avec un ET bit à bit de 11, multiplié par le nombre d'appareils déjà réservés.
   - Puis on y ajoute le bit de poid fort en gardant l'identité.
   */
-  axe = (data[i+1] & 0x03) * RESERVED + data[i];
+  axe = (data[i+1] & 0x03) * RESERVE + data[i];
   /* Si on dépasse, pour les données d'un axe, 2^9-1 = 511,
   on convertit les données sur 2^(9+1) = 2^10 = 1024. */
   if(axe > 511){ axe -= 1024; }
