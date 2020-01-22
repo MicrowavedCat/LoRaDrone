@@ -24,7 +24,10 @@ extern void cycle(unsigned short int valeur){
 /* Etablit le mode de configuration des ESC présent sur chaque PIN */
 extern void configuration(void) {
   /* Erreur de librairie */
-  if(wiringPiSetup() == -1){ exit(1); }
+  if(wiringPiSetup() == -1){ 
+    printf("Erreur librairie\n");
+    exit(1); 
+  }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
   for(unsigned short int i = 0; i < ALLOC; i++)
     /* Définie sur quel PIN on effectue des opérations */
