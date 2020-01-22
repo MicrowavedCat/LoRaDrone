@@ -1,6 +1,7 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 
+#define TAILLE 31
 /* Variables globales définissant les états de la connexion drone-télécommande */
 #define CONNECTED "connect\4"
 #define LOST "lost\4"
@@ -26,7 +27,7 @@ static const int connexion(void) {
 /* Fonction permettant de lire le flux de données envoyé par la télécommande */
 static void *lecture(void * flux) {
     /* Variable de récupération des caractères servant de tampon */
-    unsigned char buffer[31];
+    unsigned char buffer[TAILLE];
     /* Message reçu par le drone */
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
@@ -36,7 +37,7 @@ static void *lecture(void * flux) {
             /* Renvoie un caractère correspondant au code ascii entier */
             buffer[i] = serialGetchar(fd);
             /* S'il y a fin de transmission ou dépassement de la taille du message */
-            if((buffer[i] == '\4') || (i > 32)) {
+            if((buffer[i] == '\4') || (i > TAILLE+1)) {
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
