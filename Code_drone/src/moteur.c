@@ -3,7 +3,7 @@
 /* Impulsion maximale 2^9 = 511 valeurs */
 #define MAX 511 
 #define MIN 0 /* Impulsion minimale */
-#define ALLOC 4 /* Nombre de moteur */
+#define NB_MOTEUR 4 /* Nombre de moteur */
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
 #define PIN[] = {
   1, /* Correspond au PIN physique 12 (BCM18) */
@@ -14,7 +14,7 @@
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
-  for(unsigned short int i = 0; i < ALLOC; i++){
+  for(unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
     pwmWrite(PIN[i], valeur);
     delay(1);
@@ -72,20 +72,20 @@ extern void main(void) {
   /* On initialise la puissance de rotation à 0 */
   static volatile unsigned short int puissance[ALLOC] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
-  for(unsigned short int i = 0; i < ALLOC; i++)
+  for(unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
 
   sleep(3);
   
   /* Descendre la puissance des moteurs, après s'être lancé à 511 */
   for(unsigned short int i = MAX; i >= 480; i--){
-    for(unsigned short int j = 0; j < ALLOC; j++){ puissance[j] = i; }
+    for(unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
     delay(100);
   }
   /* Réinitialisation de la puissance de chaque hélice */
-  for(unsigned short int i = 0; i < ALLOC; i++){ puissance[i] = MIN; }
+  for(unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
   /* Lancement de toutes les tâches */
-  for(unsigned short int i = 0; i < ALLOC; i++) 
+  for(unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[j], NULL);
   /* Détacher les tâches */
   pthread_exit(NULL);
