@@ -32,7 +32,7 @@ extern void configuration(void) {
     exit(1); 
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
-  for(unsigned short int i = 0; i < ALLOC; i++)
+  for(unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
   delay(1);
@@ -71,9 +71,9 @@ static void *moteur(void *puissance) {
 
 extern void main(void) {
   configuration();
-  static pthread_t th_moteur[ALLOC];
+  static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation à 0 */
-  static volatile unsigned short int puissance[ALLOC] = {0};
+  static volatile unsigned short int puissance[NB_MOTEUR] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
   for(unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
