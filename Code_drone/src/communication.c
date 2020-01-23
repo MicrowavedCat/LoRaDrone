@@ -1,10 +1,4 @@
-/* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
-static const unsigned short int PIN [] = {
-  1, /* Correspond au PIN physique 12 (BCM18) */
-  23, /* Correspond au PIN physique 33 (BCM13) */
-  24, /* Correspond au PIN physique 35 (BCM19) */
-  26 /* Correspond au PIN physique 32 (BCM12) */
-};#include "../header/communication.h"
+#include "../header/communication.h"
 #include "../header/controle.h"
 
 #define TAILLE 31
@@ -21,11 +15,11 @@ static const int connexion(void) {
     fd = serialOpen(FLUX, 9600);
     /* Problème d'ouverture série du flux de connexion */
     if(fd < 0) {
-        printf("Erreur communication\n");
+        puts("Erreur communication");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
     } else if(wiringPiSetup() == -1) {
-        printf("Erreur de librairie\n");
+        puts("Erreur de librairie");
         exit(2);
     } else { return fd; }
 }
