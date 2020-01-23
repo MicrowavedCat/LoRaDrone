@@ -6,7 +6,7 @@
 #define NB_MOTEUR 4
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
-static const unsigned short int PIN[] = {
+static unsigned short int PIN[] = {
   1, /* Correspond au PIN physique 12 (BCM18) */
   23, /* Correspond au PIN physique 33 (BCM13) */
   24, /* Correspond au PIN physique 35 (BCM19) */
