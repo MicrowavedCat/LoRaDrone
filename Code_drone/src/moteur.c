@@ -25,7 +25,7 @@ extern void cycle(unsigned short int valeur){
 extern void configuration(void) {
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){ 
-    printf("Erreur librairie\n");
+    puts("Erreur librairie");
     exit(1); 
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
