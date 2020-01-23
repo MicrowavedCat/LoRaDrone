@@ -8,6 +8,8 @@
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
+/* Initialise le mutex permettant de sécuriser les données d'un thread */
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 static const int connexion(void){
