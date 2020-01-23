@@ -66,23 +66,21 @@ extern void accelerometre(void){
   /* Ecrirture de l'adresse 0x3108 dans le flux de données. */
   adressage(fd, config, 2);
   
-  while(1){
-    /* Relever en permanance la stabilité du drone */
-    sleep(1);
-    /* Définition du registre de stockage d'adresse sur 32 bits */
-    static unsigned char registre[1] = {0x32};
-    /* Ecriture de l'adresse 0x32 */
-    adressage(fd, registre, 1);
+  /* Relever en permanance la stabilité du drone */
+  sleep(1);
+  /* Définition du registre de stockage d'adresse sur 32 bits */
+  static unsigned char registre[1] = {0x32};
+  /* Ecriture de l'adresse 0x32 */
+  adressage(fd, registre, 1);
   
-    static unsigned char data[6];
-    /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
-    if(read(fd, data, 6) != 6){
-      puts("Erreur lecture coordonnees");
-      exit(3);
-    }else{
-      volatile short int x = position(x, data, 0);
-      volatile short int y = position(y, data, 2);
-      volatile short int z = position(z, data, 4);
-    }
+  static unsigned char data[6];
+  /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
+  if(read(fd, data, 6) != 6){
+    puts("Erreur lecture coordonnees");
+    exit(3);
+  }else{
+    volatile short int x = position(x, data, 0);
+    volatile short int y = position(y, data, 2);
+    volatile short int z = position(z, data, 4);
   }
 }
