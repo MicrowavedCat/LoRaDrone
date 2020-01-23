@@ -1,16 +1,16 @@
 #include "../header/moteur.h"
 
 /* Impulsion maximale 2^9 = 511 valeurs */
-#define MAX 511 
+#define MAX 511
 #define MIN 0 /* Impulsion minimale */
-#define NB_MOTEUR 4 /* Nombre de moteur */
+#define NB_MOTEUR 4
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
-#define PIN[] = {
+static const unsigned short int PIN [] = {
   1, /* Correspond au PIN physique 12 (BCM18) */
   23, /* Correspond au PIN physique 33 (BCM13) */
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
-}
+};
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
