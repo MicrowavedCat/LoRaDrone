@@ -13,7 +13,7 @@ static const unsigned short int PIN[] = {
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
 /* Initialise le mutex permettant de sécuriser les données d'un thread */
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static const pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
