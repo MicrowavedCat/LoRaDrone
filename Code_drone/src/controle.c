@@ -6,7 +6,7 @@
 static void adressage(volatile int flux, unsigned char *config,
                       const unsigned short int espace){
   if(write(flux, config, espace) != espace){
-    printf("Erreur transaction i2c\n");
+    puts("Erreur transaction i2c");
     exit(2);
   }
 }
@@ -33,7 +33,7 @@ extern void accelerometre(void) {
   /* Ouverture du bus i2c en lecutre et écriture,
   permettant de connaitre les périphériques branchés. */
   if((fd = open(BUS, O_RDWR)) < 0){
-    printf("Erreur communication\n");
+    puts("Erreur communication");
     exit(1);
   }
   /*
@@ -45,7 +45,7 @@ extern void accelerometre(void) {
   - L'adresse de l'accéléromètre est 53 (Cela se vérifie en faisant "sudo i2cdetect -y 1").
   */
   if(ioctl(fd, I2C_SLAVE, 0x53) < 0){
-    printf("Erreur communication i2c\n");
+    puts("Erreur communication i2c");
     exit(2);
   }
   /* Registre initiale de configuration des adresses */
@@ -77,7 +77,7 @@ extern void accelerometre(void) {
     static unsigned char data[6];
     /* Lecture de l'adresse 0x0A2C2D083108 écris dans le flux. */
     if(read(fd, data, 6) != 6){
-      printf("Erreur lecture coordonnees\n");
+      puts("Erreur lecture coordonnees");
       exit(3);
     }else{
       volatile short int x = position(x, data, 0);
