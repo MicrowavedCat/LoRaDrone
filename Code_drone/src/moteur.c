@@ -4,6 +4,7 @@
 #define MAX 511
 #define MIN 0 /* Impulsion minimale */
 #define NB_MOTEUR 4
+
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
 static const unsigned short int PIN[] = {
   1, /* Correspond au PIN physique 12 (BCM18) */
@@ -11,6 +12,8 @@ static const unsigned short int PIN[] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
+/* Initialise le mutex permettant de sécuriser les données d'un thread */
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
