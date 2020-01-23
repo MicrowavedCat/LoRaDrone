@@ -8,8 +8,6 @@
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
-/* Initialise le mutex permettant de sécuriser les données d'un thread */
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 static const int connexion(void){
@@ -33,8 +31,6 @@ static void *lecture(void * flux){
     /* Message reçu par le drone */
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
-    /* Sécurisation des thread pour les données reçues */
-    pthread_mutex_lock(&mutex);
     while(1){
         /* Si le flux de données est lisible */
         if(serialDataAvail(fd)){
@@ -52,8 +48,6 @@ static void *lecture(void * flux){
             }else{ i++; }
         }
     }
-    /* Déverouillage des thread pour les données reçues */
-    pthread_mutex_unlock(&mutex);
 }
 
 /* Fonction permettant d'écrire dans le flux de données à la télécommande */
@@ -86,12 +80,8 @@ static void sortie(void){
 extern void tache(void){
     connexion();
     static pthread_t th_com[2];
-    /* Sécurisation des données reçues */
-    pthread_mutex_lock(&mutex);
     /* Ecriture et lecture synchronisés */
     pthread_create(&th_com[0], NULL, lecture, (void *)&fd);
-    /* Déverouillage des thread pour l'écriture */
-    pthread_mutex_unlock(&mutex);
     pthread_create(&th_com[1], NULL, ecriture, (void *)&fd);
     /* Lancement de toutes les tâches */
     for(unsigned short int i = 0; i < 2; i++)
