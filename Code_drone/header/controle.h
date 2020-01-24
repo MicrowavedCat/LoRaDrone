@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+/* Librairie i2c */
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 
