@@ -4,7 +4,7 @@ compilation : drone
 ### 2] Variables des fichiers d'extension ".o" à créer ###
 OFILES = src/main.o \
          src/communication.o \
-         src/controle.o \
+         src/acceleration.o \
 	 src/moteur.o
 
 # Compilation et arguments de compilation
@@ -14,7 +14,7 @@ CC = gcc -ansi -Ofast -flto
 communication.o : ../header/communication.h
 controle.o : ../header/controle.h
 moteur.o : ../header/moteur.h
-main.o : communication.o controle.o
+main.o : communication.o acceleration.o
 
 ### 4] Dépedences précédentes appliquées par commandes ###
 drone : $(OFILES)
