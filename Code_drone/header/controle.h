@@ -12,6 +12,6 @@
 /* Flux de données permettant la détection des dipositifs branchés au Raspberry. */
 #define BUS "/dev/i2c-1"
 
-extern void accelerometre(void);
+extern void acceleration(void);
 
 #endif
