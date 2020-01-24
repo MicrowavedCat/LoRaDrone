@@ -69,7 +69,7 @@ static void *moteur(void *puissance) {
   exit(0);
 }
 
-extern void main(void) {
+extern void propulsion(void) {
   configuration();
   static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation à 0 */
