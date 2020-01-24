@@ -28,7 +28,7 @@ volatile short int position(volatile short int axe,
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-extern void accelerometre(void){
+extern void acceleration(void){
   static volatile int fd;
   /* Ouverture du bus i2c en lecutre et écriture,
   permettant de connaitre les périphériques branchés. */
