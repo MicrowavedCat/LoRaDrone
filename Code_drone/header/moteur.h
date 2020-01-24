@@ -7,4 +7,6 @@
 #include <wiringPi.h>
 #include <pthread.h>
 
+extern void propulsion(void);
+
 #endif
