@@ -40,7 +40,7 @@ extern void configuration(void) {
 
 /* Définie l'action pouvant être effectué sur un moteur */
 static void *moteur(void *puissance) {
-  static volatile unsigned short int *vitesse = (unsigned short int *) puissance;
+  volatile unsigned short int *vitesse = (unsigned short int *) puissance;
   /* Permet la calibration des ESC par transmission.
   On définit une valeur minimale et maximale qu'on émet sur une période,
   pour un certain temps données dans chacun des 2 états définits par ces valeurs.
@@ -89,7 +89,7 @@ extern void main(void) {
   for(unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
   /* Lancement de toutes les tâches */
   for(unsigned short int i = 0; i < NB_MOTEUR; i++) 
-    pthread_join(th_moteur[j], NULL);
+    pthread_join(th_moteur[i], NULL);
   /* Détacher les tâches */
   pthread_exit(NULL);
 }
