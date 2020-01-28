@@ -119,15 +119,15 @@ La LED présente sur la télécommande s’allume en orange, la connexion entre 
 Au bout de quelques secondes, la LED clignote 5 fois rapidement en vert puis de cette même couleur à intervalles réguliers, plus longs.
 Bertrand tente alors de faire bouger les joysticks mais rien ne se produit.
 Il enfonce alors les deux joysticks en même temps jusqu’à entendre un "clic".
-La LED passe au vert en continu.
+La LED passe au bleu en continu.
 Bertrand pousse le joystick de gauche vers le haut et le drone, cette fois-ci, décolle.
 Après l’avoir utilisé plusieurs minutes, alors que le drone est à quelques mètres du sol, notre ami enfonce par inadvertance les joysticks, mais, heureusement pour lui, rien ne se produit.
 En effet, il se rend compte au moment où il souhaite faire atterrir son drone qu’appuyer à une distance faible du sol sur ces joysticks provoque l’arrêt des moteurs afin que le drone puisse se poser, mais seulement en étant suffisamment proche du sol .
 De même, la LED passe à nouveau au vert clignotant, signe que la télécommande et le drone sont bien connectés entre eux et que ce dernier est immobilisé.</p>
 2. <p>Stéphane allume le drone puis, 2 minutes plus tard, la télécommande.
 La LED passe presque instantanément au vert clignotant.
-Il fait décoller son drone, le LED devient vert fixe et décide de le faire partir le plus loin possible. Au bout d’un moment, la télécommande ne reçoit plus de signal du drone et la LED clignote (plutôt lentement) en orange. Il court pour se rapprocher et reprendre le contrôle de son magnifique drone.
-La LED de la télécommande passe directement au vert fixe.
+Il fait décoller son drone, le LED devient bleu fixe et décide de le faire partir le plus loin possible. Au bout d’un moment, la télécommande ne reçoit plus de signal du drone et la LED clignote (plutôt lentement) en orange. Il court pour se rapprocher et reprendre le contrôle de son magnifique drone.
+La LED de la télécommande passe directement au bleu fixe.
 Il décide de l’envoyer à nouveau loin mais cette fois-ci, une fois qu’il en a perdu le contrôle, Stéphane décide d’éteindre sa télécommande et de simplement observer le drone sans tenter d’interagir avec.
 [Au bout de quelques secondes, ce dernier descend progressivement, se rapprochant irrémédiablement de l’étang au dessus duquel il était. Juste avant qu’un gros "plouf !" retentisse, les moteurs du drone se coupent à quelques centimètres de la surface.]
 OU, suivant l’implémentation de certaines fonctionnalités :
