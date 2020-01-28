@@ -96,12 +96,12 @@ extern const unsigned short int main(unsigned short int argc,
   REMOVE(GPIO2);
     
   clock_gettime(CLOCK_REALTIME, &impulsion);
-  while ((GET >> GPIO3) & 0);
+  while((GET >> GPIO3) & 0);
   /* Boucler tant que le bit 23 est à 0, puis enregistrer le temps. */
   clock_gettime(CLOCK_REALTIME, &impulsion);    
 
   clock_gettime(CLOCK_REALTIME, &reception);
-  while ((GET >> GPIO3) & 1);
+  while((GET >> GPIO3) & 1);
   /* Boucler tant que le bit 23 est à 1, puis enregistrer le temps. */
   clock_gettime(CLOCK_REALTIME, &reception);
     
