@@ -15,8 +15,8 @@
 #define GET *(gpio+13)
 
 #define OFFSET 0x20200000L
-#define PAGE (4*1024)
-#define TAILLE (4*1024)
+#define PAGE 4096
+#define TAILLE 4096
 
 #define GPIO2 3 /* Emetteur */
 #define GPIO3 5 /* Récépteur */
