@@ -14,9 +14,9 @@
 #define REMOVE(pin) *(gpio+10) = 1<<(pin)
 #define GET *(gpio+13)
 
-#define OFFSET 0x20200000L
+#define OFFSET 0x3F200000L
 #define PAGE 4096
-#define TAILLE 4096
+#define BLOCK 4096
 
 #define GPIO2 3 /* Emetteur */
 #define GPIO3 5 /* Récépteur */
@@ -25,6 +25,7 @@ static volatile int fd = 0;
 /* Mapping des GPIOs sur la mémoire */
 static unsigned char *projection = NULL;
 static volatile char *addr  = NULL;
+/* Entier signé de 32 bits */
 static volatile uint32_t *gpio = NULL;
 static short int pin = 0;
 
@@ -41,7 +42,7 @@ static void config_memoire(const char *argv[]){
     printf("Conseil : \"sudo %s\"\n", argv[0]);
     exit(1);
   }
-  if((addr = malloc(TAILLE + (PAGE-1))) == NULL) {
+  if((addr = malloc(BLOCK + (PAGE-1))) == NULL) {
     puts("Allocation inacessible");
     exit(1);
   }
@@ -50,7 +51,7 @@ static void config_memoire(const char *argv[]){
   /* Nouvelle projection dans l'espace d'adressage virtuel du processus appelant */
   projection = (unsigned char *)mmap(
     /* Adresse de départ pour placer projection */
-    (caddr_t)addr, TAILLE, /* Longueur de la projection */
+    (caddr_t)addr, BLOCK, /* Longueur de la projection */
     /* Lire le contenu de la zone mémoire, et y écrire */
     PROT_READ | PROT_WRITE,
     /* Modifications de la projection visibles par les autres processus,
@@ -63,12 +64,12 @@ static void config_memoire(const char *argv[]){
     exit(1);
   }
   gpio = (volatile uint32_t *)projection;
-} 
+}
 
 /* Sortie de la mémoire et fermeture des mappings */
 static void sortie_memoire(){
   int mapping;
-  mapping = munmap(projection, TAILLE);
+  mapping = munmap(projection, BLOCK);
   if(mapping == -1){
     puts("Erreur");
     exit(2);
