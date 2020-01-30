@@ -30,10 +30,12 @@ static short int pin = 0;
 
 /* Echo de l'onde sonore, émission + récéption */
 static void ping(long temps){
-  struct timespec wait;
-  wait.tv_sec = temps / (1000 * 1000);
-  wait.tv_nsec = (temps % (1000 * 1000)) * 1000;
-  nanosleep(&wait, NULL);
+  static struct timespec delai;
+  /* temps en secondes */
+  delai.tv_sec = temps / (1000 * 1000);
+  /* temps en nano-secondes */
+  delai.tv_nsec = (temps % (1000 * 1000)) * 1000;
+  nanosleep(&delai, NULL);
 }
 
 static void config_memoire(const char *argv[]){
@@ -68,7 +70,7 @@ static void config_memoire(const char *argv[]){
 
 /* Sortie de la mémoire et fermeture des mappings */
 static void sortie_memoire(){
-  int mapping;
+  static volatile int mapping;
   mapping = munmap(projection, BLOCK);
   if(mapping == -1){
     puts("Erreur");
@@ -82,8 +84,8 @@ extern const unsigned short int main(unsigned short int argc,
 				     char const *argv[]){
   config_memoire(argv);
 
-  struct timespec impulsion, reception, portee;
-  double distance, echo;
+  static struct timespec impulsion, reception, portee;
+  static volatile double distance, echo;
 
   ENTREE(GPIO2);
   SORTIE(GPIO2);
