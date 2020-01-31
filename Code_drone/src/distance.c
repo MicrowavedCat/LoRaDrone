@@ -7,6 +7,7 @@
 #include <time.h>
 /* Librairie d'accès aux appel systèmes sur la mémoire */
 #include <sys/mman.h>
+#include "../header/controle.h"
 
 #define ENTREE(pin) *(gpio+((pin)/10)) &= ~(7<<(((pin)%10)*3))
 #define SORTIE(pin) *(gpio+((pin)/10)) |= (1<<(((pin)%10)*3))
@@ -40,7 +41,7 @@ static void ping(long temps){
 
 static void config_memoire(const char *argv[]){
   static volatile char *addr  = NULL;
-  if((fd = open("/dev/mem", O_RDWR|O_SYNC)) < 0) {
+  if((fd = open(MEMORY, O_RDWR|O_SYNC)) < 0) {
     printf("Conseil : \"sudo %s\"\n", argv[0]);
     exit(1);
   }
