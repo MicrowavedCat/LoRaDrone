@@ -59,6 +59,7 @@ static void config_memoire(const char *argv[]){
     /* Modifications de la projection visibles par les autres processus,
     qui projettent le fichier dev/mem, en plaçant la projection exactement à l'adresse donnée */
     MAP_SHARED | MAP_FIXED,
+    /* Flux du fichier dev/mem et offset */
     fd, OFFSET
   );
   if((long)projection < 0) {
