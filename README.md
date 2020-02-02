@@ -59,7 +59,7 @@ Drone :
 <ul>
     <li>PCB,</li>
     <li>armature F450,</li>
-    <li>batterie lithium 3 cellules (11.1 V) (capacité et nombre de "C" à déterminer),</li>
+    <li>batterie lithium 3 cellules (11.1 V) 7200 mAh, 50 C,</li>
     <li>ESC SimonK 30A x4,</li>
     <li>moteurs EMAX XA2212 1400KV x4,</li>
     <li>hélice 8x6 x4,</li>
