@@ -78,11 +78,12 @@ Drone :
 
 <h2>Protocoles de communication utilisés :</h2>
 <ul>
-    <li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) (https://fr.wikipedia.org/wiki/LoRaWAN),
-    <li>Entre les modules LoRa et les microcontrôleurs, communication bidirectionnelle : UART (avec 8 bits de données, pas de parité, 1 bit de fin et à une vitesse de 9600 bauds) (https://www.youtube.com/watch?v=kVd8Zj413l8),
-    <li>Entre les joysticks/le bouton d’arrêt d’urgence/la LED RGB et l’ESP32, communication unidirectionnelle, réception uniquement : communication analogique : variation de la tension entre 0 et +3.3V,
-    <li>Entre le télémètre ultrason et le Raspberry, communication bidirectionnelle : le protocole SPI ou I²C, le module supporte ces 2 protocoles) (SPI : https://www.youtube.com/watch?v=XJLVSVXcSic et I²C : https://www.youtube.com/watch?v=N0YtIzGIW4k)
-    <li>Entre le Raspberry et les ESC, communication unidirectionnelle, émission uniquement : PWM (Pulse Width Modulation, Modulation par Largeur d’Impulsion) (https://www.aeromodelisme-vemars.com/2016/04/26/pwm-ppm-s-bus-sumd-k%C3%A9sako/)
+    <li>Entre le drone et la télécommande, communication bidirectionnelle : LoRa (entre 0,3 et 19,2 kbits/s, à déterminer en fonction des performances : vitesse, distance et consommation électrique) (https://fr.wikipedia.org/wiki/LoRaWAN),</li>
+    <li>Entre les modules LoRa et les microcontrôleurs, communication bidirectionnelle : UART (avec 8 bits de données, pas de parité, 1 bit de fin et à une vitesse de 9600 bauds) (https://www.youtube.com/watch?v=kVd8Zj413l8),</li>
+    <li>Entre les joysticks/le bouton d’arrêt d’urgence/la LED RGB et l’ESP32, communication unidirectionnelle, réception uniquement : communication analogique : variation de la tension entre 0 et +3.3V,</li>
+    <li>Entre le télémètre ultrason et le Raspberry, communication bidirectionnelle : le protocole SPI ou I²C, le module supporte ces 2 protocoles) (SPI : https://www.youtube.com/watch?v=XJLVSVXcSic et I²C : https://www.youtube.com/watch?v=N0YtIzGIW4k),</li>
+    <li>Entre l’accéléromètre et le Raspberry, communication bidirectionnelle : le protocole I²C,</li>
+    <li>Entre le Raspberry et les ESC, communication unidirectionnelle, émission uniquement : PWM (Pulse Width Modulation, Modulation par Largeur d’Impulsion) (https://www.aeromodelisme-vemars.com/2016/04/26/pwm-ppm-s-bus-sumd-k%C3%A9sako/)</li>
 </ul>
 Plus, en fonction de ce qui sera implémenté dans le drone :
 <ul>
