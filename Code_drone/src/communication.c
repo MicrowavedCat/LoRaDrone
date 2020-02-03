@@ -42,7 +42,7 @@ static void *lecture(void * flux){
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 /* Fin de la chaine de caractères */
-                for(i = 0 ; i < 31 ; i++){ buffer[i] = '\0'; }
+                for(i = 0; i < 31; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
             /* Stockage des caractères dans le buffer */
             }else{ i++; }
