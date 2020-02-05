@@ -17,7 +17,7 @@ static const pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
-  for(unsigned short int i = 0; i < NB_MOTEUR; i++){
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
     pwmWrite(PIN[i], valeur);
     delay(1);
@@ -32,7 +32,7 @@ extern void configuration(void) {
     exit(1); 
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
-  for(unsigned short int i = 0; i < NB_MOTEUR; i++)
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
   delay(1);
@@ -75,20 +75,20 @@ extern void propulsion(void) {
   /* On initialise la puissance de rotation à 0 */
   static volatile unsigned short int puissance[NB_MOTEUR] = {0};
   /* Puissance de rotation configurée sur chaque hélice */
-  for(unsigned short int i = 0; i < NB_MOTEUR; i++)
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
 
   sleep(3);
   
   /* Descendre la puissance des moteurs, après s'être lancé à 511 */
-  for(unsigned short int i = MAX; i >= 480; i--){
-    for(unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
+  for(volatile unsigned short int i = MAX; i >= 480; i--){
+    for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
     delay(100);
   }
   /* Réinitialisation de la puissance de chaque hélice */
-  for(unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
   /* Lancement de toutes les tâches */
-  for(unsigned short int i = 0; i < NB_MOTEUR; i++) 
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
   /* Détacher les tâches */
   pthread_exit(NULL);
