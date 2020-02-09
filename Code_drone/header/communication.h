@@ -12,7 +12,7 @@
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
 /* variable globale contenant le message envoyer par la télécommande */
-unsigned char *msg_recu;
+unsigned char *msg_recu = "";
 
 extern void tache(void);
 
