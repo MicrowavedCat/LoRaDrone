@@ -3,11 +3,8 @@
 
 #define TAILLE 31
 /* Variables globales définissant les états de la connexion drone-télécommande */
-#define CONNECTED "connect\4"
-#define LOST "lost\4"
-
-/* file descriptor permettant de stocker le flux de communication */
-static volatile int fd;
+#define CONNECTED "CONNECT\4"
+#define LOST "LOST\4"
 
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 static const int connexion(void){
@@ -53,18 +50,20 @@ static void *lecture(void * flux){
 /* Fonction permettant d'écrire dans le flux de données à la télécommande */
 static void *ecriture(void * flux) {
   /* Variable booléenne servant d'indice d'intégrité */
-  static volatile unsigned short int validation;
-  /* Si la télécommande est appairée au drone */
-  if(strcmp(msg_recu, "pair\4")){ 
-    validation = 1; 
-    serialPrintf(fd, "link\4");
-  }else{ validation = 0; }
-  while((validation = 1) && (strcmp(msg_recu, CONNECTED))){
-    /* Ecriture d'un message de connexion à rythme régulier,
-    pour s'assurer que la communication fonctionne. */
-    sleep(3);
-    serialPrintf(fd, CONNECTED);
-  }
+  static volatile unsigned short int validation = 0;
+  while(1){
+      /* Si la télécommande est appairée au drone */
+      if(strcmp(msg_recu, "pair\4")){ 
+        validation = 1; 
+        serialPrintf(fd, "link\4");
+      }
+      while((validation = 1) && (strcmp(msg_recu, CONNECTED))){
+        /* Ecriture d'un message de connexion à rythme régulier,
+        pour s'assurer que la communication fonctionne. */
+        sleep(3);
+        serialPrintf(fd, CONNECTED);
+      }
+   }
 }
 
 /* Permet de déterminer toutes les actions à effectuer,
