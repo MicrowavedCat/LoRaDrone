@@ -22,7 +22,7 @@
 #define GPIO2 3 /* Emetteur */
 #define GPIO3 5 /* Récépteur */
 
-static volatile int fd = 0;
+static volatile int fm = 0;
 /* Mapping des GPIOs sur la mémoire */
 static unsigned char *projection = NULL;
 /* Entier signé de 32 bits */
@@ -41,7 +41,7 @@ static void ping(long temps){
 
 static void config_memoire(const char *argv[]){
   static volatile char *addr  = NULL;
-  if((fd = open(MEMORY, O_RDWR|O_SYNC)) < 0) {
+  if((fm = open(MEMORY, O_RDWR|O_SYNC)) < 0) {
     printf("Conseil : \"sudo %s\"\n", argv[0]);
     exit(1);
   }
@@ -61,7 +61,7 @@ static void config_memoire(const char *argv[]){
     qui projettent le fichier dev/mem, en plaçant la projection exactement à l'adresse donnée */
     MAP_SHARED | MAP_FIXED,
     /* Flux du fichier dev/mem et offset */
-    fd, OFFSET
+    fm, OFFSET
   );
   if((long)projection < 0) {
     puts("Memoire inacessible");
@@ -78,7 +78,7 @@ static void sortie_memoire(){
     puts("Erreur");
     exit(2);
   }
-  mapping = close(fd);
+  mapping = close(fm);
   exit(0);
 }
 
