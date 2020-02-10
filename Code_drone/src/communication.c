@@ -16,13 +16,12 @@ static void connexion(void){
         puts("Erreur de librairie");
         exit(2);
     }
-    return fd;
 }
 
 /* Fonction permettant de lire le flux de données envoyé par la télécommande */
 static void *lecture(void * flux){
     /* Variable de récupération des caractères servant de tampon */
-    unsigned char buffer[TAILLE];
+    static volatile unsigned char buffer[TAILLE];
     /* Message reçu par le drone */
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
