@@ -19,8 +19,8 @@
 #define ROUGE 25
 #define VERT 33
 #define BLEU 32
-char tabMessage[31];
-char messageAEnvoyer[30] = "PAIR";
+char messageRecu[31];
+char messageAEnvoyer[32];
 bool connecte = false;
 unsigned long tempsDernierMessageRecu = 0;
 bool premiereConnexion = true;
@@ -29,7 +29,7 @@ bool continueTheTest = true;
 bool emergency_stop = false;
 int boutonA = 0;
 int boutonB = 0;
-pthread_mutex_t mutexMessageAEnvoyer = PTHREAD_MUTEX_INITIALIZER;
+bool messagesConfirmationEnvoyes = false;
 
 void setup() {
     disableCore0WDT();                                //Désactivation des watchdogs pour éviter un "bug" faisant redémarrer le microcontrôleur toutes les 5 secondes.
@@ -42,28 +42,23 @@ void setup() {
     pinMode(BLEU, OUTPUT);
     
     Serial.println("Allumé !");
-    pthread_t threads[5];
-    /*int returnValue;
-             
-    for( int i = 0; i< 4; i++ ) {
- 
-        returnValue = pthread_create(&threads[i], NULL, printThreadId, (void *)i);
- 
-        if (returnValue) {
-            Serial.println("An error has occurred");
-        }
-    }*/
+    pthread_t threads[4];
 
     /*
     pthread_create(&threads[0], NULL, ecriture, NULL);
     pthread_create(&threads[1], NULL, choixMessage, NULL);
     pthread_create(&threads[1], NULL, test, NULL);
+    if (pthread_create(&threads[1], NULL, controle, NULL)) Serial.println("Erreur thread 1 controle");
     */
-    pthread_create(&threads[0], NULL, lecture, NULL);
-    pthread_create(&threads[1], NULL, controle, NULL);
-    pthread_create(&threads[2], NULL, controleLed, NULL);
-    pthread_create(&threads[3], NULL, ecriture, NULL);
-    pthread_create(&threads[4], NULL, choixMessage, NULL);
+
+    if (pthread_create(&threads[0], NULL, lecture, NULL)) Serial.println("Erreur thread 0 lecture");
+    if (pthread_create(&threads[1], NULL, controleLed, NULL)) Serial.println("Erreur thread 2 controleLed");
+    if (pthread_create(&threads[2], NULL, ecriture, NULL)) Serial.println("Erreur thread 3 ecriture");
+    if (pthread_create(&threads[3], NULL, choixMessage, NULL)) Serial.println("Erreur thread 4 choixMessage");
+
+    for (int i=0; i<4; i++) {
+        pthread_join(threads[i], NULL);
+    }
 }
 
  /*
@@ -71,7 +66,6 @@ void setup() {
 * 
  */
 void *controle(void *argum) {
-
     while(true) {
         
 
@@ -88,17 +82,10 @@ void *controle(void *argum) {
         }
 
     }
-   
 }
 
 
 void *arretUrgence(void *agrum) {
-
-
-
-
-
-
 }
 
 void loop() {             //Obligatoire en Arduino
@@ -106,49 +93,69 @@ void loop() {             //Obligatoire en Arduino
 }
 
 void *choixMessage(void *argum) {
-    char bufferA[14];
-    char bufferB[14];
+    char bufferA[15];
+    char bufferB[15];
 
-    while (true) {
-        Serial.println("tyjdyfhjdfhjdtfmhjdtshgotughou");
+    while (!messagesConfirmationEnvoyes) {
+        if (isConnecte()) {
+            for (int i=0; i<10; i++) {
+                memcpy(messageAEnvoyer, PAIR, sizeof(PAIR));
+                delay(100);
+            }
+            messagesConfirmationEnvoyes = true;
+        } else {
+            delay(100);
+        }
+    }
+    while (messagesConfirmationEnvoyes) {
         if(isConnecte()) {
-            //1 = enfoncé et 0 = pas enfoncé
-            boutonA = digitalRead(BA)? 1:0;  
-            boutonB = digitalRead(BB)? 1:0;
+            //0 = enfoncé et 1 = pas enfoncé
+            boutonA = digitalRead(BA);
+            boutonB = digitalRead(BB);
             joystick(bufferA, 'A', analogRead(XA), analogRead(YA), boutonA);
             joystick(bufferB, 'B', analogRead(XB), analogRead(YB), boutonB);
-            
-            pthread_mutex_lock(&mutexMessageAEnvoyer);
-            sprintf(messageAEnvoyer, "%s%s\4", bufferA, bufferB);
-            pthread_mutex_unlock(&mutexMessageAEnvoyer);
+
+            sprintf(messageAEnvoyer, "%s", bufferA, bufferB);
+            strcat(messageAEnvoyer, "\4");
+            Serial.print("messageAEnvoyer : ");
+            Serial.println(messageAEnvoyer);
             delay(500);
             
-        } else {
-            memcpy(messageAEnvoyer, PAIR, sizeof(PAIR));
-            delay(500);
         }
     } //connect
 }
 
 void joystick(char buffer[], char joystick, int X, int Y, int B) {
-    sprintf(buffer, "X%c%.4dY%c%.4dB%c%.1d ", joystick, X, joystick, Y, joystick, B);
+    sprintf(buffer, "X%c%.4dY%c%.4dB%c%.1d", joystick, X, joystick, Y, joystick, B);
 }
 
 void *ecriture(void *argum) {
-    while (true) {
-        Serial2.print(messageAEnvoyer);
+    while (1) {
+        Serial2.println(messageAEnvoyer);
+        Serial.println("sdrrgdshgdhgbdrhnghhhhhrupighspfbrspigb");
         usleep(1000000);
     }
 }
 
 
 bool isConnecte() {
+    if(!strcmp(messageRecu, "LINK\4")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+/*
+//Ancienne isConnecte()
+bool isConnecte() {
     if((millis() - tempsDernierMessageRecu) >= 3000 || millis() <= 3000) {
         return false;
     } else {
         return true;
     }
-}
+}*/
 
 //NE PAS MODIFIER
 void *lecture(void *argum) {
@@ -158,16 +165,15 @@ void *lecture(void *argum) {
     int i = 0;
     
     Serial.println(".");
-    while(true) {
+    while(!isConnecte()) {
         if(Serial2.available() > 0) {
-            //Serial.println("avail");
             bufferRead[i] = Serial2.read();
             if(bufferRead[i] == 4 || i > 32) {
                 //Serial.println(">>>fin ou plein"); ////////////////////////////////////////
                 if(bufferRead[i] == 4) {
                     //Serial.println(">>>fin"); ////////////////////////////////////////
-                    memcpy(tabMessage, bufferRead, sizeof(bufferRead));
-                    Serial.println(tabMessage);
+                    memcpy(messageRecu, bufferRead, sizeof(bufferRead));
+                    Serial.println(messageRecu);
                     tempsDernierMessageRecu = millis();
                 }
                 for(i = 0 ; i < 31 ; i++) {
@@ -181,6 +187,10 @@ void *lecture(void *argum) {
         delay(50);
     }
 }
+
+
+
+
 
 //A tester par Moi ah aha  ha ha (Alicia au cas où)
 void *controleLed(void *argum) {
@@ -238,6 +248,11 @@ void rgb_led(int r, int g, int b, int millise) {
       //delay(1/(freq*2));
     }
 }
+
+
+
+
+
 
 
 void *test(void *argum) {
