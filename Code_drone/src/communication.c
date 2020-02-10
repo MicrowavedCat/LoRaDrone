@@ -37,7 +37,7 @@ static void *lecture(void * flux){
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 /* Fin de la chaine de caractères */
-                for(i = 0; i < 31; i++){ buffer[i] = '\0'; }
+                for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
             /* Stockage des caractères dans le buffer */
             }else{ i++; }
@@ -50,7 +50,10 @@ static void *ecriture(void * flux) {
   while(!validation){
       serialPrintf(fd, "LINK\4");
       /* Si la télécommande est appairée au drone */
-      if(!strcmp(msg_recu, "PAIR\4")){ validation = 1; }
+      if(!strcmp(msg_recu, "PAIR\4")){ 
+         validation = 1;
+         exit(0);
+      }
       sleep(5);
    }
 }
