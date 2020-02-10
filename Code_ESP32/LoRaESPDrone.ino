@@ -29,20 +29,20 @@ bool continueTheTest = true;
 bool emergency_stop = false;
 int boutonA = 0;
 int boutonB = 0;
+pthread_mutex_t mutexMessageAEnvoyer = PTHREAD_MUTEX_INITIALIZER;
 
 void setup() {
+    disableCore0WDT();                                //Désactivation des watchdogs pour éviter un "bug" faisant redémarrer le microcontrôleur toutes les 5 secondes.
+    disableCore1WDT();
     Serial.begin(115200);
     Serial2.begin(VITESSE_RXTX, SERIAL_8N1, RECEPTION, TRANSMISSION);   //Vitesse de transmission, paramètre UART (parité), pin de réception, pin de transmission
 
     pinMode(ROUGE, OUTPUT);   //Définit les pins en tant que sorties
     pinMode(VERT, OUTPUT);
     pinMode(BLEU, OUTPUT);
-
-    disableCore0WDT();                                //Désactivation des watchdogs pour éviter un "bug" faisant redémarrer le microcontrôleur toutes les 5 secondes.
-    disableCore1WDT();
     
     Serial.println("Allumé !");
-    pthread_t threads[3];
+    pthread_t threads[5];
     /*int returnValue;
              
     for( int i = 0; i< 4; i++ ) {
@@ -54,13 +54,16 @@ void setup() {
         }
     }*/
 
-    /*pthread_create(&threads[0], NULL, ecriture, NULL);
-    pthread_create(&threads[1], NULL, choixMessage, NULL);*/
-    /*pthread_create(&threads[1], NULL, test, NULL);*/
+    /*
+    pthread_create(&threads[0], NULL, ecriture, NULL);
+    pthread_create(&threads[1], NULL, choixMessage, NULL);
+    pthread_create(&threads[1], NULL, test, NULL);
+    */
     pthread_create(&threads[0], NULL, lecture, NULL);
     pthread_create(&threads[1], NULL, controle, NULL);
     pthread_create(&threads[2], NULL, controleLed, NULL);
-
+    pthread_create(&threads[3], NULL, ecriture, NULL);
+    pthread_create(&threads[4], NULL, choixMessage, NULL);
 }
 
  /*
@@ -82,7 +85,6 @@ void *controle(void *argum) {
             }  //deconnexion
                //aterrissage en "douceur"
             securite = true;
-               
         }
 
     }
@@ -90,7 +92,7 @@ void *controle(void *argum) {
 }
 
 
-void *arretUrgent(void *agrum) {
+void *arretUrgence(void *agrum) {
 
 
 
@@ -104,25 +106,26 @@ void loop() {             //Obligatoire en Arduino
 }
 
 void *choixMessage(void *argum) {
-    char bufferA[15];
-    char bufferB[15];
-    char bufferGeneral[30];
-    char *pair = "PAIR";
+    char bufferA[14];
+    char bufferB[14];
 
     while (true) {
+        Serial.println("tyjdyfhjdfhjdtfmhjdtshgotughou");
         if(isConnecte()) {
             //1 = enfoncé et 0 = pas enfoncé
             boutonA = digitalRead(BA)? 1:0;  
             boutonB = digitalRead(BB)? 1:0;
             joystick(bufferA, 'A', analogRead(XA), analogRead(YA), boutonA);
             joystick(bufferB, 'B', analogRead(XB), analogRead(YB), boutonB);
-            memcpy(bufferGeneral, bufferA, sizeof(bufferA));
-            memcpy(bufferGeneral, bufferB, sizeof(bufferB));
-            memcpy(messageAEnvoyer, bufferGeneral, sizeof(bufferGeneral));
-            delay(14);
+            
+            pthread_mutex_lock(&mutexMessageAEnvoyer);
+            sprintf(messageAEnvoyer, "%s%s\4", bufferA, bufferB);
+            pthread_mutex_unlock(&mutexMessageAEnvoyer);
+            delay(500);
+            
         } else {
-            memcpy(messageAEnvoyer, pair, sizeof(pair));
-            delay(14);
+            memcpy(messageAEnvoyer, PAIR, sizeof(PAIR));
+            delay(500);
         }
     } //connect
 }
@@ -134,7 +137,7 @@ void joystick(char buffer[], char joystick, int X, int Y, int B) {
 void *ecriture(void *argum) {
     while (true) {
         Serial2.print(messageAEnvoyer);
-        usleep(500000);
+        usleep(1000000);
     }
 }
 
@@ -149,15 +152,20 @@ bool isConnecte() {
 
 //NE PAS MODIFIER
 void *lecture(void *argum) {
+    disableCore0WDT();                                //Désactivation des watchdogs pour éviter un "bug" faisant redémarrer le microcontrôleur toutes les 5 secondes.
+    disableCore1WDT();
     char bufferRead[31];
     int i = 0;
     
     Serial.println(".");
     while(true) {
         if(Serial2.available() > 0) {
+            //Serial.println("avail");
             bufferRead[i] = Serial2.read();
             if(bufferRead[i] == 4 || i > 32) {
+                //Serial.println(">>>fin ou plein"); ////////////////////////////////////////
                 if(bufferRead[i] == 4) {
+                    //Serial.println(">>>fin"); ////////////////////////////////////////
                     memcpy(tabMessage, bufferRead, sizeof(bufferRead));
                     Serial.println(tabMessage);
                     tempsDernierMessageRecu = millis();
@@ -170,6 +178,7 @@ void *lecture(void *argum) {
                 i++;
             }
         }
+        delay(50);
     }
 }
 
@@ -199,7 +208,7 @@ void *controleLed(void *argum) {
              rgb_led(1, 1, 0, 500);
              //Serial.println("Jaune lent 1");
           }
-          rgb_led(0, 0, 1, 0);                              //Reconnexion : led en bleu
+          rgb_led(0, 0, 1, 0);                               //Reconnexion : led en bleu
           //Serial.println("Bleu fixe");
       }
       delay(100);
@@ -233,11 +242,10 @@ void rgb_led(int r, int g, int b, int millise) {
 
 void *test(void *argum) {
     Serial.println("Simulation d'une attente de connexion (6s)");
-    keep_alive();                             //simulation d'une attente de connexion
+    delay(6000);                             //simulation d'une attente de connexion
 
     Serial.println("Simulation d'une connexion (6s)");
-    tempsDernierMessageRecu = millis();   //simulation d'une connexion
-    keep_alive();
+    keep_alive();                          //simulation d'une connexion
 
     Serial.println("Simulation d'un retrait de la sécurité (6s)");
     securite = false;                        //simulation d'un retrait de la sécurité
@@ -248,8 +256,7 @@ void *test(void *argum) {
     delay(8000);
     
     Serial.println("Simulation d'une reconnexion (6s)");
-    tempsDernierMessageRecu = millis();      //simulation d'une reconnexion
-    keep_alive();
+    keep_alive();                           //simulation d'une reconnexion
 
     Serial.println("Simulation d'un arrêt d'urgence (instantané)");
     emergency_stop = true;
