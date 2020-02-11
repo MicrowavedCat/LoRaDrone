@@ -42,12 +42,12 @@ static const unsigned char* extraction(const unsigned char *chaine,
 }
 
 static void filtrage_msg(void){
-    if((!strcmp(extraction(msg_recu, 0, 2), "XA")) && 
-       (!strcmp(extraction(msg_recu, 6, 8), "YA")) &&
-       (!strcmp(extraction(msg_recu, 12, 14), "BA")) && 
-       (!strcmp(extraction(msg_recu, 15, 17), "XB")) && 
-       (!strcmp(extraction(msg_recu, 21, 23), "YB")) && 
-       (!strcmp(extraction(msg_recu, 27, 29), "BB")) && (msg_recu[30] == '\4')){
+    if((strcmp(extraction(msg_recu, 0, 2), "XA") != 0) && 
+       (strcmp(extraction(msg_recu, 6, 8), "YA") != 0) &&
+       (strcmp(extraction(msg_recu, 12, 14), "BA") != 0) && 
+       (strcmp(extraction(msg_recu, 15, 17), "XB") != 0) && 
+       (strcmp(extraction(msg_recu, 21, 23), "YB") != 0) && 
+       (strcmp(extraction(msg_recu, 27, 29), "BB") != 0) && (msg_recu[30] == '\4')){
 	    coordonnee[0] = atoi(extraction(msg_recu, 2, 6));
 	    coordonnee[1] = atoi(extraction(msg_recu, 8, 12));
             coordonnee[2] = atoi(extraction(msg_recu, 14, 15));
