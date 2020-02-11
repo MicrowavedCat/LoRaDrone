@@ -6,8 +6,9 @@
 #define CONNECT "CONNECT\4"
 #define LOST "LOST\4"
 #define LINKED "LINKED\4"
+#define STOP "STOP\4"
 
-#define BOUTONSTOP 9
+#define BOUTONSTOP 2
 
 #define XA 13
 #define YA 12
@@ -22,7 +23,6 @@
 char messageRecu[31];
 char messageAEnvoyer[32];
 bool connecte = false;
-unsigned long tempsDernierMessageRecu = 0;
 bool premiereConnexion = true;
 bool securite = true;
 bool continueTheTest = true;
@@ -36,13 +36,15 @@ void setup() {
     disableCore1WDT();
     Serial.begin(115200);
     Serial2.begin(VITESSE_RXTX, SERIAL_8N1, RECEPTION, TRANSMISSION);   //Vitesse de transmission, paramètre UART (parité), pin de réception, pin de transmission
+    delay(100);
 
     pinMode(ROUGE, OUTPUT);   //Définit les pins en tant que sorties
     pinMode(VERT, OUTPUT);
     pinMode(BLEU, OUTPUT);
+    pinMode(BOUTONSTOP, INPUT);
     
     Serial.println("Allumé !");
-    pthread_t threads[4];
+    pthread_t threads[5];
 
     /*
     pthread_create(&threads[0], NULL, ecriture, NULL);
@@ -55,6 +57,7 @@ void setup() {
     if (pthread_create(&threads[1], NULL, controleLed, NULL)) Serial.println("Erreur thread 2 controleLed");
     if (pthread_create(&threads[2], NULL, ecriture, NULL)) Serial.println("Erreur thread 3 ecriture");
     if (pthread_create(&threads[3], NULL, choixMessage, NULL)) Serial.println("Erreur thread 4 choixMessage");
+    if (pthread_create(&threads[4], NULL, arretUrgence, NULL)) Serial.println("Erreur thread 5 arretUrgence");
 
     for (int i=0; i<4; i++) {
         pthread_join(threads[i], NULL);
@@ -86,7 +89,12 @@ void *controle(void *argum) {
 
 
 void *arretUrgence(void *agrum) {
+    while (!emergency_stop) {
+      if (digitalRead(BOUTONSTOP)) emergency_stop = true;
+      delay(1);
+    }
 }
+
 
 void loop() {             //Obligatoire en Arduino
     vTaskDelete(NULL);    //Mais inutile pour ce projet, on le supprime donc avec vTaskDelete.
@@ -98,31 +106,28 @@ void *choixMessage(void *argum) {
 
     while (!messagesConfirmationEnvoyes) {
         if (isConnecte()) {
-            for (int i=0; i<10; i++) {
-                memcpy(messageAEnvoyer, PAIR, sizeof(PAIR));
-                delay(100);
-            }
+            memcpy(messageAEnvoyer, PAIR, sizeof(PAIR));
+            sleep(2);
             messagesConfirmationEnvoyes = true;
         } else {
             delay(100);
         }
     }
     while (messagesConfirmationEnvoyes) {
-        if(isConnecte()) {
+        if (emergency_stop) {
+            sprintf(messageAEnvoyer, "%s", STOP);
+        } else {
             //0 = enfoncé et 1 = pas enfoncé
             boutonA = digitalRead(BA);
             boutonB = digitalRead(BB);
             joystick(bufferA, 'A', analogRead(XA), analogRead(YA), boutonA);
             joystick(bufferB, 'B', analogRead(XB), analogRead(YB), boutonB);
-
+    
             sprintf(messageAEnvoyer, "%s", bufferA, bufferB);
             strcat(messageAEnvoyer, "\4");
-            Serial.print("messageAEnvoyer : ");
-            Serial.println(messageAEnvoyer);
-            delay(500);
-            
         }
-    } //connect
+        delay(10);
+    }
 }
 
 void joystick(char buffer[], char joystick, int X, int Y, int B) {
@@ -131,9 +136,13 @@ void joystick(char buffer[], char joystick, int X, int Y, int B) {
 
 void *ecriture(void *argum) {
     while (1) {
-        Serial2.println(messageAEnvoyer);
-        Serial.println("sdrrgdshgdhgbdrhnghhhhhrupighspfbrspigb");
-        usleep(1000000);
+        if(isConnecte()) {
+          Serial.print("messageAEnvoyer : ");
+          Serial.println(messageAEnvoyer);
+          Serial2.print(messageAEnvoyer);
+          delay(400);
+        }
+        delay(10);
     }
 }
 
@@ -147,20 +156,8 @@ bool isConnecte() {
 }
 
 
-/*
-//Ancienne isConnecte()
-bool isConnecte() {
-    if((millis() - tempsDernierMessageRecu) >= 3000 || millis() <= 3000) {
-        return false;
-    } else {
-        return true;
-    }
-}*/
-
 //NE PAS MODIFIER
 void *lecture(void *argum) {
-    disableCore0WDT();                                //Désactivation des watchdogs pour éviter un "bug" faisant redémarrer le microcontrôleur toutes les 5 secondes.
-    disableCore1WDT();
     char bufferRead[31];
     int i = 0;
     
@@ -169,13 +166,9 @@ void *lecture(void *argum) {
         if(Serial2.available() > 0) {
             bufferRead[i] = Serial2.read();
             if(bufferRead[i] == 4 || i > 32) {
-                //Serial.println(">>>fin ou plein"); ////////////////////////////////////////
-                if(bufferRead[i] == 4) {
-                    //Serial.println(">>>fin"); ////////////////////////////////////////
-                    memcpy(messageRecu, bufferRead, sizeof(bufferRead));
-                    Serial.println(messageRecu);
-                    tempsDernierMessageRecu = millis();
-                }
+                memcpy(messageRecu, bufferRead, sizeof(bufferRead));
+                Serial.print("messageRecu : ");
+                Serial.println(messageRecu);
                 for(i = 0 ; i < 31 ; i++) {
                     bufferRead[i] = 0;
                 }
@@ -184,7 +177,7 @@ void *lecture(void *argum) {
                 i++;
             }
         }
-        delay(50);
+        delay(100);
     }
 }
 
@@ -247,39 +240,4 @@ void rgb_led(int r, int g, int b, int millise) {
       delay(millise);
       //delay(1/(freq*2));
     }
-}
-
-
-
-
-
-
-
-void *test(void *argum) {
-    Serial.println("Simulation d'une attente de connexion (6s)");
-    delay(6000);                             //simulation d'une attente de connexion
-
-    Serial.println("Simulation d'une connexion (6s)");
-    keep_alive();                          //simulation d'une connexion
-
-    Serial.println("Simulation d'un retrait de la sécurité (6s)");
-    securite = false;                        //simulation d'un retrait de la sécurité
-    keep_alive();
-
-    Serial.println("Simulation d'une déconnexion (10s)");
-    delay(2000);                             //simulation d'une déconnexion
-    delay(8000);
-    
-    Serial.println("Simulation d'une reconnexion (6s)");
-    keep_alive();                           //simulation d'une reconnexion
-
-    Serial.println("Simulation d'un arrêt d'urgence (instantané)");
-    emergency_stop = true;
-}
-
-void keep_alive() {
-  for (int i = 0; i<3; i++) {
-    tempsDernierMessageRecu = millis();   //keep alive
-    delay(2000);
-  }
 }
