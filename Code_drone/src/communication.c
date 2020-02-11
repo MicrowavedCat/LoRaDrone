@@ -41,7 +41,8 @@ static const unsigned char* extraction(const unsigned char *chaine,
     return msg - longueur; /* Chaine extraite */
 }
 
-/* Filtre les message recus en vérifiant les elements qui la compose */
+/* Filtre les message recus en vérifiant les elements qui le compose,
+les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage */
 static void filtrage(void){
     /* Verification que le message soit bien du format :
     XA0000YA0000BA0XB0000YB0000BB0 */
