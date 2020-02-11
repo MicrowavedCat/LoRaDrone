@@ -13,8 +13,6 @@
 static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
 static volatile unsigned short int validation = 0;
-/* variable globale contenant le message envoyer par la télécommande */
-unsigned char *msg_recu = "";
 unsigned short int coordonnee[6] = {0};
 
 extern void tache(void);
