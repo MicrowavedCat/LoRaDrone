@@ -49,7 +49,7 @@ static void *lecture(void * flux){
 
 /* Fonction permettant d'écrire dans le flux de données à la télécommande */
 static void *ecriture(void * flux) {
-  while(!validation){
+  while(1){
       serialPrintf(fd, "LINK\4");
       /* Si la télécommande est appairée au drone */
       if(!strcmp(msg_recu, "PAIR\4")){ 
