@@ -2,7 +2,7 @@
 #include "../header/controle.h"
 
 #define TAILLE 32
-/* Variables globales definissant les états de la connexion drone-telecommande */
+/* Variables globales definissant les etats de la connexion drone-telecommande */
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 
@@ -122,10 +122,10 @@ static void sortie(void){
 extern void tache(void){
     connexion();
     static pthread_t th_com[2];
-    /* Ecriture et lecture synchronisés */
+    /* Ecriture et lecture */
     pthread_create(&th_com[0], NULL, lecture, (void *)&fd);
     pthread_create(&th_com[1], NULL, ecriture, (void *)&fd);
-    /* Lancement de toutes les tâches */
+    /* Lancement de toutes les taches */
     for(volatile unsigned short int i = 0; i < 2; i++)
         pthread_join(th_com[i], NULL);
     sortie();
