@@ -24,7 +24,7 @@ static void connexion(void){
     }
 }
 
-/* Extrait une sous-chaine d'une chaine de caractère, entre une case de début et de fin */ 
+/* Extrait une sous-chaine d'une chaine de caract"&egrave;"re, entre une case de début et de fin */ 
 static const unsigned char* extraction(const unsigned char *chaine, 
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
@@ -41,7 +41,8 @@ static const unsigned char* extraction(const unsigned char *chaine,
     return msg - longueur; /* Chaine extraite */
 }
 
-static void filtrage_msg(void){
+/* Filtre les message recus */
+static void filtrage(void){
     /* Vérification que le message soit bien du format :
     XA0000YA0000BA0XB0000YB0000BB0 */
     if((strcmp(extraction(msg_recu, 0, 2), "XA") != 0) && 
@@ -81,7 +82,7 @@ static void *lecture(void * flux){
                 /* Réupèration du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
-                filtrage_msg();
+                filtrage();
                 /* Fin de la chaine de caractères */
                 for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
                 i = 0; /* Réinitialisation du buffer */
