@@ -119,7 +119,7 @@ static void sortie(void){
 }
 
 /* Listing de tous les processus a creer et lancer en multitache */
-extern void main(void){
+extern void tache(void){
     connexion();
     static pthread_t th_com[2];
     /* Ecriture et lecture synchronisés */
