@@ -2,48 +2,48 @@
 #include "../header/controle.h"
 
 #define TAILLE 32
-/* Variables globales définissant les états de la connexion drone-télécommande */
+/* Variables globales definissant les états de la connexion drone-telecommande */
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 
-/* variable globale contenant le message envoyer par la télécommande */
+/* Variable globale contenant le message envoyer par la telecommande */
 static unsigned char *msg_recu = "";
 
-/* Vérifie l'ouverture du flux de communication série ttyAMA0 */
+/* Verifie l'ouverture du flux de communication serie ttyAMA0 */
 static void connexion(void){
-    /* Dispositif d'entrée et nombre de caractères par seconde */
+    /* Dispositif d'entree et nombre de caracteres par seconde */
     fd = serialOpen(FLUX, 9600);
-    /* Problème d'ouverture série du flux de connexion */
+    /* Probleme d'ouverture serie du flux de connexion */
     if(fd < 0){
         puts("Erreur communication");
         exit(1);
-    /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
+    /* Erreur de deploiement de certaines fonctionnalite de la librairie wiringPi */
     }else if(wiringPiSetup() == -1){
         puts("Erreur de librairie");
         exit(2);
     }
 }
 
-/* Extrait une sous-chaine d'une chaine de caract"&egrave;"re, entre une case de début et de fin */ 
+/* Extrait une sous-chaine d'une chaine de caractere, entre une case de debut et de fin */ 
 static const unsigned char* extraction(const unsigned char *chaine, 
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
     volatile unsigned short int longueur = fin - debut;
-    /* Allocation de la taille de la chaine finale à la longueur + 1 */
+    /* Allocation de la taille de la chaine finale a la longueur + 1 */
     unsigned char *msg = (unsigned char*)malloc(sizeof(unsigned char) * (longueur + 1));
-    /* On extrait et copie le(s) caractère(s) entre les cases de début et de fin */
+    /* On extrait et copie le(s) caractere(s) entre les cases de debut et de fin */
     for(volatile unsigned short int i = debut; 
 	i < fin && (*(chaine + i) != '\0'); i++){
         *msg = *(chaine + i);
         msg++;
     }
-    *msg = '\0'; /* Chaine terminée */
+    *msg = '\0'; /* Chaine terminee */
     return msg - longueur; /* Chaine extraite */
 }
 
-/* Filtre les message recus */
+/* Filtre les message recus en vérifiant les elements qui la compose */
 static void filtrage(void){
-    /* Vérification que le message soit bien du format :
+    /* Verification que le message soit bien du format :
     XA0000YA0000BA0XB0000YB0000BB0 */
     if((strcmp(extraction(msg_recu, 0, 2), "XA") != 0) && 
        (strcmp(extraction(msg_recu, 6, 8), "YA") != 0) &&
@@ -65,28 +65,28 @@ static void filtrage(void){
     }
 }
 
-/* Fonction permettant de lire le flux de données envoyé par la télécommande */
+/* Fonction permettant de lire le flux de donnees envoye par la telecommande */
 static void *lecture(void * flux){
-    /* Variable de récupération des caractères servant de tampon */
+    /* Variable de récupération des caracteres servant de tampon */
     static unsigned char buffer[TAILLE];
-    /* Message reçu par le drone */
+    /* Message recu par le drone */
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
     while(1){
-        /* Si le flux de données est lisible */
+        /* Si le flux de donnees est lisible */
         if(serialDataAvail(fd)){
-            /* Renvoie un caractère correspondant au code ascii entier */
+            /* Renvoie un caractere correspondant au code ascii entier */
             buffer[i] = serialGetchar(fd);
-            /* S'il y a fin de transmission ou dépassement de la taille du message */
+            /* S'il y a fin de transmission ou depassement de la taille du message */
             if((buffer[i] == '\4') || (i > TAILLE+1)){
-                /* Réupèration du message en copiant le buffer dans la variable du message recu */
+                /* Reuperation du message en copiant le buffer dans la variable du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 filtrage();
-                /* Fin de la chaine de caractères */
+                /* Fin de la chaine de caracteres */
                 for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
-                i = 0; /* Réinitialisation du buffer */
-            /* Stockage des caractères dans le buffer */
+                i = 0; /* Reinitialisation du buffer */
+            /* Stockage des caracteres dans le buffer */
             }else{ 
                 usleep(1000); 
                 i++;
@@ -95,9 +95,9 @@ static void *lecture(void * flux){
     }
 }
 
-/* Fonction permettant d'écrire dans le flux de données à la télécommande */
+/* Fonction permettant d'ecrire dans le flux de donnees a la telecommande */
 static void *ecriture(void * flux) {
-  /* Si la télécommande est appairée au drone */
+  /* Si la telecommande est appairee au drone */
   while(!validation) {
     serialPrintf(fd, LINK);
     if(strcmp(msg_recu, PAIR) == 0){ 
@@ -107,8 +107,8 @@ static void *ecriture(void * flux) {
   }
 }
 
-/* Permet de déterminer toutes les actions à effectuer,
-permettant de terminer la communciations drone-télécommande */
+/* Permet de determiner toutes les actions a effectuer,
+permettant de terminer la communciations drone-telecommande */
 static void sortie(void){
     free(msg_recu);
     serialClose(fd);
@@ -116,7 +116,7 @@ static void sortie(void){
     exit(0);
 }
 
-/* Listing de tous les processus à créer et lancer en multitâche */
+/* Listing de tous les processus a creer et lancer en multitache */
 extern void main(void){
     connexion();
     static pthread_t th_com[2];
