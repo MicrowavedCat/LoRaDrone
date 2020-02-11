@@ -42,6 +42,8 @@ static const unsigned char* extraction(const unsigned char *chaine,
 }
 
 static void filtrage_msg(void){
+    /* Vérification que le message soit bien du format :
+    XA0000YA0000BA0XB0000YB0000BB0 */
     if((strcmp(extraction(msg_recu, 0, 2), "XA") != 0) && 
        (strcmp(extraction(msg_recu, 6, 8), "YA") != 0) &&
        (strcmp(extraction(msg_recu, 12, 14), "BA") != 0) && 
