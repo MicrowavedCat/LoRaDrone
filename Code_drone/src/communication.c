@@ -21,33 +21,42 @@ static void connexion(void){
     }
 }
 
-static inline unsigned short int decoupage(unsigned short int position_depart, 
-    unsigned short int offset) {
-    coordonnee[offset] = (unsigned short int)msg_recu[position_depart];
-    coordonnee[offset] += (unsigned short int)msg_recu[position_depart-1]*10;
-    coordonnee[offset] += (unsigned short int)msg_recu[position_depart-2]*100;
-    coordonnee[offset] += (unsigned short int)msg_recu[position_depart-3]*1000;
+/* Extrait une sous-chaine d'une chaine de caractère, entre une case de début et de fin */ 
+static const unsigned char* extraction(const unsigned char *chaine, 
+    const unsigned short int debut, const unsigned short int fin){
+	/* Longueur de la chaine finale */
+	volatile unsigned short int longueur = fin - debut;
+	/* Allocation de la taille de la chaine finale à la longueur + 1 */
+	unsigned char *msg = (unsigned char*)malloc(sizeof(unsigned char) * (longueur + 1));
+	/* On extrait et copie le(s) caractère(s) entre les cases de début et de fin */
+	for(volatile unsigned short int i = debut; 
+        i < fin && (*(chaine + i) != '\0'); i++){
+		*msg = *(chaine + i);
+		msg++;
+	}
+	*msg = '\0'; /* Chaine terminée */
+	return msg - longueur; /* Chaine extraite */
 }
 
-static inline unsigned short int filtrage_msg(void){
-    if(msg_recu[0] == 'X' && msg_recu[1] == 'A' &&
-        msg_recu[6] == 'Y' && msg_recu[7] == 'A' &&
-        msg_recu[12] == 'B' && msg_recu[13] == 'A' &&
-        msg_recu[15] == 'X' && msg_recu[16] == 'B' &&
-        msg_recu[21] == 'Y' && msg_recu[22] == 'B' &&
-        msg_recu[27] == 'B' && msg_recu[28] == 'B' &&
-        msg_recu[30] == '\4'){
-            decoupage((unsigned short int)5, (unsigned short int)0);
-            decoupage((unsigned short int)11, (unsigned short int)1);
-            decoupage((unsigned short int)20, (unsigned short int)2);
-            decoupage((unsigned short int)26, (unsigned short int)3);
-            coordonnee[4] = (unsigned short int) msg_recu[14];
-            coordonnee[5] = (unsigned short int) msg_recu[28];
-            for(unsigned short int i=0; i<6; i++)
-               printf("%d ", coordonnee[i]);
-            putchar('\n');
-            return 1;
-    }else{ return 0; }
+static void filtrage_msg(void){
+    if((!strcmp(extraction(msg_recu, 0, 2), "XA")) && 
+        (!strcmp(extraction(msg_recu, 6, 8), "YA")) &&
+        (!strcmp(extraction(msg_recu, 12, 14), "BA")) && 
+        (!strcmp(extraction(msg_recu, 15, 17), "XB")) && 
+        (!strcmp(extraction(msg_recu, 21, 23), "YB")) && 
+        (!strcmp(extraction(msg_recu, 27, 29), "BB")) && (msg_recu[30] == '\4')){
+            coordonnee[0] = atoi(extraction(msg_recu, 2, 6));
+            coordonnee[1] = atoi(extraction(msg_recu, 8, 12));
+            coordonnee[2] = atoi(extraction(msg_recu, 14, 15));
+            coordonnee[3] = atoi(extraction(msg_recu, 17, 21));
+            coordonnee[4] = atoi(extraction(msg_recu, 23, 27));
+            coordonnee[5] = atoi(extraction(msg_recu, 29, 30));
+            for(volatile unsigned short int i=0; i<6; i++)
+               printf("Coordonnee[%hu] : %hu\n", i, coordonnee[i]);
+    }else{ 
+        puts("Format de message non valide");
+        exit(1); 
+    }
 }
 
 /* Fonction permettant de lire le flux de données envoyé par la télécommande */
