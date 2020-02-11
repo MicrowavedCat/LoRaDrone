@@ -13,7 +13,8 @@
 static volatile int fd;
 /* Variable booléenne servant d'indice d'intégrité */
 static volatile unsigned short int validation = 0;
-static unsigned short int coordonnee[6] = {0};
+/* Coordonnées de pilotage dans le message */
+static volatile unsigned short int coordonnee[6] = {0};
 
 extern void tache(void);
 
