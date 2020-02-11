@@ -12,7 +12,8 @@ static void connexion(void){
         puts("Erreur communication");
         exit(1);
     /* Erreur de déploiement de certaines fonctionnalité de la librairie wiringPi */
-    }else if(wiringPiSetup() == -1){
+    }
+    if(wiringPiSetup() == -1){
         puts("Erreur de librairie");
         exit(2);
     }
@@ -26,20 +27,22 @@ static void *lecture(void * flux){
     msg_recu = malloc(sizeof(buffer));
     static volatile unsigned short int i = 0;
     while(1){
-        /* Si le flux de données est lisible */
-        if(serialDataAvail(fd)){
-            /* Renvoie un caractère correspondant au code ascii entier */
-            buffer[i] = serialGetchar(fd);
-            /* S'il y a fin de transmission ou dépassement de la taille du message */
-            if((buffer[i] == '\4') || (i > TAILLE+1)){
-                /* Réupèration du message en copiant le buffer dans la variable du message recu */
-                memcpy(msg_recu, buffer, sizeof(buffer));
-                printf("%s\n", msg_recu);
-                /* Fin de la chaine de caractères */
-                for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
-                i = 0; /* Réinitialisation du buffer */
-            /* Stockage des caractères dans le buffer */
-            }else{ i++; }
+        if(validation){
+            /* Si le flux de données est lisible */
+            if(serialDataAvail(fd)){
+                /* Renvoie un caractère correspondant au code ascii entier */
+                buffer[i] = serialGetchar(fd);
+                /* S'il y a fin de transmission ou dépassement de la taille du message */
+                if((buffer[i] == '\4') || (i > TAILLE+1)){
+                    /* Réupèration du message en copiant le buffer dans la variable du message recu */
+                    memcpy(msg_recu, buffer, sizeof(buffer));
+                    printf("%s\n", msg_recu);
+                    /* Fin de la chaine de caractères */
+                    for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
+                    i = 0; /* Réinitialisation du buffer */
+                /* Stockage des caractères dans le buffer */
+                }else{ i++; }
+            }
         }
     }
 }
