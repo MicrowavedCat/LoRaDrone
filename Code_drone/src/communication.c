@@ -52,12 +52,13 @@ static void filtrage(void){
        (strcmp(extraction(msg_recu, 15, 17), "XB") != 0) && 
        (strcmp(extraction(msg_recu, 21, 23), "YB") != 0) && 
        (strcmp(extraction(msg_recu, 27, 29), "BB") != 0) && (msg_recu[30] == '\4')){
-	    coordonnee[0] = atoi(extraction(msg_recu, 2, 6));
-	    coordonnee[1] = atoi(extraction(msg_recu, 8, 12));
-            coordonnee[2] = atoi(extraction(msg_recu, 14, 15));
-            coordonnee[3] = atoi(extraction(msg_recu, 17, 21));
-            coordonnee[4] = atoi(extraction(msg_recu, 23, 27));
-            coordonnee[5] = atoi(extraction(msg_recu, 29, 30));
+            /* Conversion des chaine de caractere en entier */
+            coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+            coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+            coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+            coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+            coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+            coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
 	    for(volatile unsigned short int i=0; i<6; i++)
                printf("Coordonnee[%hu] : %hu\n", i, coordonnee[i]);
     }else{ 
