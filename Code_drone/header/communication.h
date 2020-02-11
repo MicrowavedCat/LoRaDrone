@@ -15,6 +15,7 @@ static volatile int fd;
 static volatile unsigned short int validation = 0;
 /* variable globale contenant le message envoyer par la télécommande */
 unsigned char *msg_recu = "";
+unsigned short int coordonnee[6] = {0}; // XA, YA, BA, XB, YB, BB
 
 extern void tache(void);
 
