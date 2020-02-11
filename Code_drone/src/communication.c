@@ -6,6 +6,9 @@
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 
+/* variable globale contenant le message envoyer par la télécommande */
+unsigned char *msg_recu = "";
+
 /* Vérifie l'ouverture du flux de communication série ttyAMA0 */
 static void connexion(void){
     /* Dispositif d'entrée et nombre de caractères par seconde */
