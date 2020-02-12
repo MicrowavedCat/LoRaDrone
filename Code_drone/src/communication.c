@@ -30,7 +30,7 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
     unsigned char *msg = (unsigned char*)malloc(sizeof(unsigned char) * (longueur + 1));
     /* On extrait et copie le(s) caractere(s) entre les cases de debut et de fin */
     for(volatile unsigned short int i = debut; 
-	i < fin && (*(chaine + i) != '\0'); i++){
+        i < fin && (*(chaine + i) != '\0'); i++){
         *msg = *(chaine + i);
         msg++;
     }
@@ -47,30 +47,30 @@ static void filtrage(void){
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
        (msg_recu[30] == '\4')){
-          /* Position en abscisse du bouton de gauche */
-	  coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
-	  /* Position en ordonnee du bouton de gauche */
-	  coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
-	  /* Position enfoncee ou non du bouton de gauche */
-          coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
-          /* Position en abscisse du bouton de droite */
-          coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
-          /* Position en ordonnee du bouton de droite */
-          coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
-          /* Position enfoncee ou non du bouton de droite */
-          coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-	  /* Les valeurs des joysticks revnoie entre 0 et 4095,
-	  Si les coordonnees sont ne correspondent pas a cet interval */
-	  for(volatile unsigned short int i=0; i<6; i++){
-	      if(coordonnee[i] < (const unsigned short int)0 || 
-		 coordonnee[i] > (const unsigned short int)4095){
-                  puts("Coordonnees non valide");
-		  exit(2); 
-	      }
-	  }
+        /* Position en abscisse du bouton de gauche */
+        coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+        /* Position en ordonnee du bouton de gauche */
+        coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+        /* Position enfoncee ou non du bouton de gauche */
+        coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+        /* Position en abscisse du bouton de droite */
+        coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+        /* Position en ordonnee du bouton de droite */
+        coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+        /* Position enfoncee ou non du bouton de droite */
+        coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+        /* Les valeurs des joysticks revnoie entre 0 et 4095,
+        Si les coordonnees sont ne correspondent pas a cet interval */
+	for(volatile unsigned short int i=0; i<6; i++){
+            if(coordonnee[i] < (const unsigned short int)0 || 
+	       coordonnee[i] > (const unsigned short int)4095){
+                puts("Coordonnees non valide");
+                exit(2); 
+            }
+        }    
     }else{ 
-       puts("Format de message non valide");
-       exit(1); 
+        puts("Format de message non valide");
+        exit(1); 
     }
 }
 
@@ -100,18 +100,20 @@ static void *lecture(void * flux){
 
 /* Fonction permettant d'ecrire dans le flux de donnees a la telecommande */
 static void *ecriture(void * flux) {
-  /* Tant que la telecommande n'est pas appairee au drone */
-  while(!validation) {
-    /* On emet des tentatives de liaison */
-    serialPrintf(fd, "LINK\4");
-    /* Si la telecommande est appairee au drone */
-    if(strcmp(msg_recu, "PAIR\4") == 0){ 
-        validation = 1;
-        /* On cesse d'ecrire des messages */
-        exit(0);
-    }
-    sleep(5);
-  }
+    /* Variable booléenne servant d'indice d'intégrité */
+    static volatile unsigned short int validation = 0;
+    /* Tant que la telecommande n'est pas appairee au drone */
+    while(!validation) {
+        /* On emet des tentatives de liaison */
+        serialPrintf(fd, "LINK\4");
+        /* Si la telecommande est appairee au drone */
+        if(strcmp(msg_recu, "PAIR\4") == 0){ 
+            validation = 1;
+            /* On cesse d'ecrire des messages */
+            exit(0);
+        }
+        sleep(5);
+     }
 }
 
 /* Permet de determiner toutes les actions a effectuer,
