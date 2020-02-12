@@ -13,7 +13,7 @@ CC = gcc -Ofast -flto
 ### 3] Dépedences à règles implicites des fichiers d'extension ".o" ###
 communication.o : ../header/communication.h
 moteur.o : ../header/moteur.h ../header/communication.h
-acceleration.o : ../header/controle.h ../header/moteur.h ../header/communication.h 
+acceleration.o : ../header/controle.h ../header/moteur.h 
 main.o : communication.o
 
 ### 4] Dépedences précédentes appliquées par commandes ###
