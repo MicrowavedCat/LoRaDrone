@@ -57,9 +57,9 @@ void setup() {
     pthread_t threads[nb_threads];                                              // Création du tableau des threads
 
     if (!digitalRead(BA) && analogRead(XB) == 4095 && analogRead(YB) == 4095) {                       // Permet de reprendre le contrôle du drone après avoir éteient la télécommande en plein vol
-        sprintf(message_recu, "%s", MSG_LINK);                                                          // au démarrage, garder le joystick de gauche enfoncé et celui de droite
-        msg_confirmation_envoyes = true;                                                                  // au maximum en haut à droite
-        securite = false;
+        sprintf(message_recu, "%s", MSG_LINK);                                                          // au démarrage, garder le joystick de gauche enfoncé et celui de droite au maximum en haut à droite ;
+        msg_confirmation_envoyes = true;                                                                // si cela a été fait, on fait croire à la télécommande qu'on a reçu le message contenu dans MSG_LINK,
+        securite = false;                                                                               // que les messages de confirmation de la connexion ont été envoyés et que la sécurité a été enlevée
     }
 
     if (pthread_create(&threads[0], NULL, controle_arret_urgence, NULL)) if (DEVELOPPEMENT) Serial.println("Erreur thread 0 controle_arret_urgence"); // Création de tous les threads
