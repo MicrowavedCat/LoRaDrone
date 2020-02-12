@@ -11,8 +11,6 @@
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
-/* Variable booléenne servant d'indice d'intégrité */
-static volatile unsigned short int validation = 0;
 /* Coordonnées de pilotage dans le message */
 static volatile unsigned short int coordonnee[6] = {0};
 
