@@ -117,7 +117,6 @@ static void *ecriture(void * flux) {
 /* Permet de determiner toutes les actions a effectuer,
 permettant de terminer la communciations drone-telecommande */
 static void sortie(void){
-    free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
     exit(0);
