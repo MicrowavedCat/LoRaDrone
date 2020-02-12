@@ -1,5 +1,4 @@
 #include "../header/communication.h"
-#include "../header/controle.h"
 
 #define TAILLE 31
 
