@@ -77,19 +77,24 @@ static void filtrage(void){
 /* Fonction permettant de lire le flux de donnees envoye par la telecommande */
 static void *lecture(void * flux){
     static volatile unsigned short int i = 0;
+    /* Variable de recuperation des caracteres servant de tampon */
+    static unsigned char buffer[TAILLE];
+    msg_recu = malloc(sizeof(buffer)):
     while(1){
         /* Si le flux de donnees est lisible */
         if(serialDataAvail(fd)){
             /* Renvoie un caractere correspondant au code ascii entier */
-            msg_recu[i] = serialGetchar(fd);
+            buffer[i] = serialGetchar(fd);
             /* S'il y a fin de transmission ou depassement de la taille du message */
-            if((msg_recu[i] == '\4') || (i > TAILLE+1)){
+            if((buffer[i] == '\4') || (i > TAILLE+1)){
+		/* Recuperation du message en copiant le buffer dans le container du message recu */
+                memcpy(msg_recu, buffer, sizeof(buffer));
                 printf("%s\n", msg_recu);
                 filtrage();
                 /* Fin de la chaine de caracteres */
-                for(i = 0; i < TAILLE; i++){ msg_recu[i] = '\0'; }
-                i = 0; /* Reinitialisation du message recu */
-            /* Stockage des caracteres dans le message recu */
+                for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
+                i = 0; /* Reinitialisation du message */
+            /* Stockage des caracteres dans le message */
             }else{ 
                 usleep(1000); 
                 i++;
@@ -119,6 +124,7 @@ static void *ecriture(void * flux) {
 /* Permet de determiner toutes les actions a effectuer,
 permettant de terminer la communciations drone-telecommande */
 static void sortie(void){
+    free(msg_recu);
     serialClose(fd);
     pthread_exit(NULL);
     exit(0);
