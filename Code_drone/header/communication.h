@@ -2,16 +2,16 @@
 #define COMMUNICATION_H
 
 #include <pthread.h>
-/* Librairie de communication série sur Raspberry */
+/* Librairie de communication serie sur Raspberry */
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
-/* Flux de données permettant, avec les modules Lora, la communication série */
+/* Flux de donnees permettant, avec les modules Lora, la communication serie */
 #define FLUX "/dev/ttyAMA0"
 
-/* Coordonnées de pilotage dans le message */
+/* Coordonnees de pilotage dans le message */
 static volatile unsigned short int coordonnee[6] = {0};
 
-extern void tache(void);
+extern void transmission(void);
 
 #endif
