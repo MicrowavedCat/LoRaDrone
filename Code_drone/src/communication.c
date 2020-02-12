@@ -25,7 +25,7 @@ static void connexion(void){
 }
 
 /* Extrait une sous-chaine d'une chaine de caractere, entre une case de debut et de fin */ 
-static const unsigned char* extraction(const unsigned char *chaine, 
+static const unsigned char* extraction(volatile unsigned char *chaine, 
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
     volatile unsigned short int longueur = fin - debut;
