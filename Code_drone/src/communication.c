@@ -70,8 +70,6 @@ static void filtrage(void){
 
 /* Fonction permettant de lire le flux de donnees envoye par la telecommande */
 static void *lecture(void * flux){
-    /* Message recu par le drone */
-    msg_recu[TAILLE];
     static volatile unsigned short int i = 0;
     while(1){
         /* Si le flux de donnees est lisible */
