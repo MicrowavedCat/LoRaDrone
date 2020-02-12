@@ -2,9 +2,6 @@
 #include "../header/controle.h"
 
 #define TAILLE 32
-/* Variables globales definissant les etats de la connexion drone-telecommande */
-#define PAIR "PAIR\4"
-#define LINK "LINK\4"
 
 /* Variable globale contenant le message envoyer par la telecommande */
 static unsigned char *msg_recu = "";
@@ -94,12 +91,15 @@ static void *lecture(void * flux){
 
 /* Fonction permettant d'ecrire dans le flux de donnees a la telecommande */
 static void *ecriture(void * flux) {
-  /* Si la telecommande est appairee au drone */
+  /* Tant que la telecommande n'est pas appairee au drone */
   while(!validation) {
-    serialPrintf(fd, LINK);
-    if(strcmp(msg_recu, PAIR) == 0){ 
+    /* On emet des tentatives de liaison */
+    serialPrintf(fd, "LINK\4");
+    /* Si la telecommande est appairee au drone */
+    if(strcmp(msg_recu, "PAIR\4") == 0){ 
         validation = 1;
-	exit(0);
+        /* On cesse d'ecrire des messages */
+        exit(0);
     }
     sleep(5);
   }
