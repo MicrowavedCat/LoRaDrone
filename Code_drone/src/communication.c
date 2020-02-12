@@ -63,7 +63,7 @@ static void filtrage(void){
 	  Si les coordonnees sont ne correspondent pas a cet interval */
 	  for(volatile unsigned short int i=0; i<6; i++){
               if(coordonnee[i] < 0 || coordonnee[i] > 4095){
-                  puts("Format de message non valide");
+                  puts("Coordonnees non valide");
 		  exit(2); 
 	      }
 	  }
