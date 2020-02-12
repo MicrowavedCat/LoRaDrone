@@ -3,6 +3,8 @@
 
 #define TAILLE 32
 
+/* file descriptor permettant de stocker le flux de communication */
+static volatile int fd;
 /* Variable globale contenant le message envoyer par la telecommande */
 static unsigned char *msg_recu = "";
 
