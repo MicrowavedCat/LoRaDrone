@@ -73,22 +73,22 @@ extern void propulsion(void) {
   static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation à 0 */
   static volatile unsigned short int puissance[NB_MOTEUR] = {0};
-  /* Puissance de rotation configurée sur chaque hélice */
+  /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
 
   sleep(3);
   
-  /* Descendre la puissance des moteurs, après s'être lancé à 511 */
+  /* Descendre la puissance des moteurs, apres s'etre lance a 511 */
   for(volatile unsigned short int i = MAX; i >= 480; i--){
     for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
     usleep(100000);
   }
-  /* Réinitialisation de la puissance de chaque hélice */
+  /* Reinitialisation de la puissance de chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
-  /* Lancement de toutes les tâches */
+  /* Lancement de toutes les moteurs */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
-  /* Détacher les tâches */
+  /* Détacher les taches */
   pthread_exit(NULL);
 }
