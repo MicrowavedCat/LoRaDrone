@@ -84,8 +84,8 @@ static void *lecture(void * flux){
                 filtrage();
                 /* Fin de la chaine de caracteres */
                 for(i = 0; i < TAILLE; i++){ msg_recu[i] = '\0'; }
-                i = 0; /* Reinitialisation du buffer */
-            /* Stockage des caracteres dans le buffer */
+                i = 0; /* Reinitialisation du message recu */
+            /* Stockage des caracteres dans le message recu */
             }else{ 
                 usleep(1000); 
                 i++;
@@ -101,6 +101,7 @@ static void *ecriture(void * flux) {
     serialPrintf(fd, LINK);
     if(strcmp(msg_recu, PAIR) == 0){ 
         validation = 1;
+	    exit(0);
     }
     sleep(5);
   }
