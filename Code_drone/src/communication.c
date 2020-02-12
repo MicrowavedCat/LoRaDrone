@@ -45,26 +45,28 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
 les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage */
 static void filtrage(void){
     /* Verification que le message soit bien du format :
-    XA0000YA0000BA0XB0000YB0000BB0 */
-    if((strcmp(extraction(msg_recu, 0, 2), "XA") != 0) && 
-        (strcmp(extraction(msg_recu, 6, 8), "YA") != 0) &&
-        (strcmp(extraction(msg_recu, 12, 14), "BA") != 0) && 
-        (strcmp(extraction(msg_recu, 15, 17), "XB") != 0) && 
-        (strcmp(extraction(msg_recu, 21, 23), "YB") != 0) && 
-        (strcmp(extraction(msg_recu, 27, 29), "BB") != 0) && (msg_recu[30] == '\4')){
-            puts("Format de message non valide");
-            exit(1); 
+    XA----YA----BA-XB----YB----BB-  */
+    if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && 
+       !(strcmp(extraction(msg_recu, 6, 8), "YA")) && !(strcmp(extraction(msg_recu, 12, 14), "BA")) && 
+       !(strcmp(extraction(msg_recu, 15, 17), "XB")) && !(strcmp(extraction(msg_recu, 21, 23), "YB")) && 
+       !(strcmp(extraction(msg_recu, 27, 29), "BB")) && (msg_recu[30] == '\4')){
+           /* Position en abscisse du bouton de gauche */
+	   coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+	   /* Position en ordonnee du bouton de gauche */
+	   coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+	   /* Position enfoncee ou non du bouton de gauche */
+           coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+           /* Position en abscisse du bouton de droite */
+           coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+           /* Position en ordonnee du bouton de droite */
+           coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+           /* Position enfoncee ou non du bouton de droite */
+           coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+           for(volatile unsigned short int i=0; i<6; i++)
+                printf("Coordonnee[%hu] : %hu\n", i, coordonnee[i]);
     }else{ 
-        /* Conversion des chaine de caractere en entier */
-        coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
-        coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
-        coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
-        coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
-        coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
-        coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-        for(volatile unsigned short int i=0; i<6; i++){
-           printf("Coordonnee[%hu] : %hu\n", i, coordonnee[i]);
-        }
+       puts("Format de message non valide");
+       exit(1); 
     }
 }
 
