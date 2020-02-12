@@ -1,6 +1,7 @@
 #include "../header/moteur.h"
+#include "../header/communication.h"
 
-/* Impulsion maximale 2^9 = 511 valeurs */
+/* Impulsion maximale 2^9 = 512 soit de 0 a 511 valeurs */
 #define MAX 511
 #define MIN 0 /* Impulsion minimale */
 #define NB_MOTEUR 4
@@ -12,15 +13,13 @@ static unsigned short int PIN[] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
-/* Initialise le mutex permettant de sécuriser les données d'un thread */
-static const pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
     pwmWrite(PIN[i], valeur);
-    delay(1);
+    usleep(1000);
   }
 }
 
@@ -35,7 +34,7 @@ extern void configuration(void) {
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
-  delay(1);
+  usleep(1000);
 }
 
 /* Définie l'action pouvant être effectué sur un moteur */
@@ -64,7 +63,7 @@ static void *moteur(void *puissance) {
       cycle(*vitesse);
       tmp = *vitesse;
     }
-    delay(10);
+    usleep(10000);
   }
   exit(0);
 }
@@ -83,7 +82,7 @@ extern void propulsion(void) {
   /* Descendre la puissance des moteurs, après s'être lancé à 511 */
   for(volatile unsigned short int i = MAX; i >= 480; i--){
     for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
-    delay(100);
+    usleep(100000);
   }
   /* Réinitialisation de la puissance de chaque hélice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
