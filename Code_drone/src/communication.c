@@ -62,8 +62,6 @@ static void filtrage(void){
            coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
            /* Position enfoncee ou non du bouton de droite */
            coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-           for(volatile unsigned short int i=0; i<6; i++)
-                printf("Coordonnee[%hu] : %hu\n", i, coordonnee[i]);
     }else{ 
        puts("Format de message non valide");
        exit(1); 
