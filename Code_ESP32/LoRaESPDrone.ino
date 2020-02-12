@@ -96,7 +96,7 @@ void *controle_securite(void *argum) {
 void *controle_arret_urgence(void *agrum) {
     while (!arret_urgence) {
       if (digitalRead(BOUTON_STOP)) arret_urgence = true;           // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
-      delay(1);
+      delay(1);                                                     // Attente ...
     }
 }
 
@@ -138,7 +138,7 @@ void *lecture(void *argum) {
                 if (DEVELOPPEMENT) { Serial.println("Cette situation n'est pas censée se produire ..."); }
             }
         }
-        delay(100);                                                                           // On attend ...
+        delay(100);                                                                           // Attente ...
     }
 }
 
@@ -192,7 +192,7 @@ void *choix_message(void *argum) {
             strcat(message_a_envoyer, CARACTERE_FIN);                               // et on y ajoute le catactère de fin de transmission
             pthread_mutex_unlock(&mutex_message_a_envoyer);                       // On déverrouille le mutex
         }
-        delay(10);
+        delay(10);                                                                // Attente ...
     }
 }
 
@@ -233,7 +233,7 @@ void *controle_led(void *argum) {
               rgb_led(0, 0, 1, 0);                                  //  > Bleu fixe
           }
       }
-      delay(100);                                                   // On attend ...
+      delay(100);                                                   // Attente ...
         
    }
   
