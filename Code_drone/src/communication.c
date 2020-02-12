@@ -101,7 +101,7 @@ static void *ecriture(void * flux) {
     serialPrintf(fd, LINK);
     if(strcmp(msg_recu, PAIR) == 0){ 
         validation = 1;
-	    exit(0);
+	exit(0);
     }
     sleep(5);
   }
