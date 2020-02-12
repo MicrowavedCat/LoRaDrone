@@ -90,7 +90,6 @@ static void *lecture(void * flux){
             if((buffer[i] == '\4') || (i > TAILLE+1)){
 		/* Recuperation du message en copiant le buffer dans le container du message recu */
                 memcpy(msg_recu, buffer, sizeof(buffer));
-                printf("%s\n", msg_recu);
                 filtrage();
                 /* Fin de la chaine de caracteres */
                 for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
