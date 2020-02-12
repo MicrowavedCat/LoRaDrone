@@ -70,24 +70,20 @@ static void filtrage(void){
 
 /* Fonction permettant de lire le flux de donnees envoye par la telecommande */
 static void *lecture(void * flux){
-    /* Variable de récupération des caracteres servant de tampon */
-    static unsigned char buffer[TAILLE];
     /* Message recu par le drone */
-    msg_recu = malloc(sizeof(buffer));
+    msg_recu[TAILLE];
     static volatile unsigned short int i = 0;
     while(1){
         /* Si le flux de donnees est lisible */
         if(serialDataAvail(fd)){
             /* Renvoie un caractere correspondant au code ascii entier */
-            buffer[i] = serialGetchar(fd);
+            msg_recu[i] = serialGetchar(fd);
             /* S'il y a fin de transmission ou depassement de la taille du message */
-            if((buffer[i] == '\4') || (i > TAILLE+1)){
-                /* Reuperation du message en copiant le buffer dans la variable du message recu */
-                memcpy(msg_recu, buffer, sizeof(buffer));
+            if((msg_recu[i] == '\4') || (i > TAILLE+1)){
                 printf("%s\n", msg_recu);
                 filtrage();
                 /* Fin de la chaine de caracteres */
-                for(i = 0; i < TAILLE; i++){ buffer[i] = '\0'; }
+                for(i = 0; i < TAILLE; i++){ msg_recu[i] = '\0'; }
                 i = 0; /* Reinitialisation du buffer */
             /* Stockage des caracteres dans le buffer */
             }else{ 
