@@ -1,7 +1,7 @@
 #include "../header/communication.h"
 #include "../header/controle.h"
 
-#define TAILLE 32
+#define TAILLE 31
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
