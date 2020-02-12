@@ -62,7 +62,8 @@ static void filtrage(void){
 	  /* Les valeurs des joysticks revnoie entre 0 et 4095,
 	  Si les coordonnees sont ne correspondent pas a cet interval */
 	  for(volatile unsigned short int i=0; i<6; i++){
-              if(coordonnee[i] < 0 || coordonnee[i] > 4095){
+	      if(coordonnee[i] < (const unsigned short int)0 || 
+		 coordonnee[i] > (const unsigned short int)4095){
                   puts("Coordonnees non valide");
 		  exit(2); 
 	      }
