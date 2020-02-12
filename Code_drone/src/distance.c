@@ -15,9 +15,9 @@
 #define REMOVE(pin) *(gpio+10) = 1<<(pin)
 #define GET *(gpio+13)
 
-#define OFFSET 0x3F200000L
+#define OFFSET 0x20200000L
 #define PAGE 4096
-#define BLOCK 4096
+#define BLOCK PAGE
 
 #define GPIO2 3 /* Emetteur */
 #define GPIO3 5 /* Récépteur */
