@@ -1,23 +1,23 @@
 #define DEVELOPPEMENT       true                                      //Activer ou désactiver l'affichage de messages de débogage à la console
 
-#define PIN_RECEPTION       16                                        // Communication avec le module LoRa
-#define PIN_TRANSMISSION    17
-#define VITESSE_LORA        9600
-#define XA                  13                                        // PINs des joysticks
-#define YA                  12
-#define BA                  14
-#define XB                  27
-#define YB                  26
-#define BB                  15
-#define BOUTON_STOP         2                                         // PIN du bouton d'arrêt d'urgence
-#define PIN_ROUGE           25                                        // PINs des LEDs
-#define PIN_VERT            33
-#define PIN_BLEU            32
-#define MSG_PAIR            "PAIR\4"                                  // Messages possibles
-#define MSG_LINK            "LINK\4"
-#define MSG_STOP            "STOP\4"
-#define MSG_SECURITE        "SECURITE\4"
-#define CARACTERE_FIN       "\4"
+#define PIN_RECEPTION       16                                        // Communication avec le module LoRa : on reçoit des informations sur le GPIO 16,
+#define PIN_TRANSMISSION    17                                          // on en envoie sur le 16,
+#define VITESSE_LORA        9600                                        // à une vitesse de 9600 bauds
+#define XA                  13                                        // PINs des joysticks, le GPIO 13 récupère les déplacements horizontaux du joystick de gauche,
+#define YA                  12                                          // le 12, ses déplacements verticaux,
+#define BA                  14                                          // le 14, s'il a été enfoncé,
+#define XB                  27                                          // le 27 récupère les déplacements horizontaux du joystick de droite,
+#define YB                  26                                          // le 26, ses déplacements verticaux,
+#define BB                  15                                          // le 15, s'il a été enfoncé
+#define BOUTON_STOP         2                                         // GPIO du bouton d'arrêt d'urgence
+#define PIN_ROUGE           25                                        // GPIO des LED : 25 = rouge
+#define PIN_VERT            33                                          // 33 = vert
+#define PIN_BLEU            32                                          // 32 = bleu
+#define MSG_LINK            "LINK\4"                                  // Messages possibles : "LINK\4" est un message qu'on doit recevoir afin d'établir une connexion
+#define MSG_PAIR            "PAIR\4"                                  // "PAIR\4" est la réponse qu'il faut envoyer au drone afin de le prévenir que la connexion est établie
+#define MSG_SECURITE        "SECURITE\4"                              // "SECURITE\4" est le message envoyé si la connexion est établie et que la sécurité est toujours activée
+#define MSG_STOP            "STOP\4"                                  // "STOP\4" est le message envoyé si le bouton d'arrêt d'urgence est enfoncé
+#define CARACTERE_FIN       "\4"                                      // "\4" est, en ASCII, un caractère de fin de transmission ; les messages échangés se terminent donc tous par celui-ci
 
 char message_recu[6];                                                 // Contient le message reçu
 char message_a_envoyer[32];                                           // Contient le message à envoyer
@@ -38,6 +38,7 @@ pthread_mutex_t mutex_message_a_envoyer = PTHREAD_MUTEX_INITIALIZER;  // Mutex s
 void setup() {
     disableCore0WDT();                                                          // Désactivation des watchdogs pour éviter un "bug"
     disableCore1WDT();                                                          // faisant redémarrer le microcontrôleur toutes les 5 secondes
+    int nb_threads = 6;                                                         // Nombre de threads
     if (DEVELOPPEMENT) Serial.begin(115200);                                    // Pour le débogage uniquement, permet de communiquer avec un ordinateur
     Serial2.begin(VITESSE_LORA, SERIAL_8N1, PIN_RECEPTION, PIN_TRANSMISSION);   // Configuration de la communication UART avec le module LoRa
 
@@ -53,7 +54,7 @@ void setup() {
     pinMode(PIN_BLEU, OUTPUT);
     
     if (DEVELOPPEMENT) Serial.println("Allumé !");
-    pthread_t threads[6];
+    pthread_t threads[nb_threads];
 
     if (!digitalRead(BA) && analogRead(XB) == 4095 && analogRead(YB) == 4095) {                       // Permet de reprendre le contrôle du drone après avoir éteient la télécommande en plein vol
         sprintf(message_recu, "%s", MSG_LINK);                                                          // au démarrage, garder le joystick de gauche enfoncé et celui de droite
@@ -68,7 +69,7 @@ void setup() {
     if (pthread_create(&threads[4], NULL, ecriture, NULL)) if (DEVELOPPEMENT) Serial.println("Erreur thread 4 ecriture");
     if (pthread_create(&threads[5], NULL, lecture, NULL)) if (DEVELOPPEMENT) Serial.println("Erreur thread 5 lecture");
 
-    for (int i=0; i<6; i++) pthread_join(threads[i], NULL);                                                                                           // Attente de tous les threads
+    for (int i=0; i<nb_threads; i++) pthread_join(threads[i], NULL);                                                                                  // Attente de tous les threads
 }
 
 void loop() {
@@ -203,6 +204,7 @@ void joystick(char buffer[], char joystick, int X, int Y, int B) {
 /*####################################################################################################*/
 /*Partie concernant la gestion de la LED*/
 
+/*Fonction assurant la modification de l'état des LED en fonction de tous les facteurs disponibles*/
 void *controle_led(void *argum) {
    while (true) {
       if (arret_urgence) {                                          // Bouton d'arrêt d'urgence enfoncé
@@ -233,7 +235,8 @@ void *controle_led(void *argum) {
    }
   
 }
-  
+
+/*Fonction permettant d'allumer les LED*/
 void rgb_led(int r, int g, int b, int millise) {
     stop_led();
     if (r == 1) {
@@ -254,6 +257,7 @@ void rgb_led(int r, int g, int b, int millise) {
     }
 }
 
+/*Fonction permettant d'éteindre toutes les LED*/
 void stop_led() {
     digitalWrite(PIN_ROUGE, LOW);
     digitalWrite(PIN_VERT, LOW);
