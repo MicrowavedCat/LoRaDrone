@@ -80,7 +80,7 @@ static void *lecture(void * flux){
     static volatile unsigned short int i = 0;
     /* Variable de recuperation des caracteres servant de tampon */
     static unsigned char buffer[TAILLE];
-    msg_recu = malloc(sizeof(buffer)):
+    msg_recu = malloc(sizeof(buffer));
     while(1){
         /* Si le flux de donnees est lisible */
         if(serialDataAvail(fd)){
