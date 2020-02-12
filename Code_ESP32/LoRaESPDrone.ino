@@ -37,7 +37,7 @@ pthread_mutex_t mutex_message_a_envoyer = PTHREAD_MUTEX_INITIALIZER;  // Mutex s
 
 void setup() {
     disableCore0WDT();                                                          // Désactivation des watchdogs pour éviter un "bug"
-    disableCore1WDT();                                                          // faisant redémarrer le microcontrôleur toutes les 5 secondes
+    disableCore1WDT();                                                            // faisant redémarrer le microcontrôleur toutes les 5 secondes
     int nb_threads = 6;                                                         // Nombre de threads
     if (DEVELOPPEMENT) Serial.begin(115200);                                    // Pour le débogage uniquement, permet de communiquer avec un ordinateur
     Serial2.begin(VITESSE_LORA, SERIAL_8N1, PIN_RECEPTION, PIN_TRANSMISSION);   // Configuration de la communication UART avec le module LoRa
@@ -54,7 +54,7 @@ void setup() {
     pinMode(PIN_BLEU, OUTPUT);
     
     if (DEVELOPPEMENT) Serial.println("Allumé !");
-    pthread_t threads[nb_threads];
+    pthread_t threads[nb_threads];                                              // Création du tableau des threads
 
     if (!digitalRead(BA) && analogRead(XB) == 4095 && analogRead(YB) == 4095) {                       // Permet de reprendre le contrôle du drone après avoir éteient la télécommande en plein vol
         sprintf(message_recu, "%s", MSG_LINK);                                                          // au démarrage, garder le joystick de gauche enfoncé et celui de droite
@@ -87,15 +87,15 @@ void *controle_securite(void *argum) {
     while (true) {
         bouton_A = digitalRead(BA);                                 // Récupération de la valeur du bouton du joystick de gauche
         bouton_B = digitalRead(BB);                                 // Récupération de la valeur du bouton du joystick de droite
-        if (bouton_A == 0 && bouton_B == 0) securite?false:true;    // Demande de changement d'état de la sécurité
-        delay(10);                                                  // Attente d'appui ...
+        if (bouton_A == 0 && bouton_B == 0) securite?false:true;    // Si les 2 boutons sont enfoncés, demande de changement d'état de la sécurité
+        delay(10);                                                  // Attente ...
     }
 }
 
 /*Fonction vérifiant continuellement si l'utilisateur demande d'activer l'arrêt d'urgence*/
 void *controle_arret_urgence(void *agrum) {
     while (!arret_urgence) {
-      if (digitalRead(BOUTON_STOP)) arret_urgence = true;           // Demande d'un arrêt d'urgence
+      if (digitalRead(BOUTON_STOP)) arret_urgence = true;           // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
       delay(1);
     }
 }
