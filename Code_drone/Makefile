@@ -4,16 +4,16 @@ compilation : drone
 ### 2] Variables des fichiers d'extension ".o" à créer ###
 OFILES = src/main.o \
          src/communication.o \
-         src/acceleration.o \
-	 src/moteur.o
+	 src/moteur.o \
+	 src/acceleration.o
 
 # Compilation et arguments de compilation
 CC = gcc -Ofast -flto
 
 ### 3] Dépedences à règles implicites des fichiers d'extension ".o" ###
 communication.o : ../header/communication.h
-acceleration.o : ../header/controle.h ../header/communication.h
 moteur.o : ../header/moteur.h ../header/communication.h
+acceleration.o : ../header/controle.h ../header/moteur.h ../header/communication.h 
 main.o : communication.o
 
 ### 4] Dépedences précédentes appliquées par commandes ###
