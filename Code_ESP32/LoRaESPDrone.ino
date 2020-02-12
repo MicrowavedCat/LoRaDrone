@@ -117,25 +117,28 @@ bool is_connecte() {
 
 /*Fonction assurant la réception de données tant que la connexion n'est pas encore établie*/
 void *lecture(void *argum) {
-    char buffer_read[31];
-    int i = 0;
+    char buffer_read[6];                                                                      // Création du buffer qui contiendra temporairement le message reçu
+    int i = 0;                                                                                // Création du compteur
     
     if (DEVELOPPEMENT) Serial.println(".");
-    while (!is_connecte()) {
-        if (Serial2.available() > 0) {
-            buffer_read[i] = Serial2.read();
-            if (buffer_read[i] == 4 || i >= 6) {
-                memcpy(message_recu, buffer_read, sizeof(buffer_read));
+    while (!is_connecte()) {                                                                  // Une fois qu'on sera connectés, on arrêtera de lire
+        if (Serial2.available() > 0) {                                                        // Si des données dont disponibles,
+            buffer_read[i] = Serial2.read();                                                    // on lit 1 caractère dans le buffer
+            if (i == 4 && buffer_read[i] == 4) {                                              // Si le dernier caractère reçu est un caractère de fin de transmission ("\4") et que le message fait 5 caractères,
+                memcpy(message_recu, buffer_read, sizeof(buffer_read));                         // on l'enregistre dans la variable prévue à cet effet
                 if (DEVELOPPEMENT) { Serial.print("message_recu : "); Serial.println(message_recu); }
-                for (i = 0 ; i < 6 ; i++) {
-                    buffer_read[i] = 0;
-                }
-                i = 0;
+                for (i = 0 ; i < 6 ; i++) buffer_read[i] = 0;                                 // Réinitialisation de toutes les cases du buffer
+                i = 0;                                                                        // Réinitialisation du compteur
+            } else if ((i < 4 && buffer_read[i] == 4) || (i == 4 && buffer_read[i] != 4)) {   // Si le caractère de fin de transmission est arrivé "trop tôt" ou si le message fait 5 caractères, mais que le dernier caractère n'est pas celui de fin de transmission,
+                for (i = 0 ; i < 6 ; i++) buffer_read[i] = 0;                                   // on réinitialise de toutes les cases du buffer et
+                i = 0;                                                                          // on réinitialise aussi le compteur
+            } else if (i < 4 && buffer_read[i] != 4) {                                        // Sinon, si le message fait moins de 5 caractères et que le caractère de fin de transmission n'est pas encore arrivé,
+                i++;                                                                            // tout va bien, on incrémente et on continue
             } else {
-                i++;
+                if (DEVELOPPEMENT) { Serial.println("Cette situation n'est pas censée se produire ..."); }
             }
         }
-        delay(100);
+        delay(100);                                                                           // On attend ...
     }
 }
 
