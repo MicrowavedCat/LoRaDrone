@@ -47,18 +47,26 @@ static void filtrage(void){
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
        (msg_recu[30] == '\4')){
-           /* Position en abscisse du bouton de gauche */
-	   coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
-	   /* Position en ordonnee du bouton de gauche */
-	   coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
-	   /* Position enfoncee ou non du bouton de gauche */
-           coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
-           /* Position en abscisse du bouton de droite */
-           coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
-           /* Position en ordonnee du bouton de droite */
-           coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
-           /* Position enfoncee ou non du bouton de droite */
-           coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+          /* Position en abscisse du bouton de gauche */
+	  coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+	  /* Position en ordonnee du bouton de gauche */
+	  coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+	  /* Position enfoncee ou non du bouton de gauche */
+          coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+          /* Position en abscisse du bouton de droite */
+          coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+          /* Position en ordonnee du bouton de droite */
+          coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+          /* Position enfoncee ou non du bouton de droite */
+          coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+	  /* Les valeurs des joysticks revnoie entre 0 et 4095,
+	  Si les coordonnees sont ne correspondent pas a cet interval */
+	  for(volatile unsigned short int i=0; i<6; i++){
+              if(coordonnee[i] < 0 || coordonnee[i] > 4095){
+                  puts("Format de message non valide");
+		  exit(2); 
+	      }
+	  }
     }else{ 
        puts("Format de message non valide");
        exit(1); 
