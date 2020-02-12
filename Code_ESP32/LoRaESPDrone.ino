@@ -176,10 +176,10 @@ void *choix_message(void *argum) {
             sprintf(message_a_envoyer, "%s", MSG_STOP);                           // On modifie le message à envoyer
             pthread_mutex_unlock(&mutex_message_a_envoyer);
             pthread_exit(0);                                                      // Puis un termine ce thread afin que le message ne soit plus jamais modifié
-        /*} else if (securite) {
+        } else if (securite) {
             pthread_mutex_lock(&mutex_message_a_envoyer);
             sprintf(message_a_envoyer, "%s", MSG_SECURITE);
-            pthread_mutex_unlock(&mutex_message_a_envoyer);*/
+            pthread_mutex_unlock(&mutex_message_a_envoyer);
         } else {
             joystick(buffer_a, 'A', analogRead(XA), analogRead(YA), bouton_A);    // Formatage des données du joystick de gauche
             joystick(buffer_b, 'B', analogRead(XB), analogRead(YB), bouton_B);    // Formatage des données du joystick de droite
