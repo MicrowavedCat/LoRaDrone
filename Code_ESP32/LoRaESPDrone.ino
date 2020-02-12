@@ -142,8 +142,8 @@ void *lecture(void *argum) {
 /*Fonction assurant l'envoi de données une fois que la connexion est établie*/
 void *ecriture(void *argum) {
     while (true) {
-        if (is_connecte()) {
-            while (true) {
+        if (is_connecte()) {                                        // On n'écrit rien tant qu'on n'est pas connectés,
+            while (true) {                                            // mais dès qu'on l'est, on n'arrête plus
                 if (DEVELOPPEMENT) { Serial.print("message_a_envoyer : "); Serial.println(message_a_envoyer); }
                 pthread_mutex_lock(&mutex_message_a_envoyer);       // Mise en place du verrou pour éviter de lire des données incomplètes ou corrompues
                 Serial2.print(message_a_envoyer);                   // Envoi du message au drone par l'intermédiaire du module LoRa
@@ -151,7 +151,7 @@ void *ecriture(void *argum) {
                 delay(400);                                         // Envoi de 2 messages et demi par seconde, envoi plus rapide impossible : corruption du message
             }
         }
-        delay(10);
+        delay(10);                                                  // Attente ...
     }
 }
 
@@ -160,34 +160,34 @@ void *choix_message(void *argum) {
     char buffer_a[15];
     char buffer_b[15];
 
-    while (!msg_confirmation_envoyes) {
-        if (is_connecte()) {
-            pthread_mutex_lock(&mutex_message_a_envoyer);
-            memcpy(message_a_envoyer, MSG_PAIR, sizeof(MSG_PAIR));
-            pthread_mutex_unlock(&mutex_message_a_envoyer);
-            sleep(2);
-            msg_confirmation_envoyes = true;
+    while (!msg_confirmation_envoyes) {                                           // Tant que les messages de connexion n'ont pas été envoyés,
+        if (is_connecte()) {                                                        // si on a reçu une demande de connexion (MSG_LINK)
+            pthread_mutex_lock(&mutex_message_a_envoyer);                         // On verrouille le mutex
+            memcpy(message_a_envoyer, MSG_PAIR, sizeof(MSG_PAIR));                // On modifie le message à envoyer en confirmation de connexion
+            pthread_mutex_unlock(&mutex_message_a_envoyer);                       // On déverrouille le mutex
+            sleep(2);                                                             // On laisse le temps à quelques messages de s'envoyer,
+            msg_confirmation_envoyes = true;                                        // et on sauvegarde le fait que la connexion est maintenant établie
         } else {
-            delay(100);
+            delay(10);                                                            // Attente ...
         }
     }
-    while (msg_confirmation_envoyes) {
+    while (true) {
         if (arret_urgence) {                                                      // Si le bonton d'arrêt d'urgence a été enfoncé
-            pthread_mutex_lock(&mutex_message_a_envoyer);
+            pthread_mutex_lock(&mutex_message_a_envoyer);                         // On verrouille le mutex
             sprintf(message_a_envoyer, "%s", MSG_STOP);                           // On modifie le message à envoyer
-            pthread_mutex_unlock(&mutex_message_a_envoyer);
+            pthread_mutex_unlock(&mutex_message_a_envoyer);                       // On déverrouille le mutex
             pthread_exit(0);                                                      // Puis un termine ce thread afin que le message ne soit plus jamais modifié
         } else if (securite) {
-            pthread_mutex_lock(&mutex_message_a_envoyer);
-            sprintf(message_a_envoyer, "%s", MSG_SECURITE);
-            pthread_mutex_unlock(&mutex_message_a_envoyer);
+            pthread_mutex_lock(&mutex_message_a_envoyer);                         // On verrouille le mutex
+            sprintf(message_a_envoyer, "%s", MSG_SECURITE);                       // Le message à envoyer devient le contenu de MSG_SECURITE
+            pthread_mutex_unlock(&mutex_message_a_envoyer);                       // On déverrouille le mutex
         } else {
             joystick(buffer_a, 'A', analogRead(XA), analogRead(YA), bouton_A);    // Formatage des données du joystick de gauche
             joystick(buffer_b, 'B', analogRead(XB), analogRead(YB), bouton_B);    // Formatage des données du joystick de droite
-            pthread_mutex_lock(&mutex_message_a_envoyer);
-            sprintf(message_a_envoyer, buffer_a, buffer_b);
-            strcat(message_a_envoyer, CARACTERE_FIN);
-            pthread_mutex_unlock(&mutex_message_a_envoyer);
+            pthread_mutex_lock(&mutex_message_a_envoyer);                         // On verrouille le mutex
+            sprintf(message_a_envoyer, buffer_a, buffer_b);                       // On met le contenu des 2 buffers dans le message à envoyer,
+            strcat(message_a_envoyer, CARACTERE_FIN);                               // et on y ajoute le catactère de fin de transmission
+            pthread_mutex_unlock(&mutex_message_a_envoyer);                       // On déverrouille le mutex
         }
         delay(10);
     }
@@ -195,7 +195,7 @@ void *choix_message(void *argum) {
 
 /*Fonction permettant de formater les données d'un joystick*/
 void joystick(char buffer[], char joystick, int X, int Y, int B) {
-    sprintf(buffer, "X%c%.4dY%c%.4dB%c%.1d", joystick, X, joystick, Y, joystick, B);  // Format : X.....Y.....B..
+    sprintf(buffer, "X%c%.4dY%c%.4dB%c%.1d", joystick, X, joystick, Y, joystick, B);  // Formatage des données d'un joystick (format : X.....Y.....B..)
 }
 /*####################################################################################################*/
 
@@ -210,17 +210,17 @@ void *controle_led(void *argum) {
       if (arret_urgence) {                                          // Bouton d'arrêt d'urgence enfoncé
           while (true) {                                            // Une fois activé, l'arrêt d'urgence ne peut plus être désactivé
               rgb_led(1, 0, 0, 100);                                //  > Rouge rapide, 5 clignotements par seconde
-              delay(10);
+              delay(10);                                            // On attend ...
           }
       } else if (!is_connecte()) {                                  // Télécommande allumée mais pas encore connectée
           rgb_led(1, 1, 0, 0);                                      //  > Jaune fixe
-          while (!is_connecte() && !arret_urgence) delay(100);
+          while (!is_connecte() && !arret_urgence) delay(100);      // Si le bouton d'arrêt d'urgence a été enfoncé, on n'attend pas d'être connectés
       } else if (is_connecte()) {                                   // Connecté
-          if (annonce_connexion) {
-              annonce_connexion = false;
-              for (int i = 0 ; i < 5 ; i++) {
+          if (annonce_connexion) {                                  // Si on vient de se connecter,
+              annonce_connexion = false;                              // on désactive l'indicateur
+              for (int i = 0 ; i < 5 ; i++) {                       // Clignote 5 fois
                   rgb_led(0, 1, 0, 150);                            //  > Vert rapide, 3 clignotements par seconde
-                  if (arret_urgence) break;
+                  if (arret_urgence) break;                         // On n'attend pas d'avoir terminé de clignoter si le bouton d'arrêt d'urgence a été enfoncé
               }
           }
           while (!arret_urgence && securite) {                      // Sécurité des deux joysticks activée
@@ -230,7 +230,7 @@ void *controle_led(void *argum) {
               rgb_led(0, 0, 1, 0);                                  //  > Bleu fixe
           }
       }
-      delay(100);
+      delay(100);                                                   // On attend ...
         
    }
   
@@ -238,29 +238,27 @@ void *controle_led(void *argum) {
 
 /*Fonction permettant d'allumer les LED*/
 void rgb_led(int r, int g, int b, int millise) {
-    stop_led();
-    if (r == 1) {
-        digitalWrite(PIN_ROUGE, HIGH);
+    stop_led();                           // Arrêt de toutes les LED
+    if (r == 1) {                         // Si on a demandé à allumer la LED rouge,
+        digitalWrite(PIN_ROUGE, HIGH);      // on l'allume
     }
-    if (g == 1) {
-        digitalWrite(PIN_VERT, HIGH);
+    if (g == 1) {                         // Si on a demandé à allumer la LED verte,
+        digitalWrite(PIN_VERT, HIGH);       // on l'allume
     }
-    if (b == 1) {
-        digitalWrite(PIN_BLEU, HIGH);
+    if (b == 1) {                         // Si on a demandé à allumer la LED bleue,
+        digitalWrite(PIN_BLEU, HIGH);       // on l'allume
     }
-    //delay(1/(freq*2));
-    if (millise != 0) {
-      delay(millise);    
-      stop_led();
-      delay(millise);
-      //delay(1/(freq*2));
+    if (millise != 0) {                   // Si on demandé à faire clignoter la LED,
+      delay(millise);                       // on attend le temps demandé,
+      stop_led();                           // on éteint la LED,
+      delay(millise);                       // on attend le temps demandé
     }
 }
 
 /*Fonction permettant d'éteindre toutes les LED*/
 void stop_led() {
-    digitalWrite(PIN_ROUGE, LOW);
-    digitalWrite(PIN_VERT, LOW);
-    digitalWrite(PIN_BLEU, LOW);
+    digitalWrite(PIN_ROUGE, LOW);         // Extinction de la LED rouge
+    digitalWrite(PIN_VERT, LOW);          // Extinction de la LED verte
+    digitalWrite(PIN_BLEU, LOW);          // Extinction de la LED bleue
 }
 /*####################################################################################################*/
