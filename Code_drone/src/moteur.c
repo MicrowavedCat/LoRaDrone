@@ -78,7 +78,7 @@ extern void propulsion(void) {
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
   sleep(5);
   
-  int a = 0;
+  extern volatile unsigned short int a = 0;
   while(1) {
     scanf("%d", &a);
     for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
