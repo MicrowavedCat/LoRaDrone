@@ -51,30 +51,28 @@ static void filtrage(void){
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
        (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
+	/* Coordonnees de pilotage dans le message */
+	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du bouton de gauche */
-        coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+        tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
         /* Position en ordonnee du bouton de gauche */
-        coordonnee[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+        tmp[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
         /* Position enfoncee ou non du bouton de gauche */
-        coordonnee[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+        tmp[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
         /* Position en abscisse du bouton de droite */
-        coordonnee[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+        tmp[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
         /* Position en ordonnee du bouton de droite */
-        coordonnee[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+        tmp[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
         /* Position enfoncee ou non du bouton de droite */
-        coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-	for(volatile unsigned short int i=0; i<6; i++){
-	    /* Les valeurs des joysticks revnoie entre 0 et 4095, 
-            et entre 0 et 1 lorsqu'un bouton est enfonce. 
-            Si les coordonnees ne correspondent pas a cet interval. */
-	    static volatile unisgned short int verif = 0;
-	    if(coordonnee[i] < 0 || (coordonnee[2] > 1 || coordonnee[5] > 1) ||
-	       (coordonnee[0] > 4095 || coordonnee[1] > 4095 || coordonnee[3] > 4095 || coordonnee[4] > 4095)){
-                verif = 1;
-            }
+        tmp[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+	if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) || (tmp[2] == 0 || tmp[2] == 1) 
+	    || (tmp[3] >= 0 && tmp[3] <= 4095) || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)) {
+            for(volatile unsigned short int i=0; i<6; i++){
+		/* Les valeurs des joysticks renvoient entre 0 et 4095, et un bouton enfonce, 0 ou 1. 
+                Si les coordonnees ne correspondent pas a cet intervalle. */
+	        coordonnee[i] = tmp[i];
+	    }
         }
-    }else{ 
-        puts("Format de message non valide");
     }
 }
 
