@@ -65,8 +65,9 @@ static void filtrage(void){
         tmp[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
         /* Position enfoncee ou non du bouton de droite */
         tmp[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-	if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) || (tmp[2] == 0 || tmp[2] == 1) 
-	    || (tmp[3] >= 0 && tmp[3] <= 4095) || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)) {
+	if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) || 
+	   (tmp[2] == 0 || tmp[2] == 1) || (tmp[3] >= 0 && tmp[3] <= 4095) || 
+	   (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)) {
             for(volatile unsigned short int i=0; i<6; i++){
 		/* Les valeurs des joysticks renvoient entre 0 et 4095, et un bouton enfonce, 0 ou 1. 
                 Si les coordonnees ne correspondent pas a cet intervalle. */
