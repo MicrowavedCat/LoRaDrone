@@ -1,6 +1,9 @@
 #include "../header/communication.h"
 
 #define TAILLE 31
+/* Message de connexion drone-telecommande */
+#define PAIR "PAIR\4"
+#define LINK "LINK\4"
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
@@ -47,7 +50,7 @@ static void filtrage(void){
     if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
-       (msg_recu[30] == '\4') && !(strcmp(msg_recu, "PAIR\4"))){
+       (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Position en abscisse du bouton de gauche */
         coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
         /* Position en ordonnee du bouton de gauche */
@@ -109,9 +112,9 @@ static void *ecriture(void * flux) {
     /* Tant que la telecommande n'est pas appairee au drone */
     while(!validation) {
         /* On emet des tentatives de liaison */
-        serialPrintf(fd, "LINK\4");
+        serialPrintf(fd, LINK);
         /* Si la telecommande est appairee au drone */
-        if(strcmp(msg_recu, "PAIR\4") == 0){ 
+        if(strcmp(msg_recu, PAIR) == 0){ 
             validation = 1;
             /* On cesse d'ecrire des messages */
             exit(0);
