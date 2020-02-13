@@ -51,10 +51,8 @@ static void *moteur(void *puissance) {
   _____|           |_____________|           |_________
     1s                   1s                       1s
   */
-  cycle(MAX); 
-  sleep(1);
-  cycle(MIN); 
-  sleep(1);
+  cycle(MAX); sleep(1);
+  cycle(MIN); sleep(1);
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
