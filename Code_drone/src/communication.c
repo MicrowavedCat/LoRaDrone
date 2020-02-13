@@ -62,7 +62,8 @@ static void filtrage(void){
         coordonnee[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
 	for(volatile unsigned short int i=0; i<6; i++){
 	    /* Les valeurs des joysticks revnoie entre 0 et 4095, 
-            et 0 ou 1 pour la pression d'un bouton. Si les coordonnees ne correspondent pas a cet interval */
+            et entre 0 et 1 lorsqu'un bouton est enfonce. 
+            Si les coordonnees ne correspondent pas a cet interval. */
 	    if(coordonnee[i] < 0 || (coordonnee[2] > 1 || coordonnee[5] > 1) ||
 	       (coordonnee[0] > 4095 || coordonnee[1] > 4095 || coordonnee[3] > 4095 || coordonnee[4] > 4095)){
                 puts("Coordonnees non valide");
