@@ -8,7 +8,7 @@
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
 static unsigned short int PIN[] = {
-  1, /* Correspond au PIN physique 12 (BCM18) */
+  1, /* Correspond au PIN physique 12 (BCM18), */
   23, /* Correspond au PIN physique 33 (BCM13) */
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
@@ -76,16 +76,21 @@ extern void propulsion(void) {
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
-
-  sleep(3);
+  sleep(5);
   
-  /* Descendre la puissance des moteurs, apres s'etre lance a 511 */
-  for(volatile unsigned short int i = MAX; i >= 480; i--){
-    for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){ puissance[j] = i; }
-    usleep(100000);
+  int a = 0;
+  while(1) {
+    scanf("%d", &a);
+    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+        puissance[i] = a;
+    puissance[i] = 0;
   }
-  /* Reinitialisation de la puissance de chaque helice */
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){ puissance[i] = MIN; }
+
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
+      puissance[i] = 0;
+
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+    puissance[i] = MIN;
   /* Lancement de toutes les moteurs */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
