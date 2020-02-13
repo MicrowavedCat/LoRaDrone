@@ -51,7 +51,7 @@ static void filtrage(void){
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
        (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
-	/* Verification des oordonnees de pilotage dans le message */
+	/* Verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du bouton de gauche */
         tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
