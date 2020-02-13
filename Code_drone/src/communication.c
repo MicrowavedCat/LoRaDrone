@@ -47,7 +47,7 @@ static void filtrage(void){
     if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
-       /* Terminaison du message */ (msg_recu[30] == '\4')){
+       (msg_recu[30] == '\4') && !(strcmp(msg_recu, "PAIR\4"))){
         /* Position en abscisse du bouton de gauche */
         coordonnee[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
         /* Position en ordonnee du bouton de gauche */
@@ -67,12 +67,10 @@ static void filtrage(void){
 	    if(coordonnee[i] < 0 || (coordonnee[2] > 1 || coordonnee[5] > 1) ||
 	       (coordonnee[0] > 4095 || coordonnee[1] > 4095 || coordonnee[3] > 4095 || coordonnee[4] > 4095)){
                 puts("Coordonnees non valide");
-                exit(2); 
             }
         }    
     }else{ 
         puts("Format de message non valide");
-        exit(1); 
     }
 }
 
