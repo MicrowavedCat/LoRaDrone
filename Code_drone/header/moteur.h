@@ -1,11 +1,11 @@
-#ifndef COMMUNICATION_H
-#define COMMUNICATION_H
+#ifndef MOTEUR_H
+#define MOTEUR_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <wiringPi.h>
+#include <pthread.h>
 
 extern void propulsion(void);
 
