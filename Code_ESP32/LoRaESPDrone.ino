@@ -3,16 +3,16 @@
 #define PIN_RECEPTION       16                                        // Communication avec le module LoRa : on reçoit des informations sur le GPIO 16,
 #define PIN_TRANSMISSION    17                                          // on en envoie sur le 16,
 #define VITESSE_LORA        9600                                        // à une vitesse de 9600 bauds
-#define XA                  13                                        // PINs des joysticks, le GPIO 13 récupère les déplacements horizontaux du joystick de gauche,
-#define YA                  12                                          // le 12, ses déplacements verticaux,
+#define XA                  33                                        // PINs des joysticks, le GPIO 13 récupère les déplacements horizontaux du joystick de gauche,
+#define YA                  26                                          // le 12, ses déplacements verticaux,
 #define BA                  14                                          // le 14, s'il a été enfoncé,
-#define XB                  27                                          // le 27 récupère les déplacements horizontaux du joystick de droite,
-#define YB                  26                                          // le 26, ses déplacements verticaux,
-#define BB                  15                                          // le 15, s'il a été enfoncé
-#define BOUTON_STOP         2                                         // GPIO du bouton d'arrêt d'urgence
-#define PIN_ROUGE           25                                        // GPIO des LED : 25 = rouge
-#define PIN_VERT            33                                          // 33 = vert
-#define PIN_BLEU            32                                          // 32 = bleu
+#define XB                  34                                          // le 27 récupère les déplacements horizontaux du joystick de droite,
+#define YB                  32                                          // le 26, ses déplacements verticaux,
+#define BB                  4                                           // le 15, s'il a été enfoncé
+#define BOUTON_STOP         35                                        // GPIO du bouton d'arrêt d'urgence
+#define PIN_ROUGE           23                                        // GPIO des LED : 25 = rouge
+#define PIN_VERT            22                                          // 33 = vert
+#define PIN_BLEU            19                                          // 32 = bleu
 #define MSG_LINK            "LINK\4"                                  // Messages possibles : "LINK\4" est un message qu'on doit recevoir afin d'établir une connexion
 #define MSG_PAIR            "PAIR\4"                                  // "PAIR\4" est la réponse qu'il faut envoyer au drone afin de le prévenir que la connexion est établie
 #define MSG_SECURITE        "SECURITE\4"                              // "SECURITE\4" est le message envoyé si la connexion est établie et que la sécurité est toujours activée
@@ -42,7 +42,12 @@ void setup() {
     if (DEVELOPPEMENT) Serial.begin(115200);                                    // Pour le débogage uniquement, permet de communiquer avec un ordinateur
     Serial2.begin(VITESSE_LORA, SERIAL_8N1, PIN_RECEPTION, PIN_TRANSMISSION);   // Configuration de la communication UART avec le module LoRa
 
-    pinMode(XA, INPUT);                                                         //Définition les PINs en tant qu'entrées/sorties
+    pinMode(21, OUTPUT);
+    pinMode(18, OUTPUT);
+    digitalWrite(21, LOW);
+    digitalWrite(18, LOW);
+    
+    pinMode(XA, INPUT);                                                         // Définition des GPIO en tant qu'entrées/sorties
     pinMode(YA, INPUT);
     pinMode(BA, INPUT);
     pinMode(XB, INPUT);
@@ -85,18 +90,31 @@ void loop() {
 /*Fonction vérifiant continuellement si l'utilisateur demande d'activer ou désactiver la sécurité*/
 void *controle_securite(void *argum) {
     while (true) {
-        bouton_A = digitalRead(BA);                                 // Récupération de la valeur du bouton du joystick de gauche
-        bouton_B = digitalRead(BB);                                 // Récupération de la valeur du bouton du joystick de droite
-        if (bouton_A == 0 && bouton_B == 0) securite?false:true;    // Si les 2 boutons sont enfoncés, demande de changement d'état de la sécurité
-        delay(10);                                                  // Attente ...
+        bouton_A = digitalRead(BA);                 // Récupération de la valeur du bouton du joystick de gauche
+        bouton_B = digitalRead(BB);                 // Récupération de la valeur du bouton du joystick de droite
+        if (bouton_A == 0 && bouton_B == 0) {       // Si les 2 boutons sont enfoncés, demande de changement d'état de la sécurité
+            if (securite) {
+                securite = false;
+            } else {
+                securite = true;
+            }
+            sleep(2);
+        }
+        delay(10);                                  // Attente ...
     }
 }
 
 /*Fonction vérifiant continuellement si l'utilisateur demande d'activer l'arrêt d'urgence*/
 void *controle_arret_urgence(void *agrum) {
+    int tab_stop[5];
+    int i;
+
     while (!arret_urgence) {
-      if (digitalRead(BOUTON_STOP)) arret_urgence = true;           // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
-      delay(1);                                                     // Attente ...
+      for (i = 0; i < 5; i++) {
+          tab_stop[i] = analogRead(BOUTON_STOP);
+          delay(10);
+      }
+      if (tab_stop[0] == 4095 && tab_stop[1] == 4095 && tab_stop[2] == 4095 && tab_stop[3] == 4095 && tab_stop[4] == 4095) arret_urgence = true;    // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
     }
 }
 
@@ -121,7 +139,7 @@ void *lecture(void *argum) {
     int i = 0;                                                                                // Création du compteur
     
     if (DEVELOPPEMENT) Serial.println(".");
-    while (!is_connecte()) {                                                                  // Une fois qu'on sera connectés, on arrêtera de lire
+    while (!is_connecte()) {  
         if (Serial2.available() > 0) {                                                        // Si des données dont disponibles,
             buffer_read[i] = Serial2.read();                                                    // on lit 1 caractère dans le buffer
             if (i == 4 && buffer_read[i] == 4) {                                              // Si le dernier caractère reçu est un caractère de fin de transmission ("\4") et que le message fait 5 caractères,
