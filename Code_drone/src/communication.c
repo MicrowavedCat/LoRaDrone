@@ -2,7 +2,7 @@
 #include "../header/global.h"
 
 #define TAILLE 31
-/* Message de connexion drone-telecommande */
+/* Message de communication drone-telecommande */
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 #define STOP "STOP\4"
