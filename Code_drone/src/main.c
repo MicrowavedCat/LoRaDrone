@@ -9,6 +9,10 @@ extern void main(void){
     pthread_create(&th[0], NULL, (void *)transmission, NULL);
     /* Rotation des helices du drone */
     pthread_create(&th[1], NULL, (void *)propulsion, NULL);
+    
     for(volatile unsigned short int i = 0; i < 2; i++) 
         pthread_join(th[i], NULL);
+
+    pthread_exit(NULL);
+    exit(0);
 }
