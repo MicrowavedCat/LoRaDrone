@@ -6,13 +6,11 @@
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 #define STOP "STOP\4"
-#define SECURITE "SECURITE\4"
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
 /* Variable globale contenant le message envoyer par la telecommande */
 static unsigned char *msg_recu = "";
-
 extern volatile unsigned short int coordonnee[6];
 
 /* Verifie l'ouverture du flux de communication serie ttyAMA0 */
@@ -50,25 +48,19 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
 /* Filtre les message recus en vérifiant les elements qui le compose,
 les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage */
 static void filtrage(void){
-    /* Verification que le message soit bien du format :
-    XA----YA----BA-XB----YB----BB-  */
-    if(!strcmp(msg_recu, STOP)) {
+    /* Si on recoit le message STOP, on arrete d'urgence le drone */
+    if(!strcmp(msg_recu, STOP)){
         for(volatile unsigned short int i = 0; i < 6; i++) 
             coordonnee[i] = 0;
-    }else if(!strcmp(msg_recu, SECURITE)) {
-        volatile unsigned short int i;
-        for(i = 0; i < 2; i++) 
-            coordonnee[i] = 2048;
-        for(i = 3; i < 5; i++) 
-            coordonnee[i] = 2048;
-        coordonnee[2] = 0; coordonnee[5] = 0;
+    /* Verification que le message soit bien du format :
+    XA----YA----BA-XB----YB----BB-  */
     }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
        (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Verification des coordonnees de pilotage dans le message */
-	    static volatile unsigned short int tmp[6] = {0};
-	    /* Position en abscisse du bouton de gauche */
+	static volatile unsigned short int tmp[6] = {0};
+	/* Position en abscisse du bouton de gauche */
         tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
         /* Position en ordonnee du bouton de gauche */
         tmp[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
@@ -80,14 +72,13 @@ static void filtrage(void){
         tmp[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
         /* Position enfoncee ou non du bouton de droite */
         tmp[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
-	    if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) || (tmp[2] == 0 || tmp[2] == 1) 
-	       || (tmp[3] >= 0 && tmp[3] <= 4095) || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)) {
-            for(volatile unsigned short int i=0; i<6; i++){
-		    /* Les valeurs des joysticks renvoient entre 0 et 4095, et un bouton enfonce, 0 ou 1.
+	 if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) 
+	    || (tmp[2] == 0 || tmp[2] == 1) || (tmp[3] >= 0 && tmp[3] <= 4095) 
+	    || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)){
+            /* Les valeurs des joysticks renvoient entre 0 et 4095, et un bouton enfonce, 0 ou 1.
             Si les coordonnees ne correspondent pas a cet intervalle. */
+            for(volatile unsigned short int i=0; i<6; i++)
 	        coordonnee[i] = tmp[i];
-	    }
-        putchar('\n');
         }
     }
 }
