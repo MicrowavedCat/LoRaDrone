@@ -3,7 +3,7 @@
 
 /* Impulsion maximale 2^9 = 512 soit de 0 a 511 valeurs */
 #define MAX 511
-#define MIN 0 /* Impulsion minimale */
+#define MIN 0
 #define NB_MOTEUR 4
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
