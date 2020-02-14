@@ -13,7 +13,6 @@ static const unsigned short int PIN[] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
-
 extern volatile unsigned short int coordonnee[6];
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
