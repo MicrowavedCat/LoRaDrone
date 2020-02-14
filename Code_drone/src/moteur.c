@@ -1,5 +1,5 @@
 #include "../header/moteur.h"
-#include "../header/communication.h"
+#include "../header/global.h"
 
 /* Impulsion maximale 2^9 = 512 soit de 0 a 511 valeurs */
 #define MAX 511
@@ -13,6 +13,8 @@ static const unsigned short int PIN[] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
+
+extern volatile unsigned short int coordonnee[6];
 
 /* Définit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
@@ -43,7 +45,6 @@ static void *moteur(void *puissance) {
   /* Permet la calibration des ESC par transmission.
   On définit une valeur minimale et maximale qu'on émet sur une période,
   pour un certain temps données dans chacun des 2 états définits par ces valeurs.
-
             MAX                       MAX
    2s  _____________ 2s       2s _____________ 2s
        |           |             |           |
@@ -76,12 +77,13 @@ extern void propulsion(void) {
     pthread_create(&th_moteur[i], NULL, moteur, (void *) &puissance[i]);
   sleep(5);
   
-  extern volatile unsigned short int a = 0;
   while(1) {
-    scanf("%d", &a);
+    for(int i = 0; i < 6; i++) 
+        printf("%d ", coordonnee[i]);
+    printf("\n");
+    usleep(100000);
     for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-        puissance[i] = a;
-    puissance[i] = 0;
+        puissance[i] = coordonnee[i];
   }
 
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
