@@ -78,9 +78,6 @@ extern void propulsion(void) {
   sleep(5);
   
   while(1) {
-    for(int i = 0; i < 6; i++) 
-        printf("%d ", coordonnee[i]);
-    printf("\n");
     usleep(100000);
     for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
         puissance[i] = coordonnee[i];
