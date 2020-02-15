@@ -22,7 +22,6 @@ extern void cycle(unsigned short int valeur){
     pwmWrite(PIN[i], valeur);
     usleep(1000);
   }
-  sleep(1);
 }
 
 /* Etablit le mode de configuration des ESC présent sur chaque PIN */
@@ -53,7 +52,9 @@ static void *moteur(void *puissance) {
     1s                   1s                       1s
   */
   cycle(MAX);
+  sleep(1);
   cycle(MIN);
+  sleep(1);
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
