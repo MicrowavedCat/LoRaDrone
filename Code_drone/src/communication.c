@@ -6,6 +6,7 @@
 #define PAIR "PAIR\4"
 #define LINK "LINK\4"
 #define STOP "STOP\4"
+#define SECURITE "SECURITE\4"
 
 /* file descriptor permettant de stocker le flux de communication */
 static volatile int fd;
@@ -52,8 +53,15 @@ static void filtrage(void){
     if(!strcmp(msg_recu, STOP)){
         for(volatile unsigned short int i = 0; i < 6; i++) 
             coordonnee[i] = 0;
+    /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
+    }else if(!strcmp(msg_recu, SECURITE)){
+        volatile unsigned short int i;
+        for(i = 0; i < 2; i++){ coordonnee[i] = 2048; }
+        for(i = 3; i < 5; i++){ coordonnee[i] = 2048; }
+        coordonnee[2] = 0;
+	coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
-    XA----YA----BA-XB----YB----BB-  */
+    XA----YA----BA-XB----YB----BB- */
     }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
        !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
        !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
