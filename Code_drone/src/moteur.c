@@ -53,6 +53,7 @@ static void *moteur(void *puissance) {
   */
   cycle(MAX);
   sleep(1);
+  /* Retour a l'etat minimal */
   cycle(MIN);
   sleep(1);
   /* Variable tampon servant à définir si la vitesse est constante */
