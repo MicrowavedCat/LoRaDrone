@@ -8,7 +8,7 @@
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
 static const unsigned short int PIN[] = {
-  1, /* Correspond au PIN physique 12 (BCM18), */
+   1, /* Correspond au PIN physique 12 (BCM18), */
   23, /* Correspond au PIN physique 33 (BCM13) */
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
@@ -77,7 +77,8 @@ extern void propulsion(void) {
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     pthread_create(&th_moteur[i], NULL, moteur, (void *)&puissance[i]);
-  sleep(5);
+  
+  sleep(3);
   
   while(1) {
     usleep(100000);
