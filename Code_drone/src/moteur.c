@@ -7,7 +7,7 @@
 #define NB_MOTEUR 4
 
 /* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
-static const unsigned short int PIN[4] = {
+static const unsigned short int PIN[NB_MOTEUR] = {
    1, /* Correspond au PIN physique 12 (BCM18), */
   23, /* Correspond au PIN physique 33 (BCM13) */
   24, /* Correspond au PIN physique 35 (BCM19) */
@@ -27,9 +27,9 @@ extern void cycle(unsigned short int valeur){
 /* Etablit le mode de configuration des ESC présent sur chaque PIN */
 extern void configuration(void) {
   /* Erreur de librairie */
-  if(wiringPiSetup() == -1){ 
+  if(wiringPiSetup() == -1){
     puts("Erreur librairie");
-    exit(1); 
+    exit(1);
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
