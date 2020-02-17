@@ -27,5 +27,5 @@ clean :
 
 ### 6] Execution du programme par l'executable ###
 run :
-	./drone
+	sudo ./drone
 .PHONY : run
