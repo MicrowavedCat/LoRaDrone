@@ -35,12 +35,8 @@ extern void configuration(void) {
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
+   
   usleep(1000);
-}
-
-/* Définie l'action pouvant être effectué sur un moteur */
-static void *moteur(void *puissance) {
-  volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Permet la calibration des ESC par transmission.
   On définit une valeur minimale et maximale qu'on émet sur une période,
   pour un certain temps données dans chacun des 2 états définits par ces valeurs.
@@ -56,6 +52,11 @@ static void *moteur(void *puissance) {
   /* Retour a l'etat minimal */
   cycle(MIN);
   sleep(1);
+}
+
+/* Définie l'action pouvant être effectué sur un moteur */
+static void *moteur(void *puissance) {
+  volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
