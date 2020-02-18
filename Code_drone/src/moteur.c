@@ -6,7 +6,7 @@
 #define MIN 0
 #define NB_MOTEUR 4
 
-/* GPIO du raspberry sur lequel on branche l'ESC relié à un moteur */
+/* GPIO du raspberry sur lequel on branche l'ESC relie a un moteur */
 static const unsigned short int PIN[NB_MOTEUR] = {
    1, /* Correspond au PIN physique 12 (BCM18), */
   23, /* Correspond au PIN physique 33 (BCM13) */
@@ -15,7 +15,7 @@ static const unsigned short int PIN[NB_MOTEUR] = {
 };
 extern volatile unsigned short int coordonnee[6];
 
-/* Définit pour chaque moteur la valeur de la puissance à transmettre */
+/* Definit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
@@ -24,22 +24,22 @@ extern void cycle(unsigned short int valeur){
   }
 }
 
-/* Etablit le mode de configuration des ESC présent sur chaque PIN */
+/* Etablit le mode de configuration des ESC present sur chaque PIN */
 extern void configuration(void) {
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
     puts("Erreur librairie");
     exit(1);
   }
-  /* Configuration des 4 ESC pour les 4 moteurs sur la sortie de courant */
+  /* Configuration des 4 ESC pour les 4 moteurs sur la sortie du courant */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    /* Définie sur quel PIN on effectue des opérations */
+    /* Definie un PIN sur le mode sortie de courant */
     pinMode(PIN[i], PWM_OUTPUT);
 
   usleep(1000);
   /* Permet la calibration des ESC par transmission.
-  On définit une valeur minimale et maximale qu'on émet sur une période,
-  pour un certain temps données dans chacun des 2 états définits par ces valeurs.
+  On definit une valeur minimale et maximale qu'on emet sur une periode,
+  pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
             MAX                       MAX
    2s  _____________ 2s       2s _____________ 2s
        |           |             |           |
@@ -54,13 +54,13 @@ extern void configuration(void) {
   sleep(1);
 }
 
-/* Définie l'action pouvant être effectué sur un moteur */
+/* Definie l'action pouvant etre effectuee sur un moteur */
 static void *moteur(void *puissance) {
   volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
-    /* On ne change la vitesse que si elle est différente de l'initialisation */
+    /* On ne change la vitesse que si elle est differente de l'initialisation */
     if(*vitesse != tmp){
       cycle(*vitesse);
       tmp = *vitesse;
@@ -72,7 +72,7 @@ static void *moteur(void *puissance) {
 extern void propulsion(void) {
   configuration();
   static pthread_t th_moteur[NB_MOTEUR];
-  /* On initialise la puissance de rotation à 0 */
+  /* On initialise la puissance de rotation a 0 */
   static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
@@ -86,7 +86,7 @@ extern void propulsion(void) {
         puissance[i] = coordonnee[i];
   }
 
-  /* Lancement de toutes les moteurs */
+  /* Lancement de tous les moteurs */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
   /* Détacher les taches */
