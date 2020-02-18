@@ -35,7 +35,7 @@ extern void configuration(void) {
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Définie sur quel PIN on effectue des opérations */
     pinMode(PIN[i], PWM_OUTPUT);
-   
+
   usleep(1000);
   /* Permet la calibration des ESC par transmission.
   On définit une valeur minimale et maximale qu'on émet sur une période,
