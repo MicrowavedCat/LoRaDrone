@@ -67,7 +67,6 @@ static void *moteur(void *puissance) {
     }
     usleep(10000);
   }
-  exit(0);
 }
 
 extern void propulsion(void) {
