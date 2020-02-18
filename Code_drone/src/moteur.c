@@ -86,8 +86,6 @@ extern void propulsion(void) {
         puissance[i] = coordonnee[i];
   }
 
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    puissance[i] = MIN;
   /* Lancement de toutes les moteurs */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
