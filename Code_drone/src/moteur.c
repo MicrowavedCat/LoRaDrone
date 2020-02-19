@@ -26,6 +26,8 @@ typedef struct parametre {
 
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
+/* Tableau de valeurs d'acceleration lineaire */
+extern volatile short int acceleration[3];
 /* Renvoie de la distance */
 extern volatile float distance;
 
