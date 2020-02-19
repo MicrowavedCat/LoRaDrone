@@ -69,7 +69,7 @@ static void *moteur(void *puissance) {
   volatile short int tmp = -1;
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
-    if(*vitesse != tmp){
+    if(/*p.puissance*/*vitesse != tmp){
       //cycle(p.puissance)
       cycle(*vitesse);
       //tmp = p.puissance;
