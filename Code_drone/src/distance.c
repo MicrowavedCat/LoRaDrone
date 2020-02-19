@@ -1,127 +1,61 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdint.h>
-#include <time.h>
-/* Librairie d'accès aux appel systèmes sur la mémoire */
-#include <sys/mman.h>
-#include "../header/controle.h"
+#include "../header/distance.h"
 
-#define ENTREE(pin) *(gpio+((pin)/10)) &= ~(7<<(((pin)%10)*3))
-#define SORTIE(pin) *(gpio+((pin)/10)) |= (1<<(((pin)%10)*3))
-#define CONFIG(pin) *(gpio+7) = 1<<(pin)
-#define REMOVE(pin) *(gpio+10) = 1<<(pin)
-#define GET *(gpio+13)
+/* PIN sur le raspberry emtteur et recepteur */
+static const unsigned short int PIN[2] = {
+  21, /* Correspond au PIN recepteur, physique 29 (BCM5) */
+  22 /* Correspond au PIN emetteur, physique 31 (BCM6) */
+};
 
-#define OFFSET 0x20200000L
-#define PAGE 4096
-#define BLOCK PAGE
+/* Renvoie de la distance */
+extern volatile float distance;
 
-#define GPIO2 3 /* Emetteur */
-#define GPIO3 5 /* Récépteur */
-
-static volatile int fm = 0;
-/* Mapping des GPIOs sur la mémoire */
-static unsigned char *projection = NULL;
-/* Entier signé de 32 bits */
-static volatile uint32_t *gpio = NULL;
-static short int pin = 0;
-
-/* Echo de l'onde sonore, émission + récéption */
-static void ping(long temps){
-  static struct timespec delai;
-  /* temps en secondes */
-  delai.tv_sec = temps / (1000 * 1000);
-  /* temps en nano-secondes */
-  delai.tv_nsec = (temps % (1000 * 1000)) * 1000;
-  nanosleep(&delai, NULL);
-}
-
-static void config_memoire(const char *argv[]){
-  static volatile char *addr  = NULL;
-  if((fm = open(MEMORY, O_RDWR|O_SYNC)) < 0) {
-    printf("Conseil : \"sudo %s\"\n", argv[0]);
+extern void configuration(void){
+  /* Erreur de librairie */
+  if(wiringPiSetup() == -1){
+    puts("Erreur librairie");
     exit(1);
   }
-  if((addr = malloc(BLOCK + (PAGE-1))) == NULL) {
-    puts("Allocation inacessible");
-    exit(1);
-  }
-  if((unsigned long)addr % PAGE)
-    addr += PAGE - ((unsigned long)addr % PAGE);
-  /* Nouvelle projection dans l'espace d'adressage virtuel du processus appelant */
-  projection = (unsigned char *)mmap(
-    /* Adresse de départ pour placer projection */
-    (caddr_t)addr, BLOCK, /* Longueur de la projection */
-    /* Lire le contenu de la zone mémoire, et y écrire */
-    PROT_READ | PROT_WRITE,
-    /* Modifications de la projection visibles par les autres processus,
-    qui projettent le fichier dev/mem, en plaçant la projection exactement à l'adresse donnée */
-    MAP_SHARED | MAP_FIXED,
-    /* Flux du fichier dev/mem et offset */
-    fm, OFFSET
-  );
-  if((long)projection < 0) {
-    puts("Memoire inacessible");
-    exit(1);
-  }
-  gpio = (volatile uint32_t *)projection;
+  /* Pin de reception en mode sortie */
+  pinMode(PIN[0], OUTPUT);
+  /* Pin d'emission en mode entree */
+  pinMode(PIN[1], INPUT);
+  /* Etat du signal logique haut */
+  digitalWrite(PIN[0], 1);
+  usleep(10);
+  /* Etat du signal logique bas */
+  digitalWrite(PIN[0], 0);
 }
 
-/* Sortie de la mémoire et fermeture des mappings */
-static void sortie_memoire(){
-  static volatile int mapping;
-  mapping = munmap(projection, BLOCK);
-  if(mapping == -1){
-    puts("Erreur");
-    exit(2);
-  }
-  mapping = close(fm);
-  exit(0);
+/* Permet de relever le temps entre une emission,
+et une reception d'onde utlrasonore avec l'horloge interne */
+static const long propagation(void){
+  static struct timeval delai;
+  /* Date et heure courante de l'horloge interne */
+  gettimeofday(&delai, NULL);
+  /* On ecrit le delai en une notation scientifique constante : 1e6 */
+  return delai.tv_sec * (volatile unsigned int)1e6 + delai.tv_usec;
 }
 
-extern const unsigned short int main(unsigned short int argc, 
-				     char const *argv[]){
-  config_memoire(argv);
-
-  static struct timespec impulsion, reception, portee;
-  static volatile double distance, echo;
-
-  ENTREE(GPIO2);
-  SORTIE(GPIO2);
-    
-  ENTREE(GPIO3);
-  ping(500000);
-    
-  /* Envoyer toutes les 10 nano-secondes à l'émetteur */
-  CONFIG(GPIO2);
-  ping(10);
-  REMOVE(GPIO2);
-    
-  clock_gettime(CLOCK_REALTIME, &impulsion);
-  while((GET >> GPIO3) & 0);
-  /* Boucler tant que le bit 23 est à 0, puis enregistrer le temps. */
-  clock_gettime(CLOCK_REALTIME, &impulsion);    
-
-  clock_gettime(CLOCK_REALTIME, &reception);
-  while((GET >> GPIO3) & 1);
-  /* Boucler tant que le bit 23 est à 1, puis enregistrer le temps. */
-  clock_gettime(CLOCK_REALTIME, &reception);
-    
-  if((reception.tv_nsec - impulsion.tv_nsec) < 0) {
-    portee.tv_sec = reception.tv_sec - impulsion.tv_sec - 1;
-    portee.tv_nsec = 1000000000 + reception.tv_nsec - impulsion.tv_nsec;
-  }else{
-     portee.tv_sec = reception.tv_sec - impulsion.tv_sec;
-     portee.tv_nsec = reception.tv_nsec - impulsion.tv_nsec;
+extern void main(void){
+  configuration();
+  static volatile unsigned short int echo = 0, tmp = 0,
+      impulsion = 0, reflection = 0;
+  static long emission, reception;
+  /* Tant qu'il n'y a pas eu d'onde emise ou recue */
+  while((impulsion == 0) || (reflection == 0)){
+    tmp = echo;
+    /* Lecture de l'etat du signal logique du PIN emetteur */
+    echo = digitalRead(PIN[1]);
+    /* On considere l'onde comme emise */
+    if((impulsion == 0) && (tmp == 0) && (echo == 1)){
+      impulsion = 1;
+      emission = propagation();
+    /* On considere l'onde comme reflechie */
+    }else if((impulsion == 1) && (tmp == 1) && (echo == 0)){
+      reflection = 1;
+      reception = propagation();
+    }
   }
-  echo = ((portee.tv_sec*1000000000) + (portee.tv_nsec));
-  echo /= 1000000000;
-  /* calcul de la distance en cm */
-  distance = (echo*17150);
-  printf("Distance: %.2f cm\n", distance);
-   
-  sortie_memoire();
+  /* Calcul de la distance */
+  distance = (reception - emission) / 58;
 }
