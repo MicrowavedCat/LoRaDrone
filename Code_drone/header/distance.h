@@ -10,6 +10,5 @@
 /* Le telemetre renvoie la distance en cm,
 par rapport a un obstacle au sol. */
 volatile float distance;
-extern void collision(void);
 
 #endif
