@@ -13,6 +13,13 @@ static const unsigned short int PIN[NB_MOTEUR] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
+/* Parametre d'un moteur */
+typedef struct parametre {
+   volatile unsigned short int puissance;
+   const unsigned short int id;
+   const phtread_mutex *mutex;
+} parametre;
+/* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
 
 /* Definit pour chaque moteur la valeur de la puissance à transmettre */
@@ -56,6 +63,7 @@ extern void configuration(void) {
 
 /* Definie l'action pouvant etre effectuee sur un moteur */
 static void *moteur(void *puissance) {
+   parametre p = *((parametre *) param);
   volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
