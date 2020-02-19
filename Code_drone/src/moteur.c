@@ -1,5 +1,5 @@
-#include "../header/moteur.h"
 #include "../header/global.h"
+#include "../header/moteur.h"
 #include "../header/acceleration.h"
 #include "../header/distance.h"
 
