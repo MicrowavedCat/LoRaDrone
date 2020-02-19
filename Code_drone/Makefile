@@ -5,15 +5,17 @@ compilation : drone
 OFILES = src/main.o \
          src/communication.o \
 	 src/moteur.o \
-	 src/acceleration.o
+	 src/acceleration.o \
+	 src/distance.o
 
 # Compilation et arguments de compilation
 CC = gcc -Ofast -flto
 
 ### 3] Depedences a regles implicites des fichiers d'extension ".o" ###
 communication.o : ../header/communication.h
-moteur.o : ../header/moteur.h ../header/communication.h
-acceleration.o : ../header/controle.h ../header/moteur.h 
+moteur.o : ../header/moteur.h ../header/communication.h ../header/acceleration.h
+acceleration.o : ../header/acceleration.h
+distance.o : ../header/distance.h
 main.o : communication.o
 
 ### 4] Depedences precedentes appliquees par commandes ###
