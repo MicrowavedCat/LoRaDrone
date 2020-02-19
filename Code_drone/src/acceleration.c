@@ -1,5 +1,4 @@
-#include "../header/controle.h"
-#include "../header/moteur.h"
+#include "../header/acceleration.h"
 
 /* Nombre d'appareils déjà réservés */
 #define RESERVE 256
