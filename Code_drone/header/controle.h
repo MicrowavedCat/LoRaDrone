@@ -1,5 +1,5 @@
-#ifndef CONTROLE_H
-#define CONTROLE_H
+#ifndef ACCELERATION_H
+#define ACCELERATION_H
 
 #include <stdio.h>
 #include <stdlib.h>
