@@ -26,6 +26,8 @@ typedef struct parametre {
 
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
+/* Renvoie de la distance */
+extern volatile float distance;
 
 /* Definit pour chaque moteur la valeur de la puissance à transmettre */
 extern void cycle(unsigned short int valeur){
