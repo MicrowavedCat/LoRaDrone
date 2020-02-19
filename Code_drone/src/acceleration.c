@@ -5,7 +5,7 @@
 #define RESERVE 256
 
 /* Tableau de valeurs d'acceleration lineaire */
-extern volatile short int celerite[3];
+extern volatile short int acceleration[3];
 
 /* Permet de vérifier la validation d'une transaction i2c d'adressage */
 static void adressage(volatile int flux, unsigned char *config,
@@ -33,7 +33,7 @@ volatile short int position(volatile short int axe,
 
 /* Fonction permettant de configurer, et de relever, 
 les coordonnées de l'accéléromètre ADXL345. */
-extern void acceleration(void){
+extern void celerite(void){
   static volatile int fd;
   /* Ouverture du bus i2c en lecutre et écriture,
   permettant de connaitre les périphériques branchés. */
@@ -86,7 +86,7 @@ extern void acceleration(void){
     }else{
       volatile unsigned short int offset = 0;
       for(volatile unsigned short int i=0; i<3; i++){
-        celerite[i] = position(celerite[i], data, offset);
+        acceleration[i] = position(acceleration[i], data, offset);
         offset += 2;
       }
     }
