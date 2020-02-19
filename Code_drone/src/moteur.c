@@ -1,5 +1,7 @@
 #include "../header/moteur.h"
 #include "../header/global.h"
+#include "../header/acceleration.h"
+#include "../header/distance.h"
 
 /* Impulsion maximale 2^9 = 512 soit de 0 a 511 valeurs */
 #define MAX 511
