@@ -14,6 +14,6 @@
 #define BUS "/dev/i2c-1"
 
 /* Tableau de valeurs d'acceleration lineaire */
-volatile short int celerite[3];
+volatile short int acceleration[3];
 
 #endif
