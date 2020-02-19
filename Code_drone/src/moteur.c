@@ -63,13 +63,14 @@ extern void configuration(void) {
 
 /* Definie l'action pouvant etre effectuee sur un moteur */
 static void *moteur(void *puissance) {
-   parametre p = *((parametre *) param);
+  parametre p = *((parametre *) param);
   volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
     if(*vitesse != tmp){
+      //cycle(p.puissance)
       cycle(*vitesse);
       tmp = *vitesse;
     }
@@ -79,6 +80,7 @@ static void *moteur(void *puissance) {
 
 extern void propulsion(void) {
   configuration();
+  param p;
   static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation a 0 */
   static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
