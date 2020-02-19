@@ -36,7 +36,7 @@ static const long propagation(void){
   return delai.tv_sec * (volatile unsigned int)1e6 + delai.tv_usec;
 }
 
-extern void main(void){
+extern void collision(void){
   configuration();
   static volatile unsigned short int echo = 0, tmp = 0,
       impulsion = 0, reflection = 0;
