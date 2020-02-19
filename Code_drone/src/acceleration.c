@@ -4,6 +4,9 @@
 /* Nombre d'appareils déjà réservés */
 #define RESERVE 256
 
+/* Tableau de valeurs d'acceleration lineaire */
+extern volatile short int celerite[3];
+
 /* Permet de vérifier la validation d'une transaction i2c d'adressage */
 static void adressage(volatile int flux, unsigned char *config,
                       const unsigned short int espace){
@@ -81,9 +84,11 @@ extern void acceleration(void){
       puts("Erreur lecture coordonnees");
       exit(3);
     }else{
-      volatile short int x = position(x, data, 0);
-      volatile short int y = position(y, data, 2);
-      volatile short int z = position(z, data, 4);
+      volatile unsigned short int offset = 0;
+      for(volatile unsigned short int i=0; i<3; i++){
+        celerite[i] = position(celerite[i], data, offset);
+        offset += 2;
+      }
     }
   }
 }
