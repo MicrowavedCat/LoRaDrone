@@ -3,7 +3,6 @@
 
 #include <string.h>
 #include <fcntl.h>
-
 /* Librairie de communication serie sur Raspberry */
 #include <wiringSerial.h>
 
