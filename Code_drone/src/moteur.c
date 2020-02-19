@@ -72,6 +72,7 @@ static void *moteur(void *puissance) {
     if(*vitesse != tmp){
       //cycle(p.puissance)
       cycle(*vitesse);
+      //tmp = p.puissance;
       tmp = *vitesse;
     }
     usleep(10000);
