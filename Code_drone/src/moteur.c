@@ -13,12 +13,14 @@ static const unsigned short int PIN[NB_MOTEUR] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
+
 /* Parametre d'un moteur */
 typedef struct parametre {
    volatile unsigned short int puissance;
    const unsigned short int id;
    const phtread_mutex *mutex;
 } parametre;
+
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
 
@@ -81,13 +83,13 @@ static void *moteur(void *puissance) {
 
 extern void propulsion(void) {
   configuration();
-  param p;
+  parametre p;
   static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation a 0 */
   static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    pthread_create(&th_moteur[i], NULL, moteur, (void *)&puissance[i]);
+    pthread_create(&th_moteur[i], NULL, moteur, /*&p*/(void *)&puissance[i]);
   
   sleep(3);
   
