@@ -7,8 +7,7 @@
 #include <sys/time.h>
 #include <wiringPi.h>
 
-/* Le telemetre renvoie la distance en cm,
-par rapport a un obstacle au sol. */
+/* Renvoie de la distance */
 volatile float distance;
 
 #endif
