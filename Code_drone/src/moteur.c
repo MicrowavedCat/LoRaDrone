@@ -14,7 +14,8 @@ static const unsigned short int PIN[NB_MOTEUR] = {
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
 
-/* Parametre d'un moteur */
+/* Parametre d'un moteur, avec la position de son PIN,
+sa puissance de rotation, et un mutex */
 typedef struct parametre {
    volatile unsigned short int puissance;
    const unsigned short int id;
