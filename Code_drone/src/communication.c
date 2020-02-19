@@ -1,5 +1,5 @@
-#include "../header/communication.h"
 #include "../header/global.h"
+#include "../header/communication.h"
 
 #define TAILLE 31
 /* Message de communication drone-telecommande */
