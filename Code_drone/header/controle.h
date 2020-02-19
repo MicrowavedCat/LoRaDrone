@@ -13,7 +13,7 @@
 /* Flux de données permettant la détection des dipositifs branchés au Raspberry. */
 #define BUS "/dev/i2c-1"
 
-volatile unsigned short int equilibre[3];
+volatile unsigned short int position[3];
 extern void acceleration(void);
 
 #endif
