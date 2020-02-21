@@ -1,4 +1,4 @@
-#include "../header/global.h"
+#include "pthread.h"
 #include "../header/communication.h"
 #include "../header/moteur.h"
 #include "../header/acceleration.h"
