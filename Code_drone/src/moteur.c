@@ -96,7 +96,7 @@ extern void propulsion(void){
   static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    pthread_create(&th_moteur[i], NULL, moteur, /*(void *)&p*/(void *)&puissance[i]);
+    pthread_create(&th_moteur[i], NULL, moteur, /*&p*/(void *)&puissance[i]);
   
   sleep(3);
   
