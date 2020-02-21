@@ -88,6 +88,7 @@ static void *moteur(void *puissance/*void *args*/){
   }
 }
 
+/* Permet l'atterissage automatique */
 extern void atterissage(void){
    /* On fait baisser progressivement dans tous les moteurs,
    la puissance du drone jusqu'a ce qu'il atterisse. */
@@ -95,6 +96,8 @@ extern void atterissage(void){
       sleep(2);
       cycle(i);
    }
+   /* Si on est au niveau du sol */
+   if(distance <= 4){ cycle(0); }
 }
 
 extern void propulsion(void){
