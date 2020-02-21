@@ -9,7 +9,7 @@ static const unsigned short int PIN[2] = {
 /* Renvoie de la distance */
 extern volatile float distance;
 
-extern void configuration(void){
+static void configuration(void){
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
     puts("Erreur librairie");
@@ -37,6 +37,7 @@ static const long propagation(void){
 }
 
 extern void collision(void){
+  usleep(10000);
   configuration();
   static volatile unsigned short int echo = 0, tmp = 0,
       impulsion = 0, reflection = 0;
