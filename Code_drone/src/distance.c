@@ -2,8 +2,8 @@
 
 /* PIN sur le raspberry emtteur et recepteur */
 static const unsigned short int PIN[2] = {
-  21, /* Correspond au PIN recepteur, physique 29 (BCM5) */
-  22 /* Correspond au PIN emetteur, physique 31 (BCM6) */
+  21, /* Correspond au PIN recepteur physique 29 (BCM5) */
+  22 /* Correspond au PIN emetteur physique 31 (BCM6) */
 };
 
 /* Renvoie de la distance */
