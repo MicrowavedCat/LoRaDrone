@@ -41,7 +41,7 @@ extern void cycle(unsigned short int valeur){
 }
 
 /* Etablit le mode de configuration des ESC present sur chaque PIN */
-extern void configuration(void) {
+extern void calibration(void) {
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
     puts("Erreur librairie");
@@ -89,7 +89,7 @@ static void *moteur(void *puissance) {
 }
 
 extern void propulsion(void) {
-  configuration();
+  calibration();
   parametre p;
   static pthread_t th_moteur[NB_MOTEUR];
   /* On initialise la puissance de rotation a 0 */
