@@ -1,6 +1,8 @@
 #include "../header/global.h"
 #include "../header/communication.h"
 #include "../header/moteur.h"
+#include "../header/acceleration.h"
+#include "../header/distance.h"
 
 /* Execution synchronise des taches */
 extern void main(void){
