@@ -97,7 +97,7 @@ extern void atterissage(void){
       cycle(i);
    }
    /* Si on est au niveau du sol */
-   if(distance <= 4){ cycle(0); }
+   if((volatile unsigned short int)distance <= 4){ cycle(0); }
 }
 
 extern void propulsion(void){
