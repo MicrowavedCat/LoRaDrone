@@ -16,7 +16,7 @@ communication.o : ../header/communication.h
 moteur.o : ../header/moteur.h ../header/communication.h ../header/acceleration.h
 acceleration.o : ../header/acceleration.h
 distance.o : ../header/distance.h
-main.o : communication.o
+main.o : communication.o moteur.o acceleration.o distance.o
 
 ### 4] Depedences precedentes appliquees par commandes ###
 drone : $(OFILES)
