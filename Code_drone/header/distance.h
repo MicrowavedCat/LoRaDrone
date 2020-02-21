@@ -10,4 +10,6 @@
 /* Renvoie de la distance */
 volatile float distance;
 
+extern volatile collision(void);
+
 #endif
