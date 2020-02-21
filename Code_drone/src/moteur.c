@@ -79,7 +79,7 @@ static void *moteur(void *puissance/*void *args*/){
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
     if(/*p.puissance*/*vitesse != tmp){
-      //pwmWrite(p.puissance, PIN[id]);
+      //pwmWrite(p.puissance, PIN[p.id]);
       cycle(*vitesse);
       //tmp = p.puissance;
       tmp = *vitesse;
@@ -109,6 +109,6 @@ extern void propulsion(void){
   /* Lancement de tous les moteurs */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
     pthread_join(th_moteur[i], NULL);
-  /* Détacher les taches */
+  /* Detacher les taches */
   pthread_exit(NULL);
 }
