@@ -88,6 +88,15 @@ static void *moteur(void *puissance/*void *args*/){
   }
 }
 
+extern void atterissage(void){
+   /* On fait baisser progressivement dans tous les moteurs,
+   la puissance du drone jusqu'a ce qu'il atterisse. */
+   for(volatile unsigned short int i = 505; i >= 480; i--){
+      sleep(2);
+      cycle(i);
+   }
+}
+
 extern void propulsion(void){
   calibration();
   parametre p;
