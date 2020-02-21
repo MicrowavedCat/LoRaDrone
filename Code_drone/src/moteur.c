@@ -41,7 +41,7 @@ static void cycle(unsigned short int valeur){
 }
 
 /* Etablit le mode de configuration des ESC present sur chaque PIN */
-static void calibration(void) {
+static void calibration(void){
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
     puts("Erreur librairie");
@@ -71,7 +71,7 @@ static void calibration(void) {
 }
 
 /* Definie l'action pouvant etre effectuee sur un moteur */
-static void *moteur(void *puissance/*void *args*/) {
+static void *moteur(void *puissance/*void *args*/){
   parametre p = *((parametre *) args);
   volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
@@ -88,7 +88,7 @@ static void *moteur(void *puissance/*void *args*/) {
   }
 }
 
-extern void propulsion(void) {
+extern void propulsion(void){
   calibration();
   parametre p;
   static pthread_t th_moteur[NB_MOTEUR];
@@ -96,11 +96,11 @@ extern void propulsion(void) {
   static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
   /* Puissance de rotation configuree sur chaque helice */
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    pthread_create(&th_moteur[i], NULL, moteur, /*&p*/(void *)&puissance[i]);
+    pthread_create(&th_moteur[i], NULL, moteur, /*(void *)&p*/(void *)&puissance[i]);
   
   sleep(3);
   
-  while(1) {
+  while(1){
     usleep(100000);
     for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
         puissance[i] = coordonnee[i];
