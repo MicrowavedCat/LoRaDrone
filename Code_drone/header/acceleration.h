@@ -16,4 +16,6 @@
 /* Tableau de valeurs d'acceleration lineaire */
 volatile short int acceleration[3];
 
+extern volatile celerite(void);
+
 #endif
