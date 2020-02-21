@@ -71,8 +71,8 @@ static void calibration(void) {
 }
 
 /* Definie l'action pouvant etre effectuee sur un moteur */
-static void *moteur(void *puissance) {
-  parametre p = *((parametre *) param);
+static void *moteur(void *puissance/*void *args*/) {
+  parametre p = *((parametre *) args);
   volatile unsigned short int *vitesse = (unsigned short int *)puissance;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
