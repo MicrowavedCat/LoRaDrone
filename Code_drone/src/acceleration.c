@@ -1,8 +1,5 @@
 #include "../header/acceleration.h"
 
-/* Nombre d'appareils déjà réservés */
-#define RESERVE 256
-
 /* Tableau de valeurs d'acceleration lineaire */
 extern volatile short int acceleration[3];
 
@@ -15,15 +12,15 @@ static void adressage(volatile int flux, unsigned char *config,
   }
 }
 
-/* Permet de définir le format des valeurs des axes de l'accéléromètre ADXL345 */
+/* Permet de definir le format des valeurs des axes de l'accelerometre ADXL345 */
 static volatile short int position(volatile short int axe,
                             unsigned char *data, const unsigned short int i){
   /*
-  - On détermine le bit de poid faible de l'adresse données sur 32 bits,
-  avec un ET bit à bit de 11, multiplié par le nombre d'appareils déjà réservés.
+  - On determine le bit de poid faible de l'adresse donnees sur 32 bits,
+  avec un ET bit a bit de 11, multiplie par l'espace d'appareils reserves de 256.
   - Puis on y ajoute le bit de poid fort en gardant l'identité.
   */
-  axe = (data[i+1] & 0x03) * RESERVE + data[i];
+  axe = (data[i+1] & 0x03) * 256 + data[i];
   /* Si on dépasse, pour les données d'un axe, 2^9 = 511 valeurs,
   on convertit les données sur 2^(9+1) = 2^10 = 1024. */
   if(axe > 511){ axe -= 1024; }
