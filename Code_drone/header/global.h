@@ -10,6 +10,4 @@
 /* Coordonnees de pilotage dans le message */
 volatile unsigned short int coordonnee[6];
 
-extern void atterrisage(void);
-
 #endif
