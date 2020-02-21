@@ -79,7 +79,7 @@ static void *moteur(void *puissance/*void *args*/){
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
     if(/*p.puissance*/*vitesse != tmp){
-      //cycle(p.puissance)
+      //pwmWrite(p.puissance, PIN[id]);
       cycle(*vitesse);
       //tmp = p.puissance;
       tmp = *vitesse;
