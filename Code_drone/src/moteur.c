@@ -32,7 +32,7 @@ extern volatile short int acceleration[3];
 extern volatile float distance;
 
 /* Definit pour chaque moteur la valeur de la puissance à transmettre */
-extern void cycle(unsigned short int valeur){
+static void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
     pwmWrite(PIN[i], valeur);
@@ -41,7 +41,7 @@ extern void cycle(unsigned short int valeur){
 }
 
 /* Etablit le mode de configuration des ESC present sur chaque PIN */
-extern void calibration(void) {
+static void calibration(void) {
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
     puts("Erreur librairie");
