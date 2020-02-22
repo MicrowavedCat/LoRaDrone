@@ -32,7 +32,8 @@ static const long propagation(void){
   static struct timeval delai;
   /* Date et heure courante de l'horloge interne */
   gettimeofday(&delai, NULL);
-  /* On ecrit le delai en une notation scientifique constante : 1e6 */
+  /* On ecrit le delai en une notation scientifique constante : 1e6
+  Et donne le nombre de secondes et microsecondes ecoulees depuis le 1er janvier 1970 */
   return delai.tv_sec * (volatile unsigned int)1e6 + delai.tv_usec;
 }
 
