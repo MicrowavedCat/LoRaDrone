@@ -29,12 +29,12 @@ static void configuration(void){
 /* Permet de relever le temps entre une emission,
 et une reception d'onde utlrasonore avec l'horloge interne */
 static const long propagation(void){
-  static struct timeval delai;
+  static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
-  gettimeofday(&delai, NULL);
+  gettimeofday(&tv, NULL);
   /* On ecrit le delai en une notation scientifique constante : 1e6
   Et donne le nombre de secondes et microsecondes ecoulees depuis le 1er janvier 1970 */
-  return delai.tv_sec * (volatile unsigned int)1e6 + delai.tv_usec;
+  return tv.tv_sec * (volatile unsigned int)1e6 + tv.tv_usec;
 }
 
 extern void collision(void){
