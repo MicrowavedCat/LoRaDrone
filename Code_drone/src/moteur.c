@@ -94,8 +94,7 @@ extern void atterissage(void){
    if((volatile unsigned short int)distance <= 4){ 
       cycle(MIN);
       exit(0);
-   }
-   else{
+   }else{
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance du drone jusqu'a ce qu'il atterisse. */
       for(volatile unsigned short int i = 505; i >= 480; i--){
