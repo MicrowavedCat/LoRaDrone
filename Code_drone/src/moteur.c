@@ -91,7 +91,10 @@ static void *moteur(void *puissance/*void *args*/){
 /* Permet l'atterissage automatique */
 extern void atterissage(void){
    /* Si on est au niveau du sol */
-   if((volatile unsigned short int)distance <= 4){ cycle(MIN); }
+   if((volatile unsigned short int)distance <= 4){ 
+      cycle(MIN);
+      exit(0);
+   }
    else{
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance du drone jusqu'a ce qu'il atterisse. */
