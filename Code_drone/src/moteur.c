@@ -20,8 +20,8 @@ static const unsigned short int PIN[NB_MOTEUR] = {
 sa puissance de rotation, et un mutex */
 typedef struct parametre {
    volatile unsigned short int puissance;
-   const unsigned short int id;
-   const phtread_mutex *mutex;
+   volatile unsigned short int id;
+   volatile pthread_mutex_t *mutex;
 } parametre;
 
 /* Tableau de coordonnees a convertir */
