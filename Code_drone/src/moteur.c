@@ -91,9 +91,9 @@ static void *moteur(void *puissance/*void *args*/){
 /* Permet l'atterissage automatique */
 extern void atterissage(void){
    /* Coupe les moteurs si on est au niveau du sol */
-   if((volatile unsigned short int)distance <= 6){ 
+   if((volatile unsigned short int)distance <= 6)
       cycle(MIN);
-   }else{
+   else{
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation jusqu'a ce qu'il atterisse. */
       for(volatile unsigned short int i = 505/*p.puissance*/; i >= 480; i--){
