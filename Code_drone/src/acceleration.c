@@ -21,7 +21,7 @@ static volatile short int position(volatile short int axe,
   - Puis on y ajoute le bit de poid fort en gardant l'identite.
   */
   axe = (data[i+1] & 0x03) * 256 + data[i];
-  /* Si on depasse, pour les donnees d'un axe, 2^9 = 511 valeurs,
+  /* Si on depasse, pour les donnees d'un axe, 2^9 = 512 valeurs soit de 0 à 511,
   on convertit les donnees sur 2^(9+1) = 2^10 = 1024. */
   if(axe > 511){ axe -= 1024; }
   return axe;
