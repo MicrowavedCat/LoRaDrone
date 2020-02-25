@@ -17,7 +17,7 @@ Must :
     <li>communications entre les modules LoRa,</li>
     <li>montage de la télécommande et du drone,</li>
     <li>communication avec les ESC (rotation des hélices),</li>
-    <li>atterrissage "brutal",
+    <li>atterrissage "brutal",</li>
     <li>arrêt d’urgence,</li>
     <li>récupération et transmission de données à tous les périphériques de la télécommande,</li>
 </ul>
