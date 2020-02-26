@@ -52,7 +52,10 @@ les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage
 static void filtrage(void){
     /* Si on recoit le message STOP, on arrete d'urgence le drone */
     if(!strcmp(msg_recu, STOP)){
-        cycle(0);
+	cycle(0);
+	/* Remise a 0 des valeurs par securite */
+        for(volatile unsigned short int i = 0; i < 6; i++) 
+            coordonnee[i] = 0;
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     }else if(!strcmp(msg_recu, SECURITE)){
         volatile unsigned short int i;
