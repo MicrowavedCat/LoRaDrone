@@ -18,7 +18,7 @@ static const unsigned short int PIN[NB_MOTEUR] = {
 
 /* Parametre d'un moteur, avec la position de son PIN,
 sa puissance de rotation, et une securisation de donnee */
-struct parametre {
+struct parametre{
    volatile unsigned short int *puissance;
    volatile unsigned short int id;
    volatile pthread_mutex_t *mutex;
@@ -114,9 +114,13 @@ extern void propulsion(void){
    
   while(1){
      usleep(100000);
-     printf("Vitesse : "); scanf("%d", &vitesse);
+     
+     printf("Vitesse : "); 
+     scanf("%d", &vitesse);
      p->puissance = vitesse;
-     printf("GPIO : "); scanf("%d", &pin);
+     
+     printf("GPIO : "); 
+     scanf("%d", &pin);
      p->id = pin;
 
     /* Puissance de rotation configuree sur chaque helice */
