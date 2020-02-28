@@ -94,6 +94,7 @@ static void *moteur(void *args){
 
 /****
 * @function propulsion
+* Definie l'action sur un ou plusieurs moteurs pour l'orienter
 ****/
 extern void propulsion(void){
   calibration();
