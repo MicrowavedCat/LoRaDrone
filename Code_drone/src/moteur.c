@@ -17,12 +17,12 @@ static const unsigned short int PIN[NB_MOTEUR] = {
 };
 
 /* Parametre d'un moteur, avec la position de son PIN,
-sa puissance de rotation, et un mutex */
-typedef struct parametre {
-   volatile unsigned short int puissance;
+sa puissance de rotation, et une securisation de donnee */
+struct parametre {
+   volatile unsigned short int *puissance;
    volatile unsigned short int id;
    volatile pthread_mutex_t *mutex;
-} parametre;
+};
 
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
@@ -71,18 +71,16 @@ static void calibration(void){
 }
 
 /* Definie l'action pouvant etre effectuee sur un moteur */
-static void *moteur(void *puissance/*void *args*/){
-  parametre p = *((parametre *) args);
-  volatile unsigned short int *vitesse = (unsigned short int *)puissance;
+static void *moteur(void *args){
+  volatile unsigned short int *vitesse = ((struct parametre*)args)->puissance;
+  volatile unsigned short int pin = ((struct parametre*)args)->id;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
-    if(/*p.puissance*/*vitesse != tmp){
-      //pwmWrite(p.puissance, PIN[p.id]);
-      cycle(*vitesse);
-      //tmp = p.puissance;
-      tmp = *vitesse;
+   if(vitesse != tmp){
+      tmp = vitesse;
+      cycle(tmp);
     }
     usleep(10000);
   }
@@ -105,25 +103,32 @@ extern void atterissage(void){
 
 extern void propulsion(void){
   calibration();
-  parametre p;
+  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
+  /* Vitesse de rotation des moteurs */
+  volatile unsigned short int *vitesse = {MIN};
+  volatile unsigned short int pin;
+  /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
-  /* On initialise la puissance de rotation a 0 */
-  static volatile unsigned short int puissance[NB_MOTEUR] = {MIN};
-  /* Puissance de rotation configuree sur chaque helice */
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-    pthread_create(&th_moteur[i], NULL, moteur, /*&p*/(void *)&puissance[i]);
   
-  sleep(3);
-  
+  usleep(100000);
+   
   while(1){
-    usleep(100000);
-    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-        puissance[i] = coordonnee[i];
+     usleep(100000);
+     printf("Vitesse : "); scanf("%d", &vitesse);
+     p->puissance = vitesse;
+     printf("GPIO : "); scanf("%d", &pin);
+     p->id = pin;
+
+    /* Puissance de rotation configuree sur chaque helice */
+    for(volatile unsigned short int i = 0; i < 4; i++)
+       pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
   }
 
   /* Lancement de tous les moteurs */
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++) 
+ for(volatile unsigned short int i = 0; i < 4; i++)
     pthread_join(th_moteur[i], NULL);
-  /* Detacher les taches */
-  pthread_exit(NULL);
+ 
+ /* Detacher les taches */
+ pthread_exit(NULL);
+ free((void *)p);
 }
