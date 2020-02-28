@@ -88,7 +88,7 @@ static void *moteur(void *args){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
    if(vitesse != tmp){
       tmp = vitesse;
-      cycle(tmp);
+      pwmWrite(PIN[P->id], valeur);
     }
     usleep(10000);
   }
