@@ -15,7 +15,6 @@ static const unsigned short int PIN[NB_MOTEUR] = {
   24, /* Correspond au PIN physique 35 (BCM19) */
   26 /* Correspond au PIN physique 32 (BCM12) */
 };
-
 /* Parametre d'un moteur, avec la position de son PIN,
 sa puissance de rotation, et une securisation de donnee */
 struct parametre{
@@ -23,7 +22,6 @@ struct parametre{
    volatile unsigned short int id;
    volatile pthread_mutex_t *mutex;
 };
-
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
 /* Tableau de valeurs d'acceleration lineaire */
@@ -32,6 +30,7 @@ extern volatile short int acceleration[3];
 extern volatile float distance;
 
 /****
+* @function cycle
 * Definit pour chaque moteur la valeur de la puissance à transmettre 
 ****/
 extern void cycle(unsigned short int valeur){
@@ -43,6 +42,7 @@ extern void cycle(unsigned short int valeur){
 }
 
 /****
+* @function calibration
 * Etablit le mode de configuration des ESC present sur chaque PIN 
 */
 static void calibration(void){
@@ -74,6 +74,7 @@ static void calibration(void){
 }
 
 /****
+* @function *moteur
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
@@ -91,6 +92,9 @@ static void *moteur(void *args){
   }
 }
 
+/****
+* @function propulsion
+****/
 extern void propulsion(void){
   calibration();
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
@@ -126,6 +130,7 @@ extern void propulsion(void){
 }
 
 /****
+* @function atterissage
 * Permet l'atterissage automatique * 
 ****/
 extern void atterissage(void){
