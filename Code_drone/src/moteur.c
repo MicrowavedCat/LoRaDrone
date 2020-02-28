@@ -31,7 +31,9 @@ extern volatile short int acceleration[3];
 /* Renvoie de la distance */
 extern volatile float distance;
 
-/* Definit pour chaque moteur la valeur de la puissance à transmettre */
+/****
+* Definit pour chaque moteur la valeur de la puissance à transmettre 
+****/
 extern void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
     /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
@@ -40,7 +42,9 @@ extern void cycle(unsigned short int valeur){
   }
 }
 
-/* Etablit le mode de configuration des ESC present sur chaque PIN */
+/****
+* Etablit le mode de configuration des ESC present sur chaque PIN 
+*/
 static void calibration(void){
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
@@ -51,7 +55,6 @@ static void calibration(void){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
     /* Definie un PIN sur le mode sortie de courant */
     pinMode(PIN[i], PWM_OUTPUT);
-
   usleep(1000);
   /* Permet la calibration des ESC par transmission.
   On definit une valeur minimale et maximale qu'on emet sur une periode,
@@ -70,7 +73,9 @@ static void calibration(void){
   sleep(1);
 }
 
-/* Definie l'action pouvant etre effectuee sur un moteur */
+/****
+* Definie l'action pouvant etre effectuee sur un moteur 
+****/
 static void *moteur(void *args){
   volatile unsigned short int *vitesse = ((struct parametre*)args)->puissance;
   volatile unsigned short int pin = ((struct parametre*)args)->id;
@@ -86,25 +91,9 @@ static void *moteur(void *args){
   }
 }
 
-volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
-
-/* Permet l'atterissage automatique */
-extern void atterissage(void){
-   /* Coupe les moteurs si on est au niveau du sol */
-   if((volatile unsigned short int)distance <= 20)
-      cycle(MIN);
-   else if((volatile unsigned short int)distance <= 100){
-      /* On fait baisser progressivement dans tous les moteurs,
-      la puissance de rotation jusqu'a ce qu'il atterisse. */
-      for(volatile unsigned short int i = p->puissance; i >= 480; i--){
-         sleep(2);
-         cycle(i);
-      }
-   }
-}
-
 extern void propulsion(void){
   calibration();
+  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   volatile unsigned short int *vitesse = {MIN};
   volatile unsigned short int pin;
@@ -128,12 +117,27 @@ extern void propulsion(void){
     for(volatile unsigned short int i = 0; i < 4; i++)
        pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
   }
-
-  /* Lancement de tous les moteurs */
+ /* Lancement de tous les moteurs */
  for(volatile unsigned short int i = 0; i < 4; i++)
     pthread_join(th_moteur[i], NULL);
- 
  /* Detacher les taches */
  pthread_exit(NULL);
  free((void *)p);
+}
+
+/****
+* Permet l'atterissage automatique * 
+****/
+extern void atterissage(void){
+   /* Coupe les moteurs si on est au niveau du sol */
+   if((volatile unsigned short int)distance <= 20)
+      cycle(MIN);
+   else if((volatile unsigned short int)distance <= 100){
+      /* On fait baisser progressivement dans tous les moteurs,
+      la puissance de rotation jusqu'a ce qu'il atterisse. */
+      for(volatile unsigned short int i = p->puissance; i >= 480; i--){
+         sleep(2);
+         cycle(i);
+      }
+   }
 }
