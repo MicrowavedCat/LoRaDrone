@@ -88,13 +88,14 @@ static void *moteur(void *args){
 
 /* Permet l'atterissage automatique */
 extern void atterissage(void){
+   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
    /* Coupe les moteurs si on est au niveau du sol */
-   if((volatile unsigned short int)distance <= 6)
+   if((volatile unsigned short int)distance <= 20)
       cycle(MIN);
-   else{
+   else if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation jusqu'a ce qu'il atterisse. */
-      for(volatile unsigned short int i = 505/*p.puissance*/; i >= 480; i--){
+      for(volatile unsigned short int i = p->puissance; i >= 480; i--){
          sleep(2);
          cycle(i);
       }
