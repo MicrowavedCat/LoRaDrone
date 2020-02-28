@@ -131,7 +131,7 @@ extern void propulsion(void){
 
 /****
 * @function atterissage
-* Permet l'atterissage automatique * 
+* Permet l'atterissage automatique
 ****/
 extern void atterissage(void){
    /* Coupe les moteurs si on est au niveau du sol */
