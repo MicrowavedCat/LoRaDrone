@@ -3,7 +3,9 @@
 /* Tableau de valeurs d'acceleration lineaire */
 extern volatile short int acceleration[3];
 
-/* Permet de verifier la validation d'une transaction i2c d'adressage */
+/**** 
+* Permet de verifier la validation d'une transaction i2c d'adressage *
+****/
 static void adressage(volatile int flux, unsigned char *config,
                       const unsigned short int espace){
   if(write(flux, config, espace) != espace){
@@ -12,7 +14,9 @@ static void adressage(volatile int flux, unsigned char *config,
   }
 }
 
-/* Permet de definir le format des valeurs des axes de l'accelerometre ADXL345 */
+/****
+* Permet de definir le format des valeurs des axes de l'accelerometre ADXL345 *
+****/
 static volatile short int position(volatile short int axe,
                             unsigned char *data, const unsigned short int i){
   /*
@@ -27,8 +31,10 @@ static volatile short int position(volatile short int axe,
   return axe;
 }
 
-/* Fonction permettant de configurer, et de relever, 
-les coordonnees de l'accelerometre ADXL345. */
+/**** 
+* Fonction permettant de configurer, et de relever, *
+* les coordonnees de l'accelerometre ADXL345. * 
+****/
 extern void celerite(void){
   static volatile int fd;
   /* Ouverture du bus i2c en lecutre et ecriture,
