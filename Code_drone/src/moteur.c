@@ -31,7 +31,8 @@ extern volatile float distance;
 
 /****
 * @function cycle
-* Definit pour chaque moteur la valeur de la puissance à transmettre 
+* @param valeur : Vitesse de rotation
+* Definit pour chaque moteur la valeur de la puissance à transmettre
 ****/
 extern void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
@@ -75,6 +76,7 @@ static void calibration(void){
 
 /****
 * @function *moteur
+* @param *args : Structure definissant les parametre d'un moteur
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
