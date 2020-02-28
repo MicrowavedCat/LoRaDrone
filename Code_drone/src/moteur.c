@@ -86,9 +86,10 @@ static void *moteur(void *args){
   }
 }
 
+volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
+
 /* Permet l'atterissage automatique */
 extern void atterissage(void){
-   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
    /* Coupe les moteurs si on est au niveau du sol */
    if((volatile unsigned short int)distance <= 20)
       cycle(MIN);
@@ -104,7 +105,6 @@ extern void atterissage(void){
 
 extern void propulsion(void){
   calibration();
-  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   volatile unsigned short int *vitesse = {MIN};
   volatile unsigned short int pin;
