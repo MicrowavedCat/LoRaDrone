@@ -32,7 +32,7 @@ extern volatile float distance;
 /****
 * @function cycle
 * @param valeur : Vitesse de rotation
-* Definit pour chaque moteur la valeur de la puissance à transmettre
+* Definit pour tousl les moteurs la meme valeur de la puissance à transmettre
 ****/
 extern void cycle(unsigned short int valeur){
   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
