@@ -125,11 +125,11 @@ extern void propulsion(void){
      p->id = i;
 
     /* Puissance de rotation configuree sur chaque helice */
-    for(volatile unsigned short int j = 0; j < 4; j++)
+    for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
        pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
   }
  /* Lancement de tous les moteurs */
- for(volatile unsigned short int j = 0; j < 4; j++)
+ for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
     pthread_join(th_moteur[j], NULL);
  /* Detacher les taches */
  pthread_exit(NULL);
