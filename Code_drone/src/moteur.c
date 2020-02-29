@@ -103,6 +103,7 @@ static void *moteur(void *args){
 ****/
 extern void propulsion(void){
   calibration();
+  /* Rappel en variable des arguments de la structure */
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   static volatile unsigned short int vitesse[NB_MOTEUR] = {MIN};
@@ -118,7 +119,7 @@ extern void propulsion(void){
      
      printf("Vitesse : "); 
      scanf("%d", &vitesse);
-     p->puissance = vitesse;
+     p->puissance = *vitesse;
      
      printf("GPIO : "); 
      scanf("%d", &i);
