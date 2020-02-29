@@ -65,10 +65,13 @@ static void filtrage(void){
 	coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
-    }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
-       !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
-       !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
-       (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
+    }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) &&
+	     !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
+	     !(strcmp(extraction(msg_recu, 12, 14), "BA")) &&
+	     !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
+	     !(strcmp(extraction(msg_recu, 21, 23), "YB")) &&
+	     !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
+	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du bouton de gauche */
