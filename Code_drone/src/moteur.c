@@ -107,7 +107,7 @@ extern void propulsion(void){
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   static volatile unsigned short int vitesse[NB_MOTEUR] = {MIN};
-   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
+  /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
   static volatile unsigned short int i;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
@@ -117,11 +117,11 @@ extern void propulsion(void){
   while(1){
      usleep(100000);
      
-     printf("Vitesse : "); 
+     printf("Vitesse : ");
      scanf("%d", &vitesse);
      p->puissance = *vitesse;
      
-     printf("GPIO : "); 
+     printf("GPIO : ");
      scanf("%d", &i);
      p->id = i;
 
@@ -129,12 +129,12 @@ extern void propulsion(void){
     for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
        pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
   }
- /* Lancement de tous les moteurs */
- for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
+  /* Lancement de tous les moteurs */
+  for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
     pthread_join(th_moteur[j], NULL);
- /* Detacher les taches */
- pthread_exit(NULL);
- free((void *)p);
+  /* Detacher les taches */
+  pthread_exit(NULL);
+  free((void *)p);
 }
 
 /****
