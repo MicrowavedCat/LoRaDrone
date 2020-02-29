@@ -47,8 +47,11 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
     return msg - longueur; /* Chaine extraite */
 }
 
-/* Filtre les message recus en vérifiant les elements qui le compose,
-les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage */
+/**** 
+* @function filtrage
+* Filtre les message recus en vérifiant les elements qui le compose,
+* les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage
+****/
 static void filtrage(void){
     /* Si on recoit le message STOP, on arrete d'urgence le drone */
     if(!strcmp(msg_recu, STOP)){
@@ -74,17 +77,17 @@ static void filtrage(void){
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
-	/* Position en abscisse du bouton de gauche */
+	/* Position en abscisse du joystick de gauche */
         tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
-        /* Position en ordonnee du bouton de gauche */
+        /* Position en ordonnee du joystick de gauche */
         tmp[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
-        /* Position enfoncee ou non du bouton de gauche */
+        /* Position enfoncee ou non du joystick de gauche */
         tmp[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
-        /* Position en abscisse du bouton de droite */
+        /* Position en abscisse du joystick de droite */
         tmp[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
-        /* Position en ordonnee du bouton de droite */
+        /* Position en ordonnee du joystick de droite */
         tmp[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
-        /* Position enfoncee ou non du bouton de droite */
+        /* Position enfoncee ou non du joystick de droite */
         tmp[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
 	 if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) 
 	    || (tmp[2] == 0 || tmp[2] == 1) || (tmp[3] >= 0 && tmp[3] <= 4095) 
@@ -97,7 +100,11 @@ static void filtrage(void){
     }
 }
 
-/* Fonction permettant de lire le flux de donnees envoye par la telecommande */
+/****
+* @function *lecture
+* @param *flux : le descripteur de flux de donnée
+* Fonction permettant de lire le flux de donnees envoye par la telecommande 
+****/
 static void *lecture(void * flux){
     static volatile unsigned short int i = 0;
     /* Variable de recuperation des caracteres servant de tampon */
@@ -125,7 +132,11 @@ static void *lecture(void * flux){
     }
 }
 
-/* Fonction permettant d'ecrire dans le flux de donnees a la telecommande */
+/****
+* @function *ecriture
+* @param *flux : le descripteur de flux de donnée
+* Fonction permettant d'ecrire dans le flux de donnees a la telecommande
+****/
 static void *ecriture(void * flux) {
     /* Variable booléenne servant d'indice d'intégrité */
     static volatile unsigned short int validation = 0;
@@ -143,8 +154,11 @@ static void *ecriture(void * flux) {
      }
 }
 
-/* Permet de determiner toutes les actions a effectuer,
-permettant de terminer la communciations drone-telecommande */
+/****
+* @function sortie
+* Permet de determiner toutes les actions a effectuer,
+* permettant de terminer la communciations drone-telecommande 
+****/
 static void sortie(void){
     free(msg_recu);
     serialClose(fd);
@@ -152,7 +166,10 @@ static void sortie(void){
     exit(0);
 }
 
-/* Listing de tous les processus a creer et lancer en multitache */
+/****
+* @function transmission
+* Listing de tous les processus a creer et lancer en multitache 
+****/
 extern void transmission(void){
     for(int i = 0; i < 6; i++) coordonnee[i] = 0;
     connexion();
