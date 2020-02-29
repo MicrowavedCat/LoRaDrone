@@ -116,11 +116,11 @@ extern void propulsion(void){
    
   while(1){
      usleep(100000);
-     
+
      printf("Vitesse : ");
      scanf("%d", &vitesse);
      p->puissance = *vitesse;
-     
+
      printf("GPIO : ");
      scanf("%d", &i);
      p->id = i;
