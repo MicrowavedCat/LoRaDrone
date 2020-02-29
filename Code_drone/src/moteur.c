@@ -155,4 +155,5 @@ extern void atterissage(void){
    }else if((volatile unsigned short int)distance <= 20)
       /* Coupe les moteurs si on est au niveau du sol */
       cycle(MIN);
+   free((void *)p);
 }
