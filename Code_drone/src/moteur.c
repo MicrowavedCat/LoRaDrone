@@ -91,7 +91,7 @@ static void *moteur(void *args){
       tmp = vitesse;
       printf("--> puissance = %d\n", tmp);
       printf("--> ID du GPIO = %d\n", i);
-      pwmWrite(PIN[i], valeur);
+      pwmWrite(PIN[i], tmp);
     }
     usleep(10000);
   }
