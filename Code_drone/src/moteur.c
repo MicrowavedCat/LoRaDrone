@@ -81,14 +81,15 @@ static void calibration(void){
 ****/
 static void *moteur(void *args){
   volatile unsigned short int *vitesse = ((struct parametre*)args)->puissance;
-  volatile unsigned short int pin = ((struct parametre*)args)->id;
+  /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
+  volatile unsigned short int i = ((struct parametre*)args)->id;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
    if(vitesse != tmp){
       tmp = vitesse;
-      pwmWrite(PIN[pin], valeur);
+      pwmWrite(PIN[i], valeur);
       printf("--> puissance = %d\n", tmp);
       printf("--> ID du GPIO = %d\n", pin);
     }
@@ -105,7 +106,7 @@ extern void propulsion(void){
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   volatile unsigned short int *vitesse = {MIN};
-  volatile unsigned short int pin;
+  volatile unsigned short int gpio;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
   
@@ -119,8 +120,8 @@ extern void propulsion(void){
      p->puissance = vitesse;
      
      printf("GPIO : "); 
-     scanf("%d", &pin);
-     p->id = pin;
+     scanf("%d", &gpio);
+     p->id = gpio;
 
     /* Puissance de rotation configuree sur chaque helice */
     for(volatile unsigned short int i = 0; i < 4; i++)
