@@ -18,9 +18,9 @@ static const unsigned short int PIN[NB_MOTEUR] = {
 /* Parametre d'un moteur, avec la position de son PIN,
 sa puissance de rotation, et une securisation de donnee */
 struct parametre{
-   volatile unsigned short int *puissance;
+   volatile unsigned short int puissance;
    volatile unsigned short int id;
-   volatile pthread_mutex_t *mutex;
+   volatile pthread_mutex_t mutex;
 };
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
@@ -80,18 +80,18 @@ static void calibration(void){
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-  volatile unsigned short int *vitesse = ((struct parametre*)args)->puissance;
+  volatile unsigned short int vitesse = ((struct parametre*)args)->puissance;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
   volatile unsigned short int i = ((struct parametre*)args)->id;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
   while(1){
-    /* On ne change la vitesse que si elle est differente de l'initialisation */
+    /* On ne change la vitesse que si elle est differente de la precedente */
    if(vitesse != tmp){
       tmp = vitesse;
-      pwmWrite(PIN[i], valeur);
       printf("--> puissance = %d\n", tmp);
-      printf("--> ID du GPIO = %d\n", pin);
+      printf("--> ID du GPIO = %d\n", i);
+      pwmWrite(PIN[i], valeur);
     }
     usleep(10000);
   }
@@ -105,7 +105,7 @@ extern void propulsion(void){
   calibration();
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
-  static volatile unsigned short int *vitesse = {MIN};
+  static volatile unsigned short int vitesse[NB_MOTEUR] = {MIN};
    /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
   static volatile unsigned short int i;
   /* Thread a creer */
