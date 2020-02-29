@@ -88,7 +88,9 @@ static void *moteur(void *args){
     /* On ne change la vitesse que si elle est differente de l'initialisation */
    if(vitesse != tmp){
       tmp = vitesse;
-      pwmWrite(PIN[P->id], valeur);
+      pwmWrite(PIN[pin], valeur);
+      printf("--> puissance = %d\n", tmp);
+      printf("--> ID du GPIO = %d\n", pin);
     }
     usleep(10000);
   }
