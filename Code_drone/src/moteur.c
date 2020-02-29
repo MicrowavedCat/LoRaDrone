@@ -142,6 +142,9 @@ extern void propulsion(void){
 * Permet l'atterissage automatique
 ****/
 extern void atterissage(void){
+  /* Rappel en variable des arguments de la structure */
+  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
+  /* Si le drone est a 1 metre du sol */
   if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation jusqu'a ce qu'il atterisse. */
