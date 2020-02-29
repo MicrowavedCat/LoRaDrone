@@ -5,6 +5,9 @@ extern volatile short int acceleration[3];
 
 /**** 
 * @function adressage
+* @param flux
+* @param *config
+* @param espace
 * Permet de verifier la validation d'une transaction i2c d'adressage
 ****/
 static void adressage(volatile int flux, unsigned char *config,
@@ -17,6 +20,9 @@ static void adressage(volatile int flux, unsigned char *config,
 
 /****
 * @function position
+* @param axe
+* @param *data
+* @param i
 * Permet de definir le format des valeurs des axes de l'accelerometre ADXL345
 ****/
 static volatile short int position(volatile short int axe,
