@@ -105,8 +105,9 @@ extern void propulsion(void){
   calibration();
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
-  volatile unsigned short int *vitesse = {MIN};
-  volatile unsigned short int gpio;
+  static volatile unsigned short int *vitesse = {MIN};
+   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
+  static volatile unsigned short int i;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
   
@@ -120,16 +121,16 @@ extern void propulsion(void){
      p->puissance = vitesse;
      
      printf("GPIO : "); 
-     scanf("%d", &gpio);
-     p->id = gpio;
+     scanf("%d", &i);
+     p->id = i;
 
     /* Puissance de rotation configuree sur chaque helice */
-    for(volatile unsigned short int i = 0; i < 4; i++)
-       pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
+    for(volatile unsigned short int j = 0; j < 4; j++)
+       pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
   }
  /* Lancement de tous les moteurs */
- for(volatile unsigned short int i = 0; i < 4; i++)
-    pthread_join(th_moteur[i], NULL);
+ for(volatile unsigned short int j = 0; j < 4; j++)
+    pthread_join(th_moteur[j], NULL);
  /* Detacher les taches */
  pthread_exit(NULL);
  free((void *)p);
