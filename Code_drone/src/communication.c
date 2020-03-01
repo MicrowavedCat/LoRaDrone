@@ -16,24 +16,6 @@ static unsigned char *msg_recu = "";
 extern volatile unsigned short int coordonnee[6];
 
 /****
-* @function connexion
-* Verifie l'ouverture du flux de communication serie ttyAMA0 
-****/
-static void connexion(void){
-    /* Dispositif d'entree et nombre de caracteres par seconde */
-    fd = serialOpen(FLUX, 9600);
-    /* Probleme d'ouverture serie du flux de connexion */
-    if(fd < 0){
-        puts("Erreur communication");
-        exit(1);
-    /* Erreur de deploiement de certaines fonctionnalite de la librairie wiringPi */
-    }else if(wiringPiSetup() == -1){
-        puts("Erreur de librairie");
-        exit(2);
-    }
-}
-
-/****
 * @function *extraction
 * @param *chaine : chaine de caractere source
 * @param debut : case de depart de la sous chaine de destination
@@ -48,8 +30,7 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
     /* Allocation de la taille de la chaine finale a la longueur + 1 */
     unsigned char *msg = (unsigned char*)malloc(sizeof(unsigned char) * (longueur + 1));
     /* On extrait et copie le(s) caractere(s) entre les cases de debut et de fin */
-    for(volatile unsigned short int i = debut;
-        i < fin && (*(chaine + i) != '\0'); i++){
+    for(volatile unsigned short int i = debut; i<fin && (*(chaine + i)!='\0'); i++){
         *msg = *(chaine + i);
         msg++;
     }
@@ -67,7 +48,7 @@ static void filtrage(void){
     if(!strcmp(msg_recu, STOP)){
 	cycle(0);
 	/* Remise a 0 des valeurs par securite */
-        for(volatile unsigned short int i = 0; i < 6; i++) 
+        for(volatile unsigned short int i=0; i<6; i++) 
             coordonnee[i] = 0;
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     }else if(!strcmp(msg_recu, SECURITE)){
@@ -82,7 +63,7 @@ static void filtrage(void){
 	     !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
 	     !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
-        /* Verification des coordonnees de pilotage dans le message */
+        /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du joystick de gauche */
         tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
@@ -100,10 +81,28 @@ static void filtrage(void){
 	    || (tmp[2] == 0 || tmp[2] == 1) || (tmp[3] >= 0 && tmp[3] <= 4095) 
 	    || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)){
             /* Les valeurs des joysticks renvoient entre 0 et 4095, et un bouton enfonce, 0 ou 1.
-            Si les coordonnees ne correspondent pas a cet intervalle. */
+            Si les coordonnees correspondent, le tampon de verification est egal aux coordonnees. */
             for(volatile unsigned short int i=0; i<6; i++)
 	        coordonnee[i] = tmp[i];
         }
+    }
+}
+
+/****
+* @function connexion
+* Verifie l'ouverture du flux de communication serie ttyAMA0 
+****/
+static void connexion(void){
+    /* Dispositif d'entree et nombre de caracteres par seconde */
+    fd = serialOpen(FLUX, 9600);
+    /* Probleme d'ouverture serie du flux de connexion */
+    if(fd < 0){
+        puts("Erreur communication");
+        exit(1);
+    /* Erreur de deploiement de certaines fonctionnalite de la librairie wiringPi */
+    }else if(wiringPiSetup() == -1){
+        puts("Erreur de librairie");
+        exit(2);
     }
 }
 
