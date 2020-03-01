@@ -177,7 +177,6 @@ static void sortie(void){
 * Listing de tous les processus a creer et lancer en multitache 
 ****/
 extern void transmission(void){
-    for(int i = 0; i < 6; i++) coordonnee[i] = 0;
     connexion();
     static pthread_t th_com[2];
     /* Ecriture et lecture */
