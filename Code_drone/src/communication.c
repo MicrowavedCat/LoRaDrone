@@ -35,9 +35,9 @@ static void connexion(void){
 
 /****
 * @function *extraction
-* @param *chaine
-* @param debut
-* @param fin
+* @param *chaine : chaine de caractere source
+* @param debut : case de depart de la sous chaine de destination
+* @param fin : case finale de la sous chaine de destination
 * Extrait une sous-chaine d'une chaine de caractere, 
 * entre une case de debut et de fin 
 ****/
