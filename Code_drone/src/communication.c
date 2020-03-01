@@ -15,7 +15,10 @@ static volatile int fd;
 static unsigned char *msg_recu = "";
 extern volatile unsigned short int coordonnee[6];
 
-/* Verifie l'ouverture du flux de communication serie ttyAMA0 */
+/****
+* @function connexion
+* Verifie l'ouverture du flux de communication serie ttyAMA0 
+****/
 static void connexion(void){
     /* Dispositif d'entree et nombre de caracteres par seconde */
     fd = serialOpen(FLUX, 9600);
@@ -30,7 +33,14 @@ static void connexion(void){
     }
 }
 
-/* Extrait une sous-chaine d'une chaine de caractere, entre une case de debut et de fin */
+/****
+* @function *extraction
+* @param *chaine
+* @param debut
+* @param fin
+* Extrait une sous-chaine d'une chaine de caractere, 
+* entre une case de debut et de fin 
+****/
 static const unsigned char* extraction(volatile unsigned char *chaine,
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
@@ -68,12 +78,9 @@ static void filtrage(void){
 	coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
-    }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) &&
-	     !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
-	     !(strcmp(extraction(msg_recu, 12, 14), "BA")) &&
-	     !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
-	     !(strcmp(extraction(msg_recu, 21, 23), "YB")) &&
-	     !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
+    }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
+	     !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
+	     !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
