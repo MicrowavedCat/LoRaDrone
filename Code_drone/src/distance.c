@@ -26,14 +26,22 @@ static void configuration(void){
   /* Ici on effectue un front descandant soit le fait de passer,
   de l'etat du signal logique haut a bas sur le recepteur
   Ainsi, a 0, le signal d'horloge interne et termine la reception.
+  -----|
+    1  | (Etat haut du signal logique)
+       V
+    0  | (Etat bas du signal logique)
+       |---------
   */
   digitalWrite(GPIO[0], 1);
   usleep(10);
   digitalWrite(GPIO[0], 0);
 }
 
-/* Permet de relever le temps entre une emission,
-et une reception d'onde utlrasonore avec l'horloge interne */
+/****
+* @function propagation
+* Permet de relever le temps entre une emission,
+* et une reception d'onde utlrasonore avec l'horloge interne.
+****/
 static const long propagation(void){
   static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
@@ -42,7 +50,10 @@ static const long propagation(void){
   return tv.tv_sec * (volatile unsigned int)1e6 + tv.tv_usec;
 }
 
-extern void collision(void){
+/****
+* @function detection
+****/
+extern void detection(void){
   usleep(10000);
   configuration();
   static volatile unsigned short int echo = 0, tmp = 0,
