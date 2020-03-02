@@ -9,6 +9,10 @@ static const unsigned short int GPIO[2] = {
 /* Renvoie de la distance */
 extern volatile float distance;
 
+/****
+* @function configuration
+* Permet de configurer le GPIO recepteur et emetteur
+****/
 static void configuration(void){
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
@@ -19,10 +23,12 @@ static void configuration(void){
   pinMode(GPIO[0], OUTPUT);
   /* Pin d'emission en mode entree */
   pinMode(GPIO[1], INPUT);
-  /* Etat du signal logique haut */
+  /* Ici on effectue un front descandant soit le fait de passer,
+  de l'etat du signal logique haut a bas sur le recepteur
+  Ainsi, a 0, le signal d'horloge interne et termine la reception.
+  */
   digitalWrite(GPIO[0], 1);
   usleep(10);
-  /* Etat du signal logique bas */
   digitalWrite(GPIO[0], 0);
 }
 
