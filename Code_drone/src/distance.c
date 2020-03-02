@@ -74,6 +74,9 @@ extern void altitude(void){
       reception = propagation();
     }
   }
-  /* Calcul de la distance */
+  /* Distance parcourue par le son : vitesse du son (340 m/s) * temps aller retour du son / 2
+  Distance = 340m/s * t(en s) / 2 = 34000 cm/1000000μs * t(en μs) /2 = 17/1000 * t
+  T = Distance * 1000 /17 = D * 58,82μs
+  Distance en cm = temps propagation (en μs) / 58 */
   distance = (reception - emission) / 58;
 }
