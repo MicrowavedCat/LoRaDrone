@@ -51,9 +51,9 @@ static const long propagation(void){
 }
 
 /****
-* @function detection
+* @function altitude
 ****/
-extern void detection(void){
+extern void altitude(void){
   usleep(10000);
   configuration();
   static volatile unsigned short int echo = 0, tmp = 0,
