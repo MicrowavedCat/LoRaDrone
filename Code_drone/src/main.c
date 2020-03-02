@@ -14,7 +14,7 @@ extern void main(void){
     /* Acceleration lineaire du drone */
     pthread_create(&th[2], NULL, (void *)celerite, NULL);
     /* Distance par rapport au sol du drone */
-    pthread_create(&th[3], NULL, (void *)detection, NULL);
+    pthread_create(&th[3], NULL, (void *)altitude, NULL);
     
     for(volatile unsigned short int i = 0; i < 4; i++) 
         pthread_join(th[i], NULL);
