@@ -30,7 +30,7 @@ static void configuration(void){
     1  | (Etat haut du signal logique)
        V
     0  | (Etat bas du signal logique)
-       |---------
+       |-----
   */
   digitalWrite(GPIO[0], 1);
   usleep(10);
