@@ -40,7 +40,8 @@ static inline long propagation(void){
 
 /****
 * @function altitude
-* Permet de definir
+* Permet de definir quand l'onde est emise et recue, et calcul une distance,
+* une fois qu'on a valide le fait qu'elle bien fait un echo.
 ****/
 extern void altitude(void){
   usleep(10000);
