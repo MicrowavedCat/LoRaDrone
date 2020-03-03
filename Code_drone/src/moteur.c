@@ -156,7 +156,7 @@ extern void atterissage(void){
   /* Si le drone est a 1 metre du sol */
   if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
-      la puissance de rotation jusqu'a ce qu'il atterisse. */
+      la puissance de rotation, jusqu'a ce qu'il atterisse. */
       for(volatile unsigned short int i = p->puissance; i >= 480; i--){
          sleep(2);
          cycle(i);
