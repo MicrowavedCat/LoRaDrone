@@ -45,10 +45,17 @@ static void configuration(void){
 static const long propagation(void){
   static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
-  gettimeofday(&tv, NULL);
+  clock_gettime(CLOCK_REALTIME, &tv);
   /* On ecrit le temps en une notation scientifique constante */
   return tv.tv_sec * (volatile unsigned int)1e6 + tv.tv_usec;
 }
+/*
+static inline double propagation(void) {
+    struct timespec tv;
+    clock_gettime(CLOCK_REALTIME, &tv);
+    return tv.tv_sec + tv.tv_nsec * 1.0e-9;
+}
+*/
 
 /****
 * @function altitude
