@@ -47,7 +47,7 @@ static const long propagation(void){
   /* Date et heure courante de l'horloge interne */
   clock_gettime(CLOCK_REALTIME, &tv);
   /* On ecrit le temps en une notation scientifique constante */
-  return tv.tv_sec * (volatile unsigned int)1e6 + tv.tv_usec;
+  return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
 /*
 static inline double propagation(void) {
@@ -59,6 +59,7 @@ static inline double propagation(void) {
 
 /****
 * @function altitude
+* Permet de definir
 ****/
 extern void altitude(void){
   usleep(10000);
