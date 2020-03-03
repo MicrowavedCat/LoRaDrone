@@ -58,9 +58,11 @@ extern void altitude(void){
     digitalWrite(GPIO[0], 1);
     usleep(10);
     digitalWrite(GPIO[0], 0);
+    
     static volatile unsigned short int echo = 0, tmp = 0,
         impulsion = 0, reflection = 0;
     static long emission, reception;
+    
     /* Tant qu'il n'y a pas eu d'onde emise ou recue */
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
