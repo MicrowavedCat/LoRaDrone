@@ -83,5 +83,6 @@ extern void altitude(void){
     T = Distance * 1000 /17 = D * 58,82μs
     Distance en cm = temps propagation (en μs) / 58 */
     distance = (reception - emission) / 58;
+    usleep(500000);
   }
 }
