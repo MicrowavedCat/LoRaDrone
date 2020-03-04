@@ -30,10 +30,11 @@ static void configuration(void){
 * Permet de relever le temps entre une emission,
 * et une reception d'onde utlrasonore avec l'horloge interne.
 ****/
-static const long propagation(void){
+static const unsigned int propagation(void){
   static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
-  clock_gettime(CLOCK_REALTIME, &tv);
+  gettimeofday(&tv, NULL);
+  //clock_gettime(CLOCK_REALTIME, &tv);
   /* On ecrit le temps en une notation scientifique constante */
   return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
@@ -49,6 +50,7 @@ extern void altitude(void){
   while(1){
     /* Ici on effectue un front descandant soit le fait de passer,
     de l'etat du signal logique haut a bas, sur le recepteur.
+    Par default, l'etat du signal logique est bas, on l'a passer a haut.
     Ainsi, a 0, le signal d'horloge interne termine la reception.
     -----|
       1  | (Etat haut du signal logique)
