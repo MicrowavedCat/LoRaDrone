@@ -60,12 +60,12 @@ extern void altitude(void){
   usleep(10000);
   configuration();
   while(1){
-    /* Impulsion - reception */
-    etalonnage();
-
+    
     static volatile unsigned short int echo, tmp, 
        impulsion, reflection;
     static volatile unsigned int emission, reception;
+    /* Impulsion - reception */
+    etalonnage();
     /* Toutes les variable sont intialisee a une valeur,
     et celles-ci changeront lors du programme. */
     echo = tmp = impulsion = reflection = 0;
