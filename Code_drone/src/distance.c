@@ -38,9 +38,9 @@ static void configuration(void){
   pinMode(PIN[1], INPUT);
 }
 /****
-* @function parametrage
+* @function etalonnage
 ****/
-static void parametrage(void){
+static void etalonnage(void){
   /* Ici on effectue un front descandant soit le fait de passer,
   de l'etat du signal logique haut a bas, sur le recepteur.
   Ainsi, a 0, le signal d'horloge interne termine la reception.
@@ -74,7 +74,7 @@ extern void altitude(void){
     echo = tmp = impulsion = reflection = 0;
     
     /* Impulsion et reception */
-    parametrage();
+    etalonnage();
     
     /* Tant qu'il n'y a pas eu d'onde emise ou recue */
     while((impulsion == 0) || (reflection == 0)){
