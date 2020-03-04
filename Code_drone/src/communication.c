@@ -45,6 +45,8 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
 static void filtrage(void){
     /* Si on recoit le message STOP, on arrete d'urgence le drone */
     if(!strcmp(msg_recu, STOP)){
+	/* On coupe immediatement la rotation des moteurs, 
+        sans passer par conversion du message, pour gagner du temps. */
 	cycle(0);
 	/* Remise a 0 des valeurs par securite */
         for(volatile unsigned short int i=0; i<6; i++) 
@@ -54,13 +56,12 @@ static void filtrage(void){
         volatile unsigned short int i;
         for(i = 0; i < 2; i++){ coordonnee[i] = 2048; }
         for(i = 3; i < 5; i++){ coordonnee[i] = 2048; }
-        coordonnee[2] = 0;
-	coordonnee[5] = 0;
+        coordonnee[2] = 0; coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
-    }else if(!(strcmp(extraction(msg_recu, 0, 2), "XA")) && !(strcmp(extraction(msg_recu, 6, 8), "YA")) &&
-	     !(strcmp(extraction(msg_recu, 12, 14), "BA")) && !(strcmp(extraction(msg_recu, 15, 17), "XB")) &&
-	     !(strcmp(extraction(msg_recu, 21, 23), "YB")) && !(strcmp(extraction(msg_recu, 27, 29), "BB")) &&
+    }else if(!(strcmp(extraction(msg_recu,0,2),"XA")) && !(strcmp(extraction(msg_recu,6,8),"YA")) &&
+	     !(strcmp(extraction(msg_recu,12,14),"BA")) && !(strcmp(extraction(msg_recu,15,17),"XB")) &&
+	     !(strcmp(extraction(msg_recu,21,23),"YB")) && !(strcmp(extraction(msg_recu,27,29),"BB")) &&
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
