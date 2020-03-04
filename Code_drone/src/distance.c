@@ -39,6 +39,22 @@ static const unsigned int propagation(void){
   return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
 
+void etalonnage(){
+  /* Ici on effectue un front descandant soit le fait de passer,
+  de l'etat du signal logique haut a bas, sur le recepteur.
+  Par default, l'etat du signal logique est bas, on l'a passer a haut.
+  Ainsi, a 0, le signal d'horloge interne termine la reception.
+  -----|
+    1  | (Etat haut du signal logique)
+       V
+    0  | (Etat bas du signal logique)
+       |-----
+  */
+   digitalWrite(PIN[0], 1);
+   usleep(10);
+   digitalWrite(PIN[0], 0);
+}
+
 /****
 * @function altitude
 * Permet de definir quand l'onde est emise et recue, et calcul une distance,
@@ -48,19 +64,8 @@ extern void altitude(void){
   usleep(10000);
   configuration();
   while(1){
-    /* Ici on effectue un front descandant soit le fait de passer,
-    de l'etat du signal logique haut a bas, sur le recepteur.
-    Par default, l'etat du signal logique est bas, on l'a passer a haut.
-    Ainsi, a 0, le signal d'horloge interne termine la reception.
-    -----|
-      1  | (Etat haut du signal logique)
-         V
-      0  | (Etat bas du signal logique)
-         |-----
-    */
-    digitalWrite(PIN[0], 1);
-    usleep(10);
-    digitalWrite(PIN[0], 0);
+    /* Impulsion - reception */
+    etalonnage();
     
     static volatile unsigned short int echo = 0, tmp = 0,
         impulsion = 0, reflection = 0;
