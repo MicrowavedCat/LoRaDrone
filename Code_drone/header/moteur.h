@@ -3,5 +3,6 @@
 
 extern void cycle(volatile unsigned short int);
 extern void propulsion(void);
+extern void atterissage(void);
 
 #endif
