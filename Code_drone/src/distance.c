@@ -34,7 +34,6 @@ static const unsigned int propagation(void){
   static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
   gettimeofday(&tv, NULL);
-  //clock_gettime(CLOCK_REALTIME, &tv);
   /* On ecrit le temps en une notation scientifique constante */
   return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
@@ -66,11 +65,11 @@ extern void altitude(void){
   while(1){
     /* Impulsion - reception */
     etalonnage();
-    
+
     static volatile unsigned short int echo = 0, tmp = 0,
         impulsion = 0, reflection = 0;
     static volatile unsigned int emission, reception;
-    
+
     /* Tant qu'il n'y a pas eu d'onde emise ou recue */
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
