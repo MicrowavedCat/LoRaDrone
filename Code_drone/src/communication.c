@@ -1,4 +1,3 @@
-#include "../header/global.h"
 #include "../header/communication.h"
 #include "../header/moteur.h"
 
