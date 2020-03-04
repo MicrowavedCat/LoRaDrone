@@ -63,10 +63,13 @@ extern void altitude(void){
     /* Impulsion - reception */
     etalonnage();
 
-    static volatile unsigned short int echo = 0, tmp = 0,
-        impulsion = 0, reflection = 0;
+    static volatile unsigned short int echo, tmp, 
+       impulsion, reflection;
     static volatile unsigned int emission, reception;
-
+    /* Toutes les variable sont intialisee a une valeur,
+    et celles-ci changeront lors du programme. */
+    echo = tmp = impulsion = reflection = 0;
+    
     /* Tant qu'il n'y a pas eu d'onde emise ou recue */
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
