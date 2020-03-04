@@ -48,8 +48,8 @@ extern void altitude(void){
   configuration();
   while(1){
     /* Ici on effectue un front descandant soit le fait de passer,
-    de l'etat du signal logique haut a bas sur le recepteur
-    Ainsi, a 0, le signal d'horloge interne et termine la reception.
+    de l'etat du signal logique haut a bas, sur le recepteur.
+    Ainsi, a 0, le signal d'horloge interne termine la reception.
     -----|
       1  | (Etat haut du signal logique)
          V
