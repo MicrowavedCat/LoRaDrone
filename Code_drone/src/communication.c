@@ -54,8 +54,8 @@ static void filtrage(void){
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     }else if(!strcmp(msg_recu, SECURITE)){
         volatile unsigned short int i;
-        for(i = 0; i < 2; i++){ coordonnee[i] = 2048; }
-        for(i = 3; i < 5; i++){ coordonnee[i] = 2048; }
+        for(i=0; i<2; i++){ coordonnee[i] = 2048; }
+        for(i=3; i<5; i++){ coordonnee[i] = 2048; }
         coordonnee[2] = 0; coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
@@ -183,7 +183,7 @@ extern void transmission(void){
     pthread_create(&th_com[0], NULL, ecriture, (void *)&fd);
     pthread_create(&th_com[1], NULL, lecture, (void *)&fd);
     /* Lancement de toutes les taches */
-    for(volatile unsigned short int i = 0; i < 2; i++)
+    for(volatile unsigned short int i=0; i<2; i++)
         pthread_join(th_com[i], NULL);
     sortie();
 }
