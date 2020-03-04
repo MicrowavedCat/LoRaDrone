@@ -38,7 +38,7 @@ static const unsigned int propagation(void){
   return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
 
-void etalonnage(){
+static void etalonnage(){
   /* Ici on effectue un front descandant soit le fait de passer,
   de l'etat du signal logique haut a bas, sur le recepteur.
   Par default, l'etat du signal logique est bas, on l'a passer a haut.
