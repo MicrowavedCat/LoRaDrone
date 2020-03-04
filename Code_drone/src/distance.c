@@ -1,7 +1,7 @@
 #include "../header/distance.h"
 
 /* PIN sur le raspberry emtteur et recepteur */
-static const unsigned short int GPIO[2] = {
+static const unsigned short int PIN[2] = {
   21, /* Correspond au PIN recepteur physique 29 (BCM5) */
   22 /* Correspond au PIN emetteur physique 31 (BCM6) */
 };
@@ -20,9 +20,9 @@ static void configuration(void){
     exit(1);
   }
   /* Pin de reception en mode sortie */
-  pinMode(GPIO[0], OUTPUT);
+  pinMode(PIN[0], OUTPUT);
   /* Pin d'emission en mode entree */
-  pinMode(GPIO[1], INPUT);
+  pinMode(PIN[1], INPUT);
 }
 
 /****
@@ -56,9 +56,9 @@ extern void altitude(void){
       0  | (Etat bas du signal logique)
          |-----
     */
-    digitalWrite(GPIO[0], 1);
+    digitalWrite(PIN[0], 1);
     usleep(10);
-    digitalWrite(GPIO[0], 0);
+    digitalWrite(PIN[0], 0);
     
     static volatile unsigned short int echo = 0, tmp = 0,
         impulsion = 0, reflection = 0;
@@ -68,7 +68,7 @@ extern void altitude(void){
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
       /* Lecture de l'etat du signal logique du PIN emetteur */
-      echo = digitalRead(GPIO[1]);
+      echo = digitalRead(PIN[1]);
       /* On considere l'onde comme emise */
       if((impulsion == 0) && (tmp == 0) && (echo == 1)){
         impulsion = 1;
@@ -84,6 +84,7 @@ extern void altitude(void){
     T = Distance * 1000 /17 = D * 58,82μs
     Distance en cm = temps propagation (en μs) / 58 */
     distance = (reception - emission) / 58;
-    usleep(500000);
+    /* Relever altitude toutes les 1/2 secondes */
+    sleep(500000);
   }
 }
