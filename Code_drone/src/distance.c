@@ -1,7 +1,10 @@
 #include "../header/distance.h"
 
-#define PIN_RECEPTEUR 29 /* Correspond au PIN physique 40 (BCM21) */
-#define PIN_EMETTEUR 28 /* Correspond au PIN physique 38 (BCM20) */
+/* PIN sur le raspberry emtteur et recepteur */
+static const unsigned short int PIN[2] = {
+  29, /* Correspond au PIN recepteur physique 40 (BCM21) */
+  28 /* Correspond au PIN emetteur physique 38 (BCM20) */
+};
 
 /* Renvoie de la distance */
 extern volatile float distance;
@@ -30,9 +33,9 @@ static void configuration(void){
     exit(1);
   }
   /* Pin de reception en mode sortie */
-  pinMode(PIN_RECEPTEUR, OUTPUT);
+  pinMode(PIN[0], OUTPUT);
   /* Pin d'emission en mode entree */
-  pinMode(PIN_EMETTEUR, INPUT);
+  pinMode(PIN[1], INPUT);
 }
 
 static void etalonnage(){
@@ -45,9 +48,9 @@ static void etalonnage(){
     0  | (Etat bas du signal logique)
        |-----
    Par default, l'etat du signal logique est bas, on l'a passer a haut. */
-   digitalWrite(PIN_RECEPTEUR, 1);
+   digitalWrite(PIN[0], 1);
    usleep(10);
-   digitalWrite(PIN_RECEPTEUR, 0);
+   digitalWrite(PIN[0], 0);
 }
 
 /****
@@ -75,7 +78,7 @@ extern void altitude(void){
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
       /* Lecture de l'etat du signal logique du PIN emetteur */
-      echo = digitalRead(PIN_EMETTEUR);
+      echo = digitalRead(PIN[1]);
       /* On considere l'onde comme emise */
       if((impulsion == 0) && (tmp == 0) && (echo == 1)){
         impulsion = 1;
