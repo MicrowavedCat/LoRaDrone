@@ -1,29 +1,10 @@
 #include "../header/distance.h"
 
-/* PIN sur le raspberry emtteur et recepteur */
-static const unsigned short int PIN[2] = {
-  29, /* Correspond au PIN recepteur physique 40 (BCM21) */
-  22 /* Correspond au PIN emetteur physique 38 (BCM20) */
-};
+#define PIN_RECEPTEUR 29 /* Correspond au PIN physique 40 (BCM21) */
+#define PIN_EMETTEUR 28 /* Correspond au PIN physique 38 (BCM20) */
 
 /* Renvoie de la distance */
 extern volatile float distance;
-
-/****
-* @function configuration
-* Permet de configurer le GPIO recepteur et emetteur
-****/
-static void configuration(void){
-  /* Erreur de librairie */
-  if(wiringPiSetup() == -1){
-    puts("Erreur librairie");
-    exit(1);
-  }
-  /* Pin de reception en mode sortie */
-  pinMode(PIN[0], OUTPUT);
-  /* Pin d'emission en mode entree */
-  pinMode(PIN[1], INPUT);
-}
 
 /****
 * @function propagation
@@ -38,6 +19,22 @@ static const unsigned int propagation(void){
   return (volatile unsigned int)1e6 * tv.tv_sec + tv.tv_usec;
 }
 
+/****
+* @function configuration
+* Permet de configurer le GPIO recepteur et emetteur
+****/
+static void configuration(void){
+  /* Erreur de librairie */
+  if(wiringPiSetup() == -1){
+    puts("Erreur librairie");
+    exit(1);
+  }
+  /* Pin de reception en mode sortie */
+  pinMode(PIN_RECEPTEUR, OUTPUT);
+  /* Pin d'emission en mode entree */
+  pinMode(PIN_EMETTEUR, INPUT);
+}
+
 static void etalonnage(){
   /* Ici on effectue un front descandant soit le fait de passer,
   de l'etat du signal logique haut a bas, sur le recepteur.
@@ -49,9 +46,9 @@ static void etalonnage(){
     0  | (Etat bas du signal logique)
        |-----
   */
-   digitalWrite(PIN[0], 1);
+   digitalWrite(PIN_RECEPTEUR, 1);
    usleep(10);
-   digitalWrite(PIN[0], 0);
+   digitalWrite(PIN_RECEPTEUR, 0);
 }
 
 /****
@@ -74,7 +71,7 @@ extern void altitude(void){
     while((impulsion == 0) || (reflection == 0)){
       tmp = echo;
       /* Lecture de l'etat du signal logique du PIN emetteur */
-      echo = digitalRead(PIN[1]);
+      echo = digitalRead(PIN_EMETTEUR);
       /* On considere l'onde comme emise */
       if((impulsion == 0) && (tmp == 0) && (echo == 1)){
         impulsion = 1;
