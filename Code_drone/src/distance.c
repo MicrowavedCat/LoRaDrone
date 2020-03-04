@@ -30,7 +30,7 @@ static void configuration(void){
 * Permet de relever le temps entre une emission,
 * et une reception d'onde utlrasonore avec l'horloge interne.
 ****/
-static inline long propagation(void){
+static const long propagation(void){
   static struct timeval tv;
   /* Date et heure courante de l'horloge interne */
   clock_gettime(CLOCK_REALTIME, &tv);
