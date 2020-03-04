@@ -60,15 +60,17 @@ extern void altitude(void){
   usleep(10000);
   configuration();
   while(1){
-    
+    /* Variables de recuperation des etats des signaux logiques,
+    ainsi que des emissions et reflections ultrasons. */
     static volatile unsigned short int echo, tmp, 
        impulsion, reflection;
     static volatile unsigned int emission, reception;
-    /* Impulsion - reception */
-    etalonnage();
     /* Toutes les variable sont intialisee a une valeur,
     et celles-ci changeront lors du programme. */
     echo = tmp = impulsion = reflection = 0;
+    
+    /* Impulsion - reception */
+    etalonnage();
     
     /* Tant qu'il n'y a pas eu d'onde emise ou recue */
     while((impulsion == 0) || (reflection == 0)){
