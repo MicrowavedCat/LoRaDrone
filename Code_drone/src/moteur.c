@@ -97,6 +97,7 @@ static void *moteur(void *args){
   }
 }
 
+/* Argument pointant vers la structure des parametre moteur */
 volatile struct parametre *p;
 
 /****
