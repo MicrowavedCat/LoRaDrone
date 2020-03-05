@@ -150,7 +150,7 @@ extern void propulsion(void){
 * @function atterissage
 * Permet l'atterissage automatique
 ****/
-extern void atterissage(void){
+extern void atterrissage(void){
   /* Rappel en variable des arguments de la structure */
   volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Si le drone est a 1 metre du sol */
