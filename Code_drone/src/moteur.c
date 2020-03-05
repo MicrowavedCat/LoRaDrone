@@ -147,8 +147,8 @@ extern void propulsion(void){
 }
 
 /****
-* @function atterissage
-* Permet l'atterissage automatique
+* @function atterrissage
+* Permet l'atterrissage automatique
 ****/
 extern void atterrissage(void){
   /* Rappel en variable des arguments de la structure */
