@@ -71,8 +71,8 @@ extern void altitude(void){
     static volatile unsigned short int echo, tmp,
        impulsion, reflection;
     static volatile unsigned int emission, reception;
-    /* Toutes les variable sont intialisee a une valeur,
-    et celles-ci changeront lors du programme. */
+    /* Toutes les variable sont intialisee a 0,
+    et la valeur de celles-ci changera lors du programme. */
     echo = tmp = impulsion = reflection = 0;
     
     /* Impulsion et reception */
