@@ -129,12 +129,10 @@ extern void propulsion(void){
         }
      }
 
-     printf("Vitesse : ");
-     scanf("%d", &vitesse);
+     printf("Vitesse : "); scanf("%d", &vitesse);
      p->puissance = *vitesse;
 
-     printf("GPIO : ");
-     scanf("%d", &i);
+     printf("GPIO : "); scanf("%d", &i);
      p->id = i;
 
     /* Puissance de rotation configuree sur chaque helice */
