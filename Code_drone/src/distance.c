@@ -39,6 +39,8 @@ static void configuration(void){
 }
 /****
 * @function etalonnage
+* Permet de definir le signal d'horloge interne,
+* determinant anisi quand terminer la reception.
 ****/
 static void etalonnage(void){
   /* Ici on effectue un front descandant soit le fait de passer,
@@ -66,7 +68,7 @@ extern void altitude(void){
   while(1){
     /* Variables de recuperation des etats des signaux logiques,
     ainsi que des emissions et reflections ultrasons. */
-    static volatile unsigned short int echo, tmp, 
+    static volatile unsigned short int echo, tmp,
        impulsion, reflection;
     static volatile unsigned int emission, reception;
     /* Toutes les variable sont intialisee a une valeur,
