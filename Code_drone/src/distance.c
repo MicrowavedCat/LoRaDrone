@@ -5,7 +5,6 @@ static const unsigned short int PIN[2] = {
   29, /* Correspond au PIN recepteur physique 40 (BCM21) */
   28 /* Correspond au PIN emetteur physique 38 (BCM20) */
 };
-
 /* Renvoie de la distance */
 extern volatile float distance;
 
@@ -37,6 +36,7 @@ static void configuration(void){
   /* Pin d'emission en mode entree */
   pinMode(PIN[1], INPUT);
 }
+
 /****
 * @function etalonnage
 * Permet de definir le signal d'horloge interne,
