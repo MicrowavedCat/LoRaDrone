@@ -97,6 +97,8 @@ static void *moteur(void *args){
   }
 }
 
+volatile struct parametre *p;
+
 /****
 * @function propulsion
 * Definie l'action sur un ou plusieurs moteurs pour l'orienter
@@ -104,7 +106,7 @@ static void *moteur(void *args){
 extern void propulsion(void){
   calibration();
   /* Rappel en variable des arguments de la structure */
-  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
+  p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   static volatile unsigned short int vitesse[NB_MOTEUR] = {MIN};
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
@@ -151,8 +153,6 @@ extern void propulsion(void){
 * Permet l'atterrissage automatique
 ****/
 extern void atterrissage(void){
-  /* Rappel en variable des arguments de la structure */
-  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Si le drone est a 1 metre du sol */
   if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
@@ -164,5 +164,4 @@ extern void atterrissage(void){
    }else if((volatile unsigned short int)distance <= 15)
       /* Coupe les moteurs si on est au niveau du sol */
       cycle(MIN);
-   free((void *)p);
 }
