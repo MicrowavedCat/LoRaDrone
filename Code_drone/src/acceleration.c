@@ -29,7 +29,7 @@ static volatile short int position(volatile short int axe,
                             unsigned char *data, const unsigned short int i){
   /*
   - On determine le bit de poid faible de l'adresse donnees sur 32 bits,
-  avec un ET bit a bit de 11, multiplie par l'espace d'appareils reserves de 256.
+  avec un ET bit a bit du PIN SDA, multiplie par l'espace d'appareils reserves de 256.
   - Puis on y ajoute le bit de poid fort en gardant l'identite.
   */
   axe = (data[i+1] & 0x03) * 256 + data[i];
