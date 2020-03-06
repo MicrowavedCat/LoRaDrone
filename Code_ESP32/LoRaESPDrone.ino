@@ -1,18 +1,24 @@
 #define DEVELOPPEMENT       true                                      //Activer ou désactiver l'affichage de messages de débogage à la console
 
+
 #define PIN_RECEPTION       16                                        // Communication avec le module LoRa : on reçoit des informations sur le GPIO 16,
 #define PIN_TRANSMISSION    17                                          // on en envoie sur le 16,
 #define VITESSE_LORA        9600                                        // à une vitesse de 9600 bauds
+
 #define XA                  33                                        // PINs des joysticks, le GPIO 13 récupère les déplacements horizontaux du joystick de gauche,
 #define YA                  26                                          // le 12, ses déplacements verticaux,
 #define BA                  14                                          // le 14, s'il a été enfoncé,
 #define XB                  34                                          // le 27 récupère les déplacements horizontaux du joystick de droite,
 #define YB                  32                                          // le 26, ses déplacements verticaux,
 #define BB                  4                                           // le 15, s'il a été enfoncé
+
 #define BOUTON_STOP         35                                        // GPIO du bouton d'arrêt d'urgence
-#define PIN_ROUGE           23                                        // GPIO des LED : 25 = rouge
-#define PIN_VERT            22                                          // 33 = vert
-#define PIN_BLEU            19                                          // 32 = bleu
+
+#define PIN_JAUNE           13                                         // GPIO des LED : 12 = jaune
+#define PIN_VERT            12                                          // 12 = vert
+#define PIN_BLEU            15                                          // 15 = bleu
+#define PIN_ROUGE           2                                           // 2 = rouge
+
 #define MSG_LINK            "LINK\4"                                  // Messages possibles : "LINK\4" est un message qu'on doit recevoir afin d'établir une connexion
 #define MSG_PAIR            "PAIR\4"                                  // "PAIR\4" est la réponse qu'il faut envoyer au drone afin de le prévenir que la connexion est établie
 #define MSG_SECURITE        "SECURITE\4"                              // "SECURITE\4" est le message envoyé si la connexion est établie et que la sécurité est toujours activée
@@ -57,11 +63,12 @@ void setup() {
     pinMode(PIN_ROUGE, OUTPUT);           
     pinMode(PIN_VERT, OUTPUT);
     pinMode(PIN_BLEU, OUTPUT);
+    pinMode(PIN_JAUNE, OUTPUT);
     
     if (DEVELOPPEMENT) Serial.println("Allumé !");
     pthread_t threads[nb_threads];                                              // Création du tableau des threads
 
-    if (!digitalRead(BA) && analogRead(XB) == 4095 && analogRead(YB) == 4095) {                       // Permet de reprendre le contrôle du drone après avoir éteient la télécommande en plein vol
+    if (!digitalRead(BA)) {                       // Permet de reprendre le contrôle du drone après avoir éteient la télécommande en plein vol
         sprintf(message_recu, "%s", MSG_LINK);                                                          // au démarrage, garder le joystick de gauche enfoncé et celui de droite au maximum en haut à droite ;
         msg_confirmation_envoyes = true;                                                                // si cela a été fait, on fait croire à la télécommande qu'on a reçu le message contenu dans MSG_LINK,
         securite = false;                                                                               // que les messages de confirmation de la connexion ont été envoyés et que la sécurité a été enlevée
@@ -223,32 +230,32 @@ void joystick(char buffer[], char joystick, int X, int Y, int B) {
 
 
 /*####################################################################################################*/
-/*Partie concernant la gestion de la LED*/
+/*Partie concernant la gestion des LED*/
 
-/*Fonction assurant la modification de l'état des LED en fonction de tous les facteurs disponibles*/
+/*Fonction assurant la modification de l'état des LED en fonction de tous les facteurs disponibles*/ /* VERSION 2 */
 void *controle_led(void *argum) {
    while (true) {
       if (arret_urgence) {                                          // Bouton d'arrêt d'urgence enfoncé
           while (true) {                                            // Une fois activé, l'arrêt d'urgence ne peut plus être désactivé
-              rgb_led(1, 0, 0, 100);                                //  > Rouge rapide, 5 clignotements par seconde
+              rgb_led(1, 0, 0, 0, 100);                             //  > Rouge rapide, 5 clignotements par seconde
               delay(10);                                            // On attend ...
           }
       } else if (!is_connecte()) {                                  // Télécommande allumée mais pas encore connectée
-          rgb_led(1, 1, 0, 0);                                      //  > Jaune fixe
+          rgb_led(0, 0, 0, 1, 0);                                   //  > Jaune fixe
           while (!is_connecte() && !arret_urgence) delay(100);      // Si le bouton d'arrêt d'urgence a été enfoncé, on n'attend pas d'être connectés
       } else if (is_connecte()) {                                   // Connecté
           if (annonce_connexion) {                                  // Si on vient de se connecter,
               annonce_connexion = false;                              // on désactive l'indicateur
               for (int i = 0 ; i < 5 ; i++) {                       // Clignote 5 fois
-                  rgb_led(0, 1, 0, 150);                            //  > Vert rapide, 3 clignotements par seconde
+                  rgb_led(0, 1, 0, 0, 150);                         //  > Vert rapide, 3 clignotements par seconde
                   if (arret_urgence) break;                         // On n'attend pas d'avoir terminé de clignoter si le bouton d'arrêt d'urgence a été enfoncé
               }
           }
           while (!arret_urgence && securite) {                      // Sécurité des deux joysticks activée
-              rgb_led(0, 1, 0, 500);                                //  > Vert lent, 1 clignotement par seconde
+              rgb_led(0, 1, 0, 0, 500);                             //  > Vert lent, 1 clignotement par seconde
           }
           if (!securite) {                                          // Si on est bien passés à la suite après avoir désactivé la sécurité
-              rgb_led(0, 0, 1, 0);                                  //  > Bleu fixe
+              rgb_led(0, 0, 1, 0, 0);                               //  > Bleu fixe
           }
       }
       delay(100);                                                   // Attente ...
@@ -258,16 +265,23 @@ void *controle_led(void *argum) {
 }
 
 /*Fonction permettant d'allumer les LED*/
-void rgb_led(int r, int g, int b, int millise) {
+void rgb_led(int r, int g, int b, int y, int millise) {
     stop_led();                           // Arrêt de toutes les LED
     if (r == 1) {                         // Si on a demandé à allumer la LED rouge,
         digitalWrite(PIN_ROUGE, HIGH);      // on l'allume
+        Serial.println("Rouge");
     }
     if (g == 1) {                         // Si on a demandé à allumer la LED verte,
         digitalWrite(PIN_VERT, HIGH);       // on l'allume
+        Serial.println("Vert");
     }
     if (b == 1) {                         // Si on a demandé à allumer la LED bleue,
         digitalWrite(PIN_BLEU, HIGH);       // on l'allume
+        Serial.println("Bleu");
+    }
+    if (y == 1) {                         // Si on a demandé à allumer la LED jaune,
+        digitalWrite(PIN_JAUNE, HIGH);       // on l'allume
+        Serial.println("Jaune");
     }
     if (millise != 0) {                   // Si on demandé à faire clignoter la LED,
       delay(millise);                       // on attend le temps demandé,
@@ -281,5 +295,6 @@ void stop_led() {
     digitalWrite(PIN_ROUGE, LOW);         // Extinction de la LED rouge
     digitalWrite(PIN_VERT, LOW);          // Extinction de la LED verte
     digitalWrite(PIN_BLEU, LOW);          // Extinction de la LED bleue
+    digitalWrite(PIN_JAUNE, LOW);         // Extinction de la LED bleue
 }
 /*####################################################################################################*/
