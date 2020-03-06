@@ -39,7 +39,7 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
 
 /**** 
 * @function filtrage
-* Filtre les message recus en vérifiant les elements qui le compose,
+* Filtre les message recus en verifiant les elements qui le compose,
 * les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage
 ****/
 static void filtrage(void){
