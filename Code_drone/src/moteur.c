@@ -109,9 +109,9 @@ extern void propulsion(void){
   /* Rappel en variable des arguments de la structure */
   p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
-  volatile unsigned short int vitesse = p->puissance;
+  static volatile unsigned short int vitesse = MIN;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
-  volatile unsigned short int i = p->id;
+  static volatile unsigned short int i;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
   
@@ -126,8 +126,10 @@ extern void propulsion(void){
         pwmWrite(PIN[i], p->puissance);
         */
 
-        printf("Vitesse : "); scanf("%d", &vitesse);
-        printf("GPIO : "); scanf("%d", &i);
+        printf("Vitesse : "); scanf("%hu", &vitesse);
+        p->puissance = vitesse;
+        printf("GPIO : "); scanf("%hu", &i);
+        p->id = i;
 
         /* Puissance de rotation configuree sur chaque moteur */
         for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
