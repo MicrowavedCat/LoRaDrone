@@ -119,25 +119,23 @@ extern void propulsion(void){
    
   while(1){
      usleep(100000);
-     for(volatile unsigned short int j=0; j<6; j++){
-        /* Si la securite n'est pas activee */
-        if((coordonnee[2] == 1) && (coordonnee[5] == 1)){
-           /*
-           for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-               pwmWrite(PIN[i], p->puissance);
-           */
-        }
+     /* Si la securite n'est pas activee */
+     if((coordonnee[2] == 1) && (coordonnee[5] == 1)){
+        /*
+        for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+        pwmWrite(PIN[i], p->puissance);
+        */
+
+        printf("Vitesse : "); scanf("%d", &vitesse);
+        p->puissance = *vitesse;
+
+        printf("GPIO : "); scanf("%d", &i);
+        p->id = i;
+
+        /* Puissance de rotation configuree sur chaque helice */
+        for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
+           pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
      }
-
-     printf("Vitesse : "); scanf("%d", &vitesse);
-     p->puissance = *vitesse;
-
-     printf("GPIO : "); scanf("%d", &i);
-     p->id = i;
-
-    /* Puissance de rotation configuree sur chaque helice */
-    for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
-       pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
   }
   /* Lancement de tous les moteurs */
   for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
