@@ -113,19 +113,20 @@ static void deplacement(volatile unsigned short int vitesse,
                         pthread_t *th_moteur){
     /* Tourne a droite */
     if((coordonnee[1] < 2048)){
-        for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
-            usleep(10000);
-            p->puissance = vitesse - 10;
-            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
-            if(j >= 2){ p->puissance =  vitesse + 10; }
+       for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
+          usleep(10000);
+          p->puissance = vitesse - 10;
+          /* Puissance de rotation configuree sur chaque moteur */
+          pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+          if(j >= 2){ p->puissance =  vitesse + 10; }
         }
     /* Tourner a gauche */
     }else{
        for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
-            usleep(10000);
-            p->puissance = vitesse + 10;
-            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
-            if(j >= 2){ p->puissance =  vitesse - 10; }
+          usleep(10000);
+          p->puissance = vitesse + 10;
+          pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+          if(j >= 2){ p->puissance =  vitesse - 10; }
         }
     }
 }
@@ -156,7 +157,8 @@ extern void propulsion(void){
         p->puissance = vitesse;
         printf("GPIO : "); scanf("%hu", &i);
         p->id = i;
-
+        
+        //deplacement(vitesse, th_moteur);
         /* Puissance de rotation configuree sur chaque moteur */
         for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
