@@ -109,9 +109,9 @@ extern void propulsion(void){
   /* Rappel en variable des arguments de la structure */
   p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
-  static volatile unsigned short int vitesse = p->puissance;
+  volatile unsigned short int vitesse = p->puissance;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
-  static volatile unsigned short int i = p->id;
+  volatile unsigned short int i = p->id;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
   
