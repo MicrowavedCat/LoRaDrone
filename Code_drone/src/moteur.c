@@ -105,9 +105,18 @@ static void deplacement(volatile unsigned short int vitesse,
     /* Tourne a droite */
     if((coordonnee[1] < 2048)){
         for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
+            usleep(10000);
             p->puissance = vitesse - 10;
             pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
             if(j >= 2){ p->puissance =  vitesse + 10; }
+        }
+    /* Tourner a gauche */
+    }else{
+       for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
+            usleep(10000);
+            p->puissance = vitesse + 10;
+            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+            if(j >= 2){ p->puissance =  vitesse - 10; }
         }
     }
 }
