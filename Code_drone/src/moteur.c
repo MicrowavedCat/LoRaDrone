@@ -26,7 +26,7 @@ struct parametre{
 extern volatile unsigned short int coordonnee[6];
 /* Tableau de valeurs d'acceleration lineaire */
 extern volatile short int acceleration[3];
-/* Renvoie de la distance */
+/* Renvoie de l'altitude */
 extern volatile float distance;
 
 /****
@@ -80,6 +80,12 @@ static void calibration(void){
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
+  /* Argument de verouillage des donnes d'un moteur aux autres thread */
+  pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
+  /* Securiser la transmission des donnees */
+  pthread_mutex_lock(&securisation);
+
+  /* Vitesse de rotation fournit par l'ESC dans un moteur */
   volatile unsigned short int vitesse = ((struct parametre*)args)->puissance;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
   volatile unsigned short int i = ((struct parametre*)args)->id;
@@ -95,6 +101,9 @@ static void *moteur(void *args){
     }
     usleep(10000);
   }
+
+  /* Deverouiller la securite de transmission des donnees */
+  pthread_mutex_unlock(&securisation);
 }
 
 /* Argument pointant vers la structure des parametre moteur */
