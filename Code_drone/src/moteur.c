@@ -121,10 +121,6 @@ extern void propulsion(void){
      usleep(100000);
      /* Si la securite n'est pas activee */
      if((coordonnee[2] == 1) && (coordonnee[5] == 1)){
-        /*
-        for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-        pwmWrite(PIN[i], p->puissance);
-        */
 
         printf("Vitesse : "); scanf("%hu", &vitesse);
         p->puissance = vitesse;
