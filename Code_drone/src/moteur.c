@@ -144,7 +144,6 @@ extern void propulsion(void){
     pthread_join(th_moteur[j], NULL);
   /* Detacher les taches */
   pthread_exit(NULL);
-  free((void *)p);
 }
 
 /****
