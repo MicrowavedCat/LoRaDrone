@@ -132,7 +132,7 @@ extern void propulsion(void){
         printf("GPIO : "); scanf("%d", &i);
         p->id = i;
 
-        /* Puissance de rotation configuree sur chaque helice */
+        /* Puissance de rotation configuree sur chaque moteur */
         for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
      }
