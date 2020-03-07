@@ -97,6 +97,21 @@ static void *moteur(void *args){
   }
 }
 
+/* Argument pointant vers la structure des parametre moteur */
+static volatile struct parametre *p;
+
+static void deplacement(volatile unsigned short int vitesse,
+                        pthread_t *th_moteur){
+    /* Tourne a droite */
+    if((coordonnee[1] < 2048)){
+        for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
+            p->puissance = vitesse - 10;
+            pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+            if(j >= 2){ p->puissance =  vitesse + 10; }
+        }
+    }
+}
+
 /****
 * @function propulsion
 * Definie l'action sur un ou plusieurs moteurs pour l'orienter
@@ -104,7 +119,7 @@ static void *moteur(void *args){
 extern void propulsion(void){
   calibration();
   /* Argument pointant vers la structure des parametre moteur */
-  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
+  p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   static volatile unsigned short int vitesse = MIN;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
