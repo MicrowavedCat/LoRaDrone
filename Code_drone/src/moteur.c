@@ -97,17 +97,14 @@ static void *moteur(void *args){
   }
 }
 
-/* Argument pointant vers la structure des parametre moteur */
-volatile struct parametre *p;
-
 /****
 * @function propulsion
 * Definie l'action sur un ou plusieurs moteurs pour l'orienter
 ****/
 extern void propulsion(void){
   calibration();
-  /* Rappel en variable des arguments de la structure */
-  p = (struct parametre *)malloc(sizeof(struct parametre));
+  /* Argument pointant vers la structure des parametre moteur */
+  volatile struct parametre *p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
   static volatile unsigned short int vitesse = MIN;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
@@ -137,6 +134,7 @@ extern void propulsion(void){
     pthread_join(th_moteur[j], NULL);
   /* Detacher les taches */
   pthread_exit(NULL);
+  free((void *)p);
 }
 
 /****
@@ -155,5 +153,4 @@ extern void atterrissage(void){
    }else if((volatile unsigned short int)distance <= 15)
       /* Coupe les moteurs si on est au niveau du sol */
       cycle(MIN);
-   free((void *)p);
 }
