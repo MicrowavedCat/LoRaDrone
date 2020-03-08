@@ -111,21 +111,21 @@ static void *moteur(void *args){
 ****/
 static void deplacement(void){
      if((coordonnee[1] >= 0) && (coordonnee[1] <= 512))
-        p->puissance = 510;
+        cycle(510);
      else if((coordonnee[1] > 512) && (coordonnee[1] <= 1024))
-        p->puissance = 505;
+        cycle(505);
      else if((coordonnee[1] > 1024) && (coordonnee[1] <= 1536))
-        p->puissance = 500;
+        cycle(500);
      else if((coordonnee[1] > 1536) && (coordonnee[1] <= 2048))
-        p->puissance = 495;
+        cycle(495);
      else if((coordonnee[1] > 2048) && (coordonnee[1] <= 2560))
-        p->puissance = 490;
+        cycle(490);
      else if((coordonnee[1] > 2560) && (coordonnee[1] <= 3072))
-        p->puissance = 485;
+        cycle(485);
      else if((coordonnee[1] > 3072) && (coordonnee[1] <= 3584))
-        p->puissance = 480;
+        cycle(480);
      else if((coordonnee[1] > 3584) && (coordonnee[1] <= 4095))
-        p->puissance = 0;
+        cycle(0);
 }
 
 /****
