@@ -45,7 +45,7 @@ extern void cycle(unsigned short int valeur){
 /****
 * @function calibration
 * Etablit le mode de configuration des ESC present sur chaque PIN 
-*/
+****/
 static void calibration(void){
   /* Erreur de librairie */
   if(wiringPiSetup() == -1){
@@ -53,10 +53,12 @@ static void calibration(void){
     exit(1);
   }
   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie du courant */
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+  for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
     /* Definie un PIN sur le mode sortie de courant */
     pinMode(PIN[i], PWM_OUTPUT);
+
   usleep(1000);
+  
   /* Permet la calibration des ESC par transmission.
   On definit une valeur minimale et maximale qu'on emet sur une periode,
   pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
@@ -142,16 +144,18 @@ extern void propulsion(void){
   usleep(100000);
 
    /* Puissance de rotation configuree sur chaque moteur */
-   for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
-      pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+      pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
 
   while(1){
      usleep(100000);
      deplacement();
   }
+   
   /* Lancement de tous les moteurs */
-  for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
-    pthread_join(th_moteur[j], NULL);
+  for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
+    pthread_join(th_moteur[i], NULL);
+   
   /* Detacher les taches */
   pthread_exit(NULL);
   free((void *)p);
