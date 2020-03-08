@@ -102,7 +102,6 @@ static void *moteur(void *args){
     }
     usleep(10000);
   }
-
   /* Deverouiller la securite de transmission des donnees */
   pthread_mutex_unlock(&securisation);
 }
