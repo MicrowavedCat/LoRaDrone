@@ -10,6 +10,6 @@
 /* Renvoie de la distance */
 volatile float distance;
 
-extern volatile altitude(void);
+extern void altitude(void);
 
 #endif
