@@ -55,9 +55,12 @@ static void filtrage(void){
 
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     }else if(!(strcmp(msg_recu, SECURITE))){
-        for(volatile unsigned short int i=0; i<2; i++){ coordonnee[i] = 2048; }
-        for(volatile unsigned short int i=3; i<5; i++){ coordonnee[i] = 2048; }
-        coordonnee[2] = 0; coordonnee[5] = 0;
+        for(volatile unsigned short int i=0; i<2; i++)
+            coordonnee[i] = 2048;
+        coordonnee[2] = 0; 
+        for(volatile unsigned short int i=3; i<5; i++)
+            coordonnee[i] = 2048;
+        coordonnee[5] = 0;
 
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
