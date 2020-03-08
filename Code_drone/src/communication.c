@@ -16,14 +16,14 @@ static unsigned char *msg_recu = "";
 extern volatile unsigned short int coordonnee[6];
 
 /****
-* @function *extraction
+* @function *substr
 * @param *chaine : chaine de caractere source
 * @param debut : case de depart de la sous chaine de destination
 * @param fin : case finale de la sous chaine de destination
 * Extrait une sous-chaine d'une chaine de caractere, 
 * entre une case de debut et de fin 
 ****/
-static const unsigned char* substr(volatile unsigned char *chaine,
+static const unsigned char *substr(volatile unsigned char *chaine,
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
     volatile unsigned short int longueur = fin - debut;
