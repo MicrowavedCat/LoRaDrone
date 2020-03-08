@@ -12,6 +12,7 @@
 static volatile int fd;
 /* Variable globale contenant le message envoyer par la telecommande */
 static unsigned char *msg_recu = "";
+/* Coordonnees directionnelle envoyees au drone par la telecommande */
 extern volatile unsigned short int coordonnee[6];
 
 /****
@@ -22,7 +23,7 @@ extern volatile unsigned short int coordonnee[6];
 * Extrait une sous-chaine d'une chaine de caractere, 
 * entre une case de debut et de fin 
 ****/
-static const unsigned char* extraction(volatile unsigned char *chaine,
+static const unsigned char* substr(volatile unsigned char *chaine,
 				       const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
     volatile unsigned short int longueur = fin - debut;
@@ -44,7 +45,7 @@ static const unsigned char* extraction(volatile unsigned char *chaine,
 ****/
 static void filtrage(void){
     /* Si on recoit le message STOP, on arrete d'urgence le drone */
-    if(!strcmp(msg_recu, STOP)){
+    if(!(strcmp(msg_recu, STOP))){
 	/* On coupe immediatement la rotation des moteurs, 
         sans passer par conversion du message, pour gagner du temps. */
 	cycle(0);
@@ -52,33 +53,30 @@ static void filtrage(void){
         for(volatile unsigned short int i=0; i<6; i++) 
             coordonnee[i] = 0;
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
-    }else if(!strcmp(msg_recu, SECURITE)){
-	volatile unsigned short int i;
-        for(i=0; i<2; i++){ coordonnee[i] = 2048; }
-        for(i=3; i<5; i++){ coordonnee[i] = 2048; }
+    }else if(!(strcmp(msg_recu, SECURITE))){
+        for(volatile unsigned short int i=0; i<2; i++){ coordonnee[i] = 2048; }
+        for(volatile unsigned short int i=3; i<5; i++){ coordonnee[i] = 2048; }
         coordonnee[2] = 0; coordonnee[5] = 0;
-	/* Poser le drone automatiquement */
-	atterrissage();
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
-    }else if(!(strcmp(extraction(msg_recu,0,2),"XA")) && !(strcmp(extraction(msg_recu,6,8),"YA")) &&
-	     !(strcmp(extraction(msg_recu,12,14),"BA")) && !(strcmp(extraction(msg_recu,15,17),"XB")) &&
-	     !(strcmp(extraction(msg_recu,21,23),"YB")) && !(strcmp(extraction(msg_recu,27,29),"BB")) &&
+    }else if(!(strcmp(substr(msg_recu,0,2),"XA")) && !(strcmp(substr(msg_recu,6,8),"YA")) &&
+	     !(strcmp(substr(msg_recu,12,14),"BA")) && !(strcmp(substr(msg_recu,15,17),"XB")) &&
+	     !(strcmp(substr(msg_recu,21,23),"YB")) && !(strcmp(substr(msg_recu,27,29),"BB")) &&
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
         /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du joystick de gauche */
-        tmp[0] = (const unsigned short int)atoi(extraction(msg_recu, 2, 6));
+        tmp[0] = (const unsigned short int)atoi(substr(msg_recu, 2, 6));
         /* Position en ordonnee du joystick de gauche */
-        tmp[1] = (const unsigned short int)atoi(extraction(msg_recu, 8, 12));
+        tmp[1] = (const unsigned short int)atoi(substr(msg_recu, 8, 12));
         /* Position enfoncee ou non du joystick de gauche */
-        tmp[2] = (const unsigned short int)atoi(extraction(msg_recu, 14, 15));
+        tmp[2] = (const unsigned short int)atoi(substr(msg_recu, 14, 15));
         /* Position en abscisse du joystick de droite */
-        tmp[3] = (const unsigned short int)atoi(extraction(msg_recu, 17, 21));
+        tmp[3] = (const unsigned short int)atoi(substr(msg_recu, 17, 21));
         /* Position en ordonnee du joystick de droite */
-        tmp[4] = (const unsigned short int)atoi(extraction(msg_recu, 23, 27));
+        tmp[4] = (const unsigned short int)atoi(substr(msg_recu, 23, 27));
         /* Position enfoncee ou non du joystick de droite */
-        tmp[5] = (const unsigned short int)atoi(extraction(msg_recu, 29, 30));
+        tmp[5] = (const unsigned short int)atoi(substr(msg_recu, 29, 30));
 	 if((tmp[0] >= 0 && tmp[0] <= 4095) || (tmp[1] >= 0 && tmp[1] <= 4095) 
 	    || (tmp[2] == 0 || tmp[2] == 1) || (tmp[3] >= 0 && tmp[3] <= 4095) 
 	    || (tmp[4] >= 0 && tmp[4] <= 4095) || (tmp[5] == 0 || tmp[5] == 1)){
