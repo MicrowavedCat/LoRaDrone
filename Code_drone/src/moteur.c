@@ -80,17 +80,18 @@ static void calibration(void){
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-  /* Argument de verouillage des donnes d'un moteur aux autres thread */
-  pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
-  /* Securiser la transmission des donnees */
-  pthread_mutex_lock(&securisation);
-
-  /* Vitesse de rotation fournit par l'ESC dans un moteur */
+  /* Vitesse de rotation fournie par l'ESC dans un moteur */
   volatile unsigned short int vitesse = ((struct parametre*)args)->puissance;
   /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
   volatile unsigned short int i = ((struct parametre*)args)->id;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
+
+  /* Argument de verouillage des donnes d'un moteur aux autres thread */
+  pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
+  /* Securiser la transmission des donnees */
+  pthread_mutex_lock(&securisation);
+
   while(1){
     /* On ne change la vitesse que si elle est differente de la precedente */
    if(vitesse != tmp){
