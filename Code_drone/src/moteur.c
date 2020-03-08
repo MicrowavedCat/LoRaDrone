@@ -109,6 +109,13 @@ static void *moteur(void *args){
 /* Argument pointant vers la structure des parametre moteur */
 static volatile struct parametre *p;
 
+/****
+* @function deplacement
+* @param vitesse
+* @param *th_moteur
+* Permet de definir la direction que prend le drone,
+* en fonction de la puissance fournie dant les moteurs.
+****/
 static void deplacement(volatile unsigned short int vitesse,
                         pthread_t *th_moteur){
     /* Tourne a droite */
