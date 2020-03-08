@@ -74,16 +74,15 @@ static void calibration(void){
   sleep(1);
 }
 
+/* Argument pointant vers la structure des parametre moteur */
+static volatile struct parametre *p;
+
 /****
 * @function *moteur
 * @param *args : Structure definissant les parametre d'un moteur
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-  /* Vitesse de rotation fournie par l'ESC dans un moteur */
-  volatile unsigned short int vitesse = ((struct parametre*)args)->puissance;
-  /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
-  volatile unsigned short int i = ((struct parametre*)args)->id;
   /* Variable tampon servant à définir si la vitesse est constante */
   volatile short int tmp = -1;
 
@@ -94,48 +93,37 @@ static void *moteur(void *args){
 
   while(1){
     /* On ne change la vitesse que si elle est differente de la precedente */
-   if(vitesse != tmp){
-      tmp = vitesse;
-      printf("--> puissance = %d\n", tmp);
-      printf("--> ID du GPIO = %d\n", i);
+   if(p->puissance != tmp){
+      tmp = p->puissance;
       pwmWrite(PIN[i], tmp);
-    }
-    usleep(10000);
+    }else{ usleep(10000); }
   }
   /* Deverouiller la securite de transmission des donnees */
   pthread_mutex_unlock(&securisation);
 }
 
-/* Argument pointant vers la structure des parametre moteur */
-static volatile struct parametre *p;
-
 /****
 * @function deplacement
-* @param vitesse
-* @param *th_moteur
 * Permet de definir la direction que prend le drone,
 * en fonction de la puissance fournie dant les moteurs.
 ****/
-static void deplacement(volatile unsigned short int vitesse,
-                        pthread_t *th_moteur){
-    /* Tourne a droite */
-    if((coordonnee[1] < 2048)){
-       for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
-          usleep(10000);
-          p->puissance = vitesse - 10;
-          /* Puissance de rotation configuree sur chaque moteur */
-          pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
-          if(j >= 2){ p->puissance =  vitesse + 10; }
-        }
-    /* Tourner a gauche */
-    }else{
-       for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++){
-          usleep(10000);
-          p->puissance = vitesse + 10;
-          pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
-          if(j >= 2){ p->puissance =  vitesse - 10; }
-        }
-    }
+static void deplacement(void){
+     if((coordonnee[1] >= 0) && (coordonnee[1] <= 512))
+        p->puissance = 510;
+     else if((coordonnee[1] > 512) && (coordonnee[1] <= 1024))
+        p->puissance = 505;
+     else if((coordonnee[1] > 1024) && (coordonnee[1] <= 1536))
+        p->puissance = 500;
+     else if((coordonnee[1] > 1536) && (coordonnee[1] <= 2048))
+        p->puissance = 495;
+     else if((coordonnee[1] > 2048) && (coordonnee[1] <= 2560))
+        p->puissance = 490;
+     else if((coordonnee[1] > 2560) && (coordonnee[1] <= 3072))
+        p->puissance = 485;
+     else if((coordonnee[1] > 3072) && (coordonnee[1] <= 3584))
+        p->puissance = 480;
+     else if((coordonnee[1] > 3584) && (coordonnee[1] <= 4095))
+        p->puissance = 0;
 }
 
 /****
@@ -147,29 +135,19 @@ extern void propulsion(void){
   /* Argument pointant vers la structure des parametre moteur */
   p = (struct parametre *)malloc(sizeof(struct parametre));
   /* Vitesse de rotation des moteurs */
-  static volatile unsigned short int vitesse = MIN;
-  /* Endroit dans le tableau definissant sur quel PIN le moteur est branche */
-  static volatile unsigned short int i;
+  p->puissance = MIN;
   /* Thread a creer */
   static pthread_t th_moteur[NB_MOTEUR];
-  
+
   usleep(100000);
-   
+
+   /* Puissance de rotation configuree sur chaque moteur */
+   for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
+      pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
+
   while(1){
      usleep(100000);
-     /* Si la securite n'est pas activee */
-     if((coordonnee[2] == 1) && (coordonnee[5] == 1)){
-
-        printf("Vitesse : "); scanf("%hu", &vitesse);
-        p->puissance = vitesse;
-        printf("GPIO : "); scanf("%hu", &i);
-        p->id = i;
-        
-        //deplacement(vitesse, th_moteur);
-        /* Puissance de rotation configuree sur chaque moteur */
-        for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
-           pthread_create(&th_moteur[j], NULL, moteur, (void *)p);
-     }
+     deplacement();
   }
   /* Lancement de tous les moteurs */
   for(volatile unsigned short int j = 0; j < NB_MOTEUR; j++)
