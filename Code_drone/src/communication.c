@@ -15,6 +15,8 @@ static unsigned char *msg_recu = "";
 /* Coordonnees directionnelle envoyees au drone par la telecommande */
 extern volatile unsigned short int coordonnee[6];
 
+extern volatile unsigned short int securite_retiree;
+
 /****
 * @function *substr
 * @param *chaine : chaine de caractere source
@@ -93,6 +95,8 @@ static void filtrage(void){
             Si les coordonnees correspondent, le tampon de verification est egal aux coordonnees. */
             for(volatile unsigned short int i=0; i<6; i++)
 	        coordonnee[i] = tmp[i];
+
+            if(securite_retiree == 0){ securite_retiree = 1; }
         }
     }
 }
