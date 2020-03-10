@@ -11,9 +11,9 @@
 /* GPIO du raspberry sur lequel on branche l'ESC relie a un moteur */
 static const unsigned short int PIN[NB_MOTEUR] = {
    1, /* Correspond au PIN physique 12 (BCM18), */
-  23, /* Correspond au PIN physique 33 (BCM13) */
-  24, /* Correspond au PIN physique 35 (BCM19) */
-  26 /* Correspond au PIN physique 32 (BCM12) */
+   23, /* Correspond au PIN physique 33 (BCM13) */
+   24, /* Correspond au PIN physique 35 (BCM19) */
+   26 /* Correspond au PIN physique 32 (BCM12) */
 };
 /* Parametre d'un moteur, avec la position de son PIN,
 sa puissance de rotation, et une securisation de donnee */
@@ -37,11 +37,11 @@ extern volatile unsigned short int securite_retiree;
 * Definit pour tousl les moteurs la meme valeur de la puissance à transmettre
 ****/
 extern void cycle(unsigned short int valeur){
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
-    /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
-    pwmWrite(PIN[i], valeur);
-    usleep(1000);
-  }
+   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
+      /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
+      pwmWrite(PIN[i], valeur);
+      usleep(1000);
+   }
 }
 
 /****
@@ -49,33 +49,33 @@ extern void cycle(unsigned short int valeur){
 * Etablit le mode de configuration des ESC present sur chaque PIN 
 ****/
 static void calibration(void){
-  /* Erreur de librairie */
-  if(wiringPiSetup() == -1){
-    puts("Erreur librairie");
-    exit(1);
-  }
-  /* Configuration des 4 ESC pour les 4 moteurs sur la sortie du courant */
-  for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
-    /* Definie un PIN sur le mode sortie de courant */
-    pinMode(PIN[i], PWM_OUTPUT);
+   /* Erreur de librairie */
+   if(wiringPiSetup() == -1){
+      puts("Erreur librairie");
+      exit(1);
+   }
+   /* Configuration des 4 ESC pour les 4 moteurs sur la sortie du courant */
+   for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
+      /* Definie un PIN sur le mode sortie de courant */
+      pinMode(PIN[i], PWM_OUTPUT);
 
-  usleep(1000);
+   usleep(1000);
   
-  /* Permet la calibration des ESC par transmission.
-  On definit une valeur minimale et maximale qu'on emet sur une periode,
-  pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
-            MAX                       MAX
-   2s  _____________ 2s       2s _____________ 2s
-       |           |             |           |
-   MIN |           |     MIN     |           |   MIN
-  _____|           |_____________|           |_________
-    1s                   1s                       1s
+   /* Permet la calibration des ESC par transmission.
+   On definit une valeur minimale et maximale qu'on emet sur une periode,
+   pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
+             MAX                       MAX
+    2s  _____________ 2s       2s _____________ 2s
+        |           |             |           |
+    MIN |           |     MIN     |           |   MIN
+   _____|           |_____________|           |_________
+     1s                   1s                       1s
   */
-  cycle(MAX);
-  sleep(1);
-  /* Retour a l'etat minimal */
-  cycle(MIN);
-  sleep(1);
+   cycle(MAX);
+   sleep(1);
+   /* Retour a l'etat minimal */
+   cycle(MIN);
+   sleep(1);
 }
 
 /* Argument pointant vers la structure des parametre moteur */
@@ -87,23 +87,23 @@ static volatile struct parametre *p;
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-  /* Variable tampon servant à définir si la vitesse est constante */
-  volatile short int tmp = -1;
+   /* Variable tampon servant à définir si la vitesse est constante */
+   volatile short int tmp = -1;
 
-  /* Argument de verouillage des donnes d'un moteur aux autres thread */
-  pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
-  /* Securiser la transmission des donnees */
-  pthread_mutex_lock(&securisation);
+   /* Argument de verouillage des donnes d'un moteur aux autres thread */
+   pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
+   /* Securiser la transmission des donnees */
+   pthread_mutex_lock(&securisation);
 
-  while(1){
-    /* On ne change la vitesse que si elle est differente de la precedente */
-   if(p->puissance != tmp){
-      tmp = p->puissance;
-      pwmWrite(PIN[i], tmp);
-    }else{ usleep(10000); }
-  }
-  /* Deverouiller la securite de transmission des donnees */
-  pthread_mutex_unlock(&securisation);
+   while(1){
+      /* On ne change la vitesse que si elle est differente de la precedente */
+      if(p->puissance != tmp){
+         tmp = p->puissance;
+         pwmWrite(PIN[i], tmp);
+      }else{ usleep(10000); }
+   }
+   /* Deverouiller la securite de transmission des donnees */
+   pthread_mutex_unlock(&securisation);
 }
 
 /****
