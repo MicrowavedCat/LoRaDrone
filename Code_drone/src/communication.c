@@ -52,29 +52,32 @@ static void filtrage(void){
     else if(!(strcmp(msg_recu, SECURITE))){
         for(volatile unsigned short int i=0; i<2; i++)
             coordonnee[i] = 2048;
+        coordonnee[2] = 0;
+
         for(volatile unsigned short int i=3; i<5; i++)
             coordonnee[i] = 2048;
+         coordonnee[5] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
-    }else if(!(strcmp(substr(msg_recu,0,2), "XA")) && !(strcmp(substr(msg_recu,6,8), "YA")) &&
-	     !(strcmp(substr(msg_recu,12,14), "BA")) && !(strcmp(substr(msg_recu,15,17), "XB")) &&
-	     !(strcmp(substr(msg_recu,21,23), "YB")) && !(strcmp(substr(msg_recu,27,29), "BB")) &&
+    }else if(!(strcmp(substr(msg_recu, 0, 2), "XA")) && !(strcmp(substr(msg_recu, 6, 8), "YA")) &&
+	     !(strcmp(substr(msg_recu, 12, 14), "BA")) && !(strcmp(substr(msg_recu, 15, 17), "XB")) &&
+	     !(strcmp(substr(msg_recu, 21, 23), "YB")) && !(strcmp(substr(msg_recu, 27, 29), "BB")) &&
 	     (msg_recu[30] == '\4') && (strcmp(msg_recu, PAIR))){
 
         /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse du joystick de gauche */
-        tmp[0] = (const unsigned short int)strtol(substr(msg_recu,2,6), NULL, 10);
+        tmp[0] = (const unsigned short int)strtol(substr(msg_recu, 2, 6), NULL, 10);
         /* Position en ordonnee du joystick de gauche */
-        tmp[1] = (const unsigned short int)strtol(substr(msg_recu,8,12), NULL, 10);
+        tmp[1] = (const unsigned short int)strtol(substr(msg_recu, 8, 12), NULL, 10);
         /* Position enfoncee ou non du joystick de gauche */
-        tmp[2] = (const unsigned short int)strtol(substr(msg_recu,14,15), NULL, 10);
+        tmp[2] = (const unsigned short int)strtol(substr(msg_recu, 14, 15), NULL, 10);
         /* Position en abscisse du joystick de droite */
-        tmp[3] = (const unsigned short int)strtol(substr(msg_recu,17,21), NULL, 10);
+        tmp[3] = (const unsigned short int)strtol(substr(msg_recu, 17, 21), NULL, 10);
         /* Position en ordonnee du joystick de droite */
-        tmp[4] = (const unsigned short int)strtol(substr(msg_recu,23,27), NULL, 10);
+        tmp[4] = (const unsigned short int)strtol(substr(msg_recu, 23, 27), NULL, 10);
         /* Position enfoncee ou non du joystick de droite */
-        tmp[5] = (const unsigned short int)strtol(substr(msg_recu,29,30), NULL, 10);
+        tmp[5] = (const unsigned short int)strtol(substr(msg_recu, 29, 30), NULL, 10);
 
 	/* Verification des valeurs transmises au drone par les joysticks */
 	if(((tmp[0] >= 0) && (tmp[0] <= 4095)) || ((tmp[1] >= 0) && (tmp[1] <= 4095)) 
