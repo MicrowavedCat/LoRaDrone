@@ -101,7 +101,7 @@ static void *moteur(void *args){
       }else{ usleep(10000); }
    }
    /* Deverouiller la securite de transmission des donnees */
-   pthread_mutex_unlock(&securisation);
+   pthread_mutex_unlock(&(p->mutex));
 }
 
 /****
