@@ -34,7 +34,7 @@ extern volatile unsigned short int securite_retiree;
 /****
 * @function cycle
 * @param valeur : Vitesse de rotation
-* Definit pour tousl les moteurs la meme valeur de la puissance à transmettre
+* Definit pour tous les moteurs la meme valeur de la puissance à transmettre
 ****/
 extern void cycle(unsigned short int valeur){
    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
@@ -90,10 +90,8 @@ static void *moteur(void *args){
    /* Variable tampon servant à définir si la vitesse est constante */
    volatile short int tmp = -1;
 
-   /* Argument de verouillage des donnes d'un moteur aux autres thread */
-   pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
    /* Securiser la transmission des donnees */
-   pthread_mutex_lock(&securisation);
+   pthread_mutex_lock(&(p->mutex));
 
    while(1){
       /* On ne change la vitesse que si elle est differente de la precedente */
@@ -130,7 +128,10 @@ static void deplacement(void){
    pivot_droit = conversion(coordonnee[3]);
    pivot_gauche = conversion(coordonnee[4]);
    
-   p->puissance = latitude;
+   for(volatile unsigned short int i=0; i<NB_MOTEUR; i++){
+      p->puissance = latitude;
+      p->id = i;
+   }
 }
 
 /****
