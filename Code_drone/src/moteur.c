@@ -122,10 +122,14 @@ static const unsigned short int conversion(volatile unsigned short int valeur){
 * en fonction de la puissance fournie dant les moteurs.
 ****/
 static void deplacement(void){
-   static volatile unsigned short int latitude = conversion(coordonnee[0]);
-   static volatile unsigned short int longitude = conversion(coordonnee[1]);
-   static volatile unsigned short int pivot_droit = conversion(coordonnee[3]);
-   static volatile unsigned short int pivot_gauche = conversion(coordonnee[4]);
+   static volatile unsigned short int latitude, longitude, 
+       pivot_droit, pivot_gauche;
+
+   latitude = conversion(coordonnee[0]);
+   longitude = conversion(coordonnee[1]);
+   pivot_droit = conversion(coordonnee[3]);
+   pivot_gauche = conversion(coordonnee[4]);
+
    cycle(latitude);
 }
 
