@@ -46,20 +46,15 @@ static const unsigned char *substr(volatile unsigned char *chaine,
 * les separateurs commencant par X, Y et Z definissent les coordonnees de pilotage
 ****/
 static void filtrage(void){
-    /* Si on recoit le message STOP, on arrete d'urgence le drone */
-    if(!(strcmp(msg_recu, STOP))){
-	/* On coupe immediatement la rotation des moteurs, 
-        sans passer par conversion du message, pour gagner du temps. */
-	cycle(0);
-	/* Remise a 0 des valeurs par securite */
-        for(volatile unsigned short int i=0; i<6; i++) 
-            coordonnee[i] = 0;
-
+    /* Si on recoit le message STOP, on coupe immediatement la rotation des moteurs */
+    if(!(strcmp(msg_recu, STOP))){ cycle(0); }
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
-    }else if(!(strcmp(msg_recu, SECURITE))){
+    else if(!(strcmp(msg_recu, SECURITE))){
+
         for(volatile unsigned short int i=0; i<2; i++)
             coordonnee[i] = 2048;
         coordonnee[2] = 0; 
+
         for(volatile unsigned short int i=3; i<5; i++)
             coordonnee[i] = 2048;
         coordonnee[5] = 0;
