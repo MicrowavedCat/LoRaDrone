@@ -1,4 +1,4 @@
-#define DEVELOPPEMENT       true                                      //Activer ou désactiver l'affichage de messages de débogage à la console
+#define DEVELOPPEMENT       false                                     //Activer ou désactiver l'affichage de messages de débogage à la console
 
 
 #define PIN_RECEPTION       16                                        // Communication avec le module LoRa : on reçoit des informations sur le GPIO 16,
@@ -14,7 +14,7 @@
 
 #define BOUTON_STOP         35                                        // GPIO du bouton d'arrêt d'urgence
 
-#define PIN_JAUNE           13                                         // GPIO des LED : 12 = jaune
+#define PIN_JAUNE           13                                         // GPIO des LED : 13 = jaune
 #define PIN_VERT            12                                          // 12 = vert
 #define PIN_BLEU            15                                          // 15 = bleu
 #define PIN_ROUGE           2                                           // 2 = rouge
@@ -52,7 +52,7 @@ void setup() {
     pinMode(18, OUTPUT);
     digitalWrite(21, LOW);
     digitalWrite(18, LOW);
-    
+
     pinMode(XA, INPUT);                                                         // Définition des GPIO en tant qu'entrées/sorties
     pinMode(YA, INPUT);
     pinMode(BA, INPUT);
@@ -60,11 +60,11 @@ void setup() {
     pinMode(YB, INPUT);
     pinMode(BB, INPUT);
     pinMode(BOUTON_STOP, INPUT);
-    pinMode(PIN_ROUGE, OUTPUT);           
+    pinMode(PIN_ROUGE, OUTPUT);
     pinMode(PIN_VERT, OUTPUT);
     pinMode(PIN_BLEU, OUTPUT);
     pinMode(PIN_JAUNE, OUTPUT);
-    
+
     if (DEVELOPPEMENT) Serial.println("Allumé !");
     pthread_t threads[nb_threads];                                              // Création du tableau des threads
 
@@ -81,7 +81,7 @@ void setup() {
     if (pthread_create(&threads[4], NULL, ecriture, NULL)) if (DEVELOPPEMENT) Serial.println("Erreur thread 4 ecriture");
     if (pthread_create(&threads[5], NULL, lecture, NULL)) if (DEVELOPPEMENT) Serial.println("Erreur thread 5 lecture");
 
-    for (int i=0; i<nb_threads; i++) pthread_join(threads[i], NULL);                                                                                  // Attente de tous les threads
+    for (int i = 0; i < nb_threads; i++) pthread_join(threads[i], NULL);                                                                              // Attente de tous les threads
 }
 
 void loop() {
@@ -117,11 +117,11 @@ void *controle_arret_urgence(void *agrum) {
     int i;
 
     while (!arret_urgence) {
-      for (i = 0; i < 5; i++) {
-          tab_stop[i] = analogRead(BOUTON_STOP);
-          delay(10);
-      }
-      if (tab_stop[0] == 4095 && tab_stop[1] == 4095 && tab_stop[2] == 4095 && tab_stop[3] == 4095 && tab_stop[4] == 4095) arret_urgence = true;    // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
+        for (i = 0; i < 5; i++) {
+            tab_stop[i] = analogRead(BOUTON_STOP);
+            delay(10);
+        }
+        if (tab_stop[0] == 4095 && tab_stop[1] == 4095 && tab_stop[2] == 4095 && tab_stop[3] == 4095 && tab_stop[4] == 4095) arret_urgence = true;    // Si le bouton d'arrêt d'urgence est enfoncé, demande d'un arrêt d'urgence
     }
 }
 
@@ -144,14 +144,17 @@ bool is_connecte() {
 void *lecture(void *argum) {
     char buffer_read[6];                                                                      // Création du buffer qui contiendra temporairement le message reçu
     int i = 0;                                                                                // Création du compteur
-    
+
     if (DEVELOPPEMENT) Serial.println(".");
-    while (!is_connecte()) {  
+    while (!is_connecte()) {
         if (Serial2.available() > 0) {                                                        // Si des données dont disponibles,
             buffer_read[i] = Serial2.read();                                                    // on lit 1 caractère dans le buffer
             if (i == 4 && buffer_read[i] == 4) {                                              // Si le dernier caractère reçu est un caractère de fin de transmission ("\4") et que le message fait 5 caractères,
                 memcpy(message_recu, buffer_read, sizeof(buffer_read));                         // on l'enregistre dans la variable prévue à cet effet
-                if (DEVELOPPEMENT) { Serial.print("message_recu : "); Serial.println(message_recu); }
+                if (DEVELOPPEMENT) {
+                    Serial.print("message_recu : ");
+                    Serial.println(message_recu);
+                }
                 for (i = 0 ; i < 6 ; i++) buffer_read[i] = 0;                                 // Réinitialisation de toutes les cases du buffer
                 i = 0;                                                                        // Réinitialisation du compteur
             } else if ((i < 4 && buffer_read[i] == 4) || (i == 4 && buffer_read[i] != 4)) {   // Si le caractère de fin de transmission est arrivé "trop tôt" ou si le message fait 5 caractères, mais que le dernier caractère n'est pas celui de fin de transmission,
@@ -160,7 +163,9 @@ void *lecture(void *argum) {
             } else if (i < 4 && buffer_read[i] != 4) {                                        // Sinon, si le message fait moins de 5 caractères et que le caractère de fin de transmission n'est pas encore arrivé,
                 i++;                                                                            // tout va bien, on incrémente et on continue
             } else {
-                if (DEVELOPPEMENT) { Serial.println("Cette situation n'est pas censée se produire ..."); }
+                if (DEVELOPPEMENT) {
+                    Serial.println("Cette situation n'est pas censée se produire ...");
+                }
             }
         }
         delay(100);                                                                           // Attente ...
@@ -172,7 +177,10 @@ void *ecriture(void *argum) {
     while (true) {
         if (is_connecte()) {                                        // On n'écrit rien tant qu'on n'est pas connectés,
             while (true) {                                            // mais dès qu'on l'est, on n'arrête plus
-                if (DEVELOPPEMENT) { Serial.print("message_a_envoyer : "); Serial.println(message_a_envoyer); }
+                if (DEVELOPPEMENT) {
+                    Serial.print("message_a_envoyer : ");
+                    Serial.println(message_a_envoyer);
+                }
                 pthread_mutex_lock(&mutex_message_a_envoyer);       // Mise en place du verrou pour éviter de lire des données incomplètes ou corrompues
                 Serial2.print(message_a_envoyer);                   // Envoi du message au drone par l'intermédiaire du module LoRa
                 pthread_mutex_unlock(&mutex_message_a_envoyer);     // Retrait du verrou
@@ -234,34 +242,34 @@ void joystick(char buffer[], char joystick, int X, int Y, int B) {
 
 /*Fonction assurant la modification de l'état des LED en fonction de tous les facteurs disponibles*/ /* VERSION 2 */
 void *controle_led(void *argum) {
-   while (true) {
-      if (arret_urgence) {                                          // Bouton d'arrêt d'urgence enfoncé
-          while (true) {                                            // Une fois activé, l'arrêt d'urgence ne peut plus être désactivé
-              rgb_led(1, 0, 0, 0, 100);                             //  > Rouge rapide, 5 clignotements par seconde
-              delay(10);                                            // On attend ...
-          }
-      } else if (!is_connecte()) {                                  // Télécommande allumée mais pas encore connectée
-          rgb_led(0, 0, 0, 1, 0);                                   //  > Jaune fixe
-          while (!is_connecte() && !arret_urgence) delay(100);      // Si le bouton d'arrêt d'urgence a été enfoncé, on n'attend pas d'être connectés
-      } else if (is_connecte()) {                                   // Connecté
-          if (annonce_connexion) {                                  // Si on vient de se connecter,
-              annonce_connexion = false;                              // on désactive l'indicateur
-              for (int i = 0 ; i < 5 ; i++) {                       // Clignote 5 fois
-                  rgb_led(0, 1, 0, 0, 150);                         //  > Vert rapide, 3 clignotements par seconde
-                  if (arret_urgence) break;                         // On n'attend pas d'avoir terminé de clignoter si le bouton d'arrêt d'urgence a été enfoncé
-              }
-          }
-          while (!arret_urgence && securite) {                      // Sécurité des deux joysticks activée
-              rgb_led(0, 1, 0, 0, 500);                             //  > Vert lent, 1 clignotement par seconde
-          }
-          if (!securite) {                                          // Si on est bien passés à la suite après avoir désactivé la sécurité
-              rgb_led(0, 0, 1, 0, 0);                               //  > Bleu fixe
-          }
-      }
-      delay(100);                                                   // Attente ...
-        
-   }
-  
+    while (true) {
+        if (arret_urgence) {                                          // Bouton d'arrêt d'urgence enfoncé
+            while (true) {                                            // Une fois activé, l'arrêt d'urgence ne peut plus être désactivé
+                rgb_led(1, 0, 0, 0, 100);                             //  > Rouge rapide, 5 clignotements par seconde
+                delay(10);                                            // On attend ...
+            }
+        } else if (!is_connecte()) {                                  // Télécommande allumée mais pas encore connectée
+            rgb_led(0, 0, 0, 1, 0);                                   //  > Jaune fixe
+            while (!is_connecte() && !arret_urgence) delay(100);      // Si le bouton d'arrêt d'urgence a été enfoncé, on n'attend pas d'être connectés
+        } else if (is_connecte()) {                                   // Connecté
+            if (annonce_connexion) {                                  // Si on vient de se connecter,
+                annonce_connexion = false;                              // on désactive l'indicateur
+                for (int i = 0 ; i < 5 ; i++) {                       // Clignote 5 fois
+                    rgb_led(0, 1, 0, 0, 150);                         //  > Vert rapide, 3 clignotements par seconde
+                    if (arret_urgence) break;                         // On n'attend pas d'avoir terminé de clignoter si le bouton d'arrêt d'urgence a été enfoncé
+                }
+            }
+            while (!arret_urgence && securite) {                      // Sécurité des deux joysticks activée
+                rgb_led(0, 1, 0, 0, 500);                             //  > Vert lent, 1 clignotement par seconde
+            }
+            if (!securite) {                                          // Si on est bien passés à la suite après avoir désactivé la sécurité
+                rgb_led(0, 0, 1, 0, 0);                               //  > Bleu fixe
+            }
+        }
+        delay(100);                                                   // Attente ...
+
+    }
+
 }
 
 /*Fonction permettant d'allumer les LED*/
@@ -284,9 +292,9 @@ void rgb_led(int r, int g, int b, int y, int millise) {
         Serial.println("Jaune");
     }
     if (millise != 0) {                   // Si on demandé à faire clignoter la LED,
-      delay(millise);                       // on attend le temps demandé,
-      stop_led();                           // on éteint la LED,
-      delay(millise);                       // on attend le temps demandé
+        delay(millise);                       // on attend le temps demandé,
+        stop_led();                           // on éteint la LED,
+        delay(millise);                       // on attend le temps demandé
     }
 }
 
