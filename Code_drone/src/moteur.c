@@ -107,7 +107,7 @@ static void *moteur(void *args){
 /****
 * @function conversion
 * Permet de faire correspondre l'interval de valeurs des joysticks (de 0 a 4095),
-* a celui de la puissance fournie dans les moteurs
+* a celui de la puissance fournie dans les moteurs (de 480 a 511).
 * @return valeur : La vitesse convertie definissant la rotation des moteurs
 ****/
 static const unsigned short int conversion(volatile unsigned short int valeur){
