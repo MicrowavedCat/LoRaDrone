@@ -129,8 +129,8 @@ static void deplacement(void){
    longitude = conversion(coordonnee[1]);
    pivot_droit = conversion(coordonnee[3]);
    pivot_gauche = conversion(coordonnee[4]);
-
-   cycle(latitude);
+   
+   p->puissance = latitude;
 }
 
 /****
