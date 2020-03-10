@@ -16,6 +16,7 @@
 
 /* Coordonnees de pilotage dans le message */
 volatile unsigned short int coordonnee[6];
+volatile unsigned short int securite_retiree = 0;
 
 extern void transmission(void);
 
