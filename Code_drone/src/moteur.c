@@ -122,22 +122,9 @@ static const unsigned short int conversion(volatile unsigned short int valeur){
 * en fonction de la puissance fournie dant les moteurs.
 ****/
 static void deplacement(void){
-     if((coordonnee[1] >= 0) && (coordonnee[1] <= 512))
-        cycle(510);
-     else if((coordonnee[1] > 512) && (coordonnee[1] <= 1024))
-        cycle(505);
-     else if((coordonnee[1] > 1024) && (coordonnee[1] <= 1536))
-        cycle(500);
-     else if((coordonnee[1] > 1536) && (coordonnee[1] <= 2048))
-        cycle(495);
-     else if((coordonnee[1] > 2048) && (coordonnee[1] <= 2560))
-        cycle(490);
-     else if((coordonnee[1] > 2560) && (coordonnee[1] <= 3072))
-        cycle(485);
-     else if((coordonnee[1] > 3072) && (coordonnee[1] <= 3584))
-        cycle(480);
-     else if((coordonnee[1] > 3584) && (coordonnee[1] <= 4095))
-        cycle(0);
+   static volatile unsigned short int latitude = conversion(coordonnee[0]);
+   static volatile unsigned short int longitude = conversion(coordonnee[1]);
+   cycle(latitude);
 }
 
 /****
