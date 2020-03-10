@@ -113,7 +113,7 @@ static void *moteur(void *args){
 * @return valeur : La vitesse convertie, de rotation des moteurs
 ****/
 static const unsigned short int conversion(volatile unsigned short int valeur){
-   return (valeur - 0) * (511 - 480) / (4095 - 0) + 480;
+   return valeur * (511 - 480) / 4095 + 480;
 }
 
 /****
