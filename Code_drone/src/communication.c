@@ -26,7 +26,7 @@ extern volatile unsigned short int securite_retiree;
 * entre une case de debut et de fin 
 ****/
 static const unsigned char *substr(volatile unsigned char *chaine,
-				       const unsigned short int debut, const unsigned short int fin){
+				   const unsigned short int debut, const unsigned short int fin){
     /* Longueur de la chaine finale */
     volatile unsigned short int longueur = fin - debut;
     /* Allocation de la taille de la chaine finale a la longueur + 1 */
