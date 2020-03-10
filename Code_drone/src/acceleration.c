@@ -26,7 +26,7 @@ static void adressage(volatile int flux, unsigned char *config,
 * Permet de definir le format des valeurs des axes de l'accelerometre ADXL345
 ****/
 static volatile short int position(volatile short int axe,
-                            unsigned char *data, const unsigned short int i){
+                                   unsigned char *data, const unsigned short int i){
   /*
   - On determine le bit de poid faible de l'adresse donnees sur 32 bits,
   avec un ET bit a bit du PIN SDA, multiplie par l'espace d'appareils reserves de 256.
