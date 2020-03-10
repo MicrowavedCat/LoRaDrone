@@ -121,16 +121,15 @@ static const unsigned short int conversion(volatile unsigned short int valeur){
 * en fonction de la puissance fournie dant les moteurs.
 ****/
 static void deplacement(void){
-   static volatile unsigned short int latitude, longitude, 
-       pivot_droit, pivot_gauche;
-
-   latitude = conversion(coordonnee[0]);
-   longitude = conversion(coordonnee[1]);
-   pivot_droit = conversion(coordonnee[3]);
-   pivot_gauche = conversion(coordonnee[4]);
+   static volatile unsigned short int joystick_gauche[2], joystick_droit[2];
+   
+   for(volatile unsigned short int i=0; i<2; i++){
+      joystick_gauche[i] = conversion(coordonnee[i]);
+      joystick_droit[i] = conversion(coordonnee[i]);
+   }
    
    for(volatile unsigned short int i=0; i<NB_MOTEUR; i++){
-      p->puissance = latitude;
+      p->puissance = joystick_gauche[0];
       p->id = i;
    }
 }
