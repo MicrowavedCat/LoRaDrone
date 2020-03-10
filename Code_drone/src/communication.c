@@ -53,7 +53,6 @@ static void filtrage(void){
         for(volatile unsigned short int i=0; i<2; i++)
             coordonnee[i] = 2048;
         coordonnee[2] = 0;
-
         for(volatile unsigned short int i=3; i<5; i++)
             coordonnee[i] = 2048;
          coordonnee[5] = 0;
