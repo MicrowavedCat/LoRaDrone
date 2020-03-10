@@ -107,6 +107,16 @@ static void *moteur(void *args){
 }
 
 /****
+* @function conversion
+* Permet de faire correspondre l'interval de valeurs des joysticks (de 0 a 4095),
+* a celui de la puissance fournie dans les moteurs
+* @return valeur : La vitesse convertie, de rotation des moteurs
+****/
+static const unsigned short int conversion(volatile unsigned short int valeur){
+   return (valeur - 0) * (511 - 480) / (4095 - 0) + 480;
+}
+
+/****
 * @function deplacement
 * Permet de definir la direction que prend le drone,
 * en fonction de la puissance fournie dant les moteurs.
@@ -144,10 +154,11 @@ extern void propulsion(void){
   static pthread_t th_moteur[NB_MOTEUR];
 
   usleep(100000);
-   while(!securite_retiree){ usleep(10000); }
-   /* Puissance de rotation configuree sur chaque moteur */
-   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-      pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
+  while(!securite_retiree){ usleep(10000); }
+
+  /* Puissance de rotation configuree sur chaque moteur */
+  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+     pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
 
   while(1){
      usleep(100000);
