@@ -87,12 +87,12 @@ static volatile struct parametre *p;
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-   /* Variable tampon servant à définir si la vitesse est constante */
-   volatile short int tmp = -1;
-
    pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
    /* Securiser la transmission des donnees */
    pthread_mutex_lock(&securisation);
+   
+   /* Variable tampon servant à définir si la vitesse est constante */
+   volatile short int tmp = -1;
 
    while(1){
       /* On ne change la vitesse que si elle est differente de la precedente */
