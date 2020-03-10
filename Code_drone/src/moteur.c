@@ -110,7 +110,7 @@ static void *moteur(void *args){
 * @function conversion
 * Permet de faire correspondre l'interval de valeurs des joysticks (de 0 a 4095),
 * a celui de la puissance fournie dans les moteurs
-* @return valeur : La vitesse convertie, de rotation des moteurs
+* @return valeur : La vitesse convertie definissant la rotation des moteurs
 ****/
 static const unsigned short int conversion(volatile unsigned short int valeur){
    return valeur * (511 - 480) / 4095 + 480;
@@ -124,6 +124,8 @@ static const unsigned short int conversion(volatile unsigned short int valeur){
 static void deplacement(void){
    static volatile unsigned short int latitude = conversion(coordonnee[0]);
    static volatile unsigned short int longitude = conversion(coordonnee[1]);
+   static volatile unsigned short int pivot_droit = conversion(coordonnee[3]);
+   static volatile unsigned short int pivot_gauche = conversion(coordonnee[4]);
    cycle(latitude);
 }
 
@@ -132,33 +134,34 @@ static void deplacement(void){
 * Definie l'action sur un ou plusieurs moteurs pour l'orienter
 ****/
 extern void propulsion(void){
-  calibration();
-  /* Argument pointant vers la structure des parametre moteur */
-  p = (struct parametre *)malloc(sizeof(struct parametre));
-  /* Vitesse de rotation des moteurs */
-  p->puissance = MIN;
-  /* Thread a creer */
-  static pthread_t th_moteur[NB_MOTEUR];
+   calibration();
+   /* Argument pointant vers la structure des parametre moteur */
+   p = (struct parametre *)malloc(sizeof(struct parametre));
+   /* Vitesse de rotation des moteurs */
+   p->puissance = MIN;
+   /* Thread a creer */
+   static pthread_t th_moteur[NB_MOTEUR];
 
-  usleep(100000);
-  while(!securite_retiree){ usleep(10000); }
+   usleep(100000);
+   /* Si la securite n'est pas retiree */
+   while(!securite_retiree){ usleep(10000); }
 
-  /* Puissance de rotation configuree sur chaque moteur */
-  for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
-     pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
+   /* Puissance de rotation configuree sur chaque moteur */
+   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+      pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
 
-  while(1){
-     usleep(100000);
-     deplacement();
-  }
+   while(1){
+      usleep(100000);
+      deplacement();
+   }
    
-  /* Lancement de tous les moteurs */
-  for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
-    pthread_join(th_moteur[i], NULL);
+   /* Lancement de tous les moteurs */
+   for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
+      pthread_join(th_moteur[i], NULL);
    
-  /* Detacher les taches */
-  pthread_exit(NULL);
-  free((void *)p);
+   /* Detacher les taches */
+   pthread_exit(NULL);
+   free((void *)p);
 }
 
 /****
@@ -166,8 +169,8 @@ extern void propulsion(void){
 * Permet l'atterrissage automatique
 ****/
 extern void atterrissage(void){
-  /* Si le drone est a 1 metre du sol */
-  if((volatile unsigned short int)distance <= 100){
+   /* Si le drone est a 1 metre du sol */
+   if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation, jusqu'a ce qu'il atterisse. */
       for(volatile unsigned short int i = p->puissance; i >= 480; i--){
