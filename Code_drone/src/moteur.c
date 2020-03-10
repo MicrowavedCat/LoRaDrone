@@ -90,8 +90,9 @@ static void *moteur(void *args){
    /* Variable tampon servant à définir si la vitesse est constante */
    volatile short int tmp = -1;
 
+   pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
    /* Securiser la transmission des donnees */
-   pthread_mutex_lock(&(p->mutex));
+   pthread_mutex_lock(&securisation);
 
    while(1){
       /* On ne change la vitesse que si elle est differente de la precedente */
@@ -101,7 +102,7 @@ static void *moteur(void *args){
       }else{ usleep(10000); }
    }
    /* Deverouiller la securite de transmission des donnees */
-   pthread_mutex_unlock(&(p->mutex));
+   pthread_mutex_unlock(&securisation);
 }
 
 /****
