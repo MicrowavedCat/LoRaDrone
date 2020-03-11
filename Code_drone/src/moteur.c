@@ -98,7 +98,7 @@ static void *moteur(void *args){
       /* On ne change la vitesse que si elle est differente de la precedente */
       if(p->puissance != tmp){
          tmp = p->puissance;
-         pwmWrite(PIN[i], tmp);
+         pwmWrite(PIN[p->id], tmp);
       }else{ usleep(10000); }
    }
    /* Deverouiller la securite de transmission des donnees */
