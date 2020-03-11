@@ -47,7 +47,10 @@ static const unsigned char *substr(volatile unsigned char *chaine,
 ****/
 static void filtrage(void){
     /* Si on recoit le message STOP, on coupe immediatement la rotation des moteurs */
-    if(!(strcmp(msg_recu, STOP))){ cycle(0); }
+    if(!(strcmp(msg_recu, STOP))){ 
+	for(volatile unsigned short int i=0; i<6; i++)
+            coordonnee[i] = 0;
+    }
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     else if(!(strcmp(msg_recu, SECURITE))){
         for(volatile unsigned short int i=0; i<2; i++)
