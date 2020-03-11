@@ -125,7 +125,7 @@ static void deplacement(void){
    
    for(volatile unsigned short int i=0; i<2; i++){
       joystick_gauche[i] = conversion(coordonnee[i]);
-      joystick_droit[i] = conversion(coordonnee[i]);
+      joystick_droit[i] = conversion(coordonnee[i+3]);
    }
    
    for(volatile unsigned short int i=0; i<NB_MOTEUR; i++){
