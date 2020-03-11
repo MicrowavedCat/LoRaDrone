@@ -36,7 +36,7 @@ extern volatile unsigned short int securite_retiree;
 * @param valeur : Vitesse de rotation
 * Definit pour tous les moteurs la meme valeur de la puissance à transmettre
 ****/
-extern void cycle(unsigned short int valeur){
+static void cycle(unsigned short int valeur){
    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
       /* Ecrire la puissance en impulsion que l'on veut fournir sur un GPIO */
       pwmWrite(PIN[i], valeur);
