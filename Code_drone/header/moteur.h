@@ -7,7 +7,6 @@
 /* Librairie de communication serie sur Raspberry */
 #include <wiringPi.h>
 
-extern void cycle(volatile unsigned short int);
 extern void propulsion(void);
 extern void atterrissage(void);
 
