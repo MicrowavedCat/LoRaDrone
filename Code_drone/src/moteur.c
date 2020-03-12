@@ -34,7 +34,7 @@ extern volatile unsigned short int securite_retiree;
 /****
 * @function cycle
 * @param valeur : Vitesse de rotation
-* Definit pour tous les moteurs la meme valeur de la puissance à transmettre
+* Fournie a tous les moteurs la meme puissance
 ****/
 static void cycle(unsigned short int valeur){
    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
