@@ -50,9 +50,8 @@ static void filtrage(void){
     if(!(strcmp(msg_recu, STOP))){ 
 	for(volatile unsigned short int i=0; i<6; i++)
             coordonnee[i] = 0;
-    }
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
-    else if(!(strcmp(msg_recu, SECURITE))){
+    }else if(!(strcmp(msg_recu, SECURITE))){
         for(volatile unsigned short int i=0; i<2; i++)
             coordonnee[i] = 2048;
         coordonnee[2] = 0;
