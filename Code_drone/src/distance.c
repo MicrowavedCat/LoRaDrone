@@ -43,9 +43,12 @@ static void configuration(void){
 * determinant anisi quand terminer la reception.
 ****/
 static void etalonnage(void){
-  /* Ici on effectue un front descandant soit le fait de passer,
-  de l'etat du signal logique haut a bas, sur le recepteur.
-  Ainsi, a 0, le signal d'horloge interne termine la reception.
+  /* Ici on effectue un front descandant suite a un front montant,
+  soit respectivement le fait de passer de l'etat du signal logique bas a haut,
+  et inversement sur le PIN recepteur.
+  * Ainsi, de 0 a 1, on dertermine l'impulsion par signal de l'horloge interne.
+  * Tant qu'on est a 1, on attend la reception.
+  * Une fois la reception effectuee, on repasse a 0 pourla terminer.
       |-----|
       |  1  | (Etat haut du signal logique)
       A     V
