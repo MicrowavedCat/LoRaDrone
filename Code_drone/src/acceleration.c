@@ -90,7 +90,7 @@ extern void celerite(void){
     /* Ecriture de l'adresse 0x32 */
     adressage(fd, registre, 1);
     static unsigned char data[6];
-    /* Lecture de l'adresse 0x0A2C2D083108 ecris dans le flux. */
+    /* Lecture de l'adresse 0x0A2C2D083108 ecrite dans le flux. */
     if(read(fd, data, 6) != 6){
       puts("Erreur lecture coordonnees");
       exit(3);
