@@ -46,11 +46,11 @@ static void etalonnage(void){
   /* Ici on effectue un front descandant soit le fait de passer,
   de l'etat du signal logique haut a bas, sur le recepteur.
   Ainsi, a 0, le signal d'horloge interne termine la reception.
-  -----|
-    1  | (Etat haut du signal logique)
-       V
-    0  | (Etat bas du signal logique)
-       |-----
+      |-----|
+      |  1  | (Etat haut du signal logique)
+      A     V
+      |  0  | (Etat bas du signal logique)
+  ----|     |-----
    Par default, l'etat du signal logique est bas, on l'a passer a haut. */
    digitalWrite(PIN[0], 1);
    usleep(10);
