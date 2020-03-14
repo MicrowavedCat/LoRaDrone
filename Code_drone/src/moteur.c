@@ -138,7 +138,7 @@ static void deplacement(void){
 ****/
 extern void propulsion(void){
    calibration();
-   /* Argument pointant vers la structure des parametre moteur */
+   /* Argument pointant vers la structure des parametres moteur */
    p = (struct parametre *)malloc(sizeof(struct parametre));
    /* Vitesse de rotation des moteurs */
    p->puissance = MIN;
