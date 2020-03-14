@@ -29,8 +29,6 @@ extern volatile short int acceleration[3];
 /* Renvoie de l'altitude */
 extern volatile float distance;
 
-extern volatile unsigned short int securite_retiree;
-
 /****
 * @function cycle
 * @param valeur : Vitesse de rotation
@@ -148,8 +146,6 @@ extern void propulsion(void){
    static pthread_t th_moteur[NB_MOTEUR];
 
    usleep(100000);
-   /* Si la securite n'est pas retiree */
-   while(!securite_retiree){ usleep(10000); }
 
    /* Puissance de rotation configuree sur chaque moteur */
    for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
