@@ -109,8 +109,10 @@ static void *moteur(void *args){
 * a celui de la puissance fournie dans les moteurs (de 480 a 511).
 * @return valeur : La vitesse convertie definissant la rotation des moteurs
 ****/
-static const unsigned short int conversion(volatile unsigned short int valeur){
-   return valeur * (511 - 480) / 4095 + 480;
+static const unsigned short int conversion(volatile unsigned short int valeur,
+                                           const unsigned short int min, 
+                                           const unsigned short int max){
+   return valeur * (max - min) / 4095 + min;
 }
 
 /****
@@ -122,8 +124,8 @@ static void deplacement(void){
    static volatile unsigned short int joystick_gauche[2], joystick_droit[2];
    
    for(volatile unsigned short int i=0; i<2; i++){
-      joystick_gauche[i] = conversion(coordonnee[i]);
-      joystick_droit[i] = conversion(coordonnee[i+3]);
+      joystick_gauche[i] = conversion(coordonnee[i], 480, 511);
+      joystick_droit[i] = conversion(coordonnee[i+3], 480, 511);
    }
    
    for(volatile unsigned short int i=0; i<NB_MOTEUR; i++){
