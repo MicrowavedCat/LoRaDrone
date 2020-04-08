@@ -128,7 +128,7 @@ static void deplacement(void){
       joystick_droit[i] = conversion(coordonnee[i+3], -5, 5);
    }
 
-   p->puissance = joystick_gauche[0] + joystick_gauche[1];
+   p->puissance = joystick_gauche[0];
 }
 
 /****
