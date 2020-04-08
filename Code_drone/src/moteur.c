@@ -150,8 +150,10 @@ extern void propulsion(void){
    usleep(100000);
 
    /* Puissance de rotation configuree sur chaque moteur */
-   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++)
+   for(volatile unsigned short int i = 0; i < NB_MOTEUR; i++){
+      p->id = i;
       pthread_create(&th_moteur[i], NULL, moteur, (void *)p);
+   }
 
    while(1){
       usleep(100000);
