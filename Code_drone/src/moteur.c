@@ -126,9 +126,8 @@ static void deplacement(void){
    /* Controle haut-bas, gauche-droite */
    joystick_gauche[0] = conversion(coordonnee[0], 480, 511);
    joystick_gauche[1] = conversion(coordonnee[1], -5, 5);
-   /* Controle avant-arriere, rotation 360° droite-gauche */
+   /* Controle avant-arriere */
    joystick_droit[0] = conversion(coordonnee[3], -5, 5);
-   joystick_droit[1] = conversion(coordonnee[4], -5, 5);
 
    p->puissance = joystick_gauche[0];
 }
