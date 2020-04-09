@@ -123,11 +123,14 @@ static const unsigned short int conversion(volatile unsigned short int valeur,
 static void deplacement(void){
    static volatile unsigned short int joystick_gauche[2], joystick_droit[2];
    
-   for(volatile unsigned short int i=0; i<2; i++){
+   for(volatile unsigned short int i=0; i<1; i++){
       joystick_gauche[i] = conversion(coordonnee[i], 480, 511);
       joystick_droit[i] = conversion(coordonnee[i+3], -5, 5);
    }
-
+   for(volatile unsigned short int i=1; i<2; i++){
+      joystick_gauche[i] = conversion(coordonnee[i], -5, 5);
+      joystick_droit[i] = conversion(coordonnee[i+3], -5, 5);
+   }
    p->puissance = joystick_gauche[0];
 }
 
