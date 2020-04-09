@@ -123,8 +123,10 @@ static const unsigned short int conversion(volatile unsigned short int valeur,
 static void deplacement(void){
    static volatile unsigned short int joystick_gauche[2], joystick_droit[2];
 
+   /* Controle haut-bas, gauche-droite */
    joystick_gauche[0] = conversion(coordonnee[0], 480, 511);
    joystick_gauche[1] = conversion(coordonnee[1], -5, 5);
+   /* Controle avant-arriere, rotation 360° droite-gauche */
    joystick_droit[0] = conversion(coordonnee[3], -5, 5);
    joystick_droit[1] = conversion(coordonnee[4], -5, 5);
 
