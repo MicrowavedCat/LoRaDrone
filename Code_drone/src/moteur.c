@@ -124,12 +124,18 @@ static void deplacement(void){
    static volatile unsigned short int joystick_gauche[2], joystick_droit[2];
 
    /* Controle haut-bas, gauche-droite */
-   joystick_gauche[0] = conversion(coordonnee[0], 480, 511);
-   joystick_gauche[1] = conversion(coordonnee[1], -5, 5);
+   joystick_gauche[0] = conversion(coordonnee[0], -5, 5);
+   joystick_gauche[1] = conversion(coordonnee[1], 480, 511);
    /* Controle avant-arriere */
    joystick_droit[0] = conversion(coordonnee[3], -5, 5);
 
-   p->puissance = joystick_gauche[0];
+   p->puissance = joystick_gauche[1];
+   
+   /* Deplacements lateraux */
+   if((joystick_gauche[0] < 0) && (joystick_droit[0] < 0)){
+   }else if((joystick_droit[0] < 0) || (joystick_droit[0] > 0)){
+   }else if((joystick_droit[0] > 0) || (joystick_droit[0] < 0)){
+   }else{}
 }
 
 /****
