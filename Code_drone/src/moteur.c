@@ -133,9 +133,9 @@ static void deplacement(void){
    
    /* Deplacements lateraux */
    if((joystick_gauche[0] < 0) && (joystick_droit[0] < 0)){
-   }else if((joystick_droit[0] < 0) || (joystick_droit[0] > 0)){
-   }else if((joystick_droit[0] > 0) || (joystick_droit[0] < 0)){
-   }else{}
+   }else if((joystick_droit[0] < 0) && (joystick_droit[0] > 0)){
+   }else if((joystick_droit[0] > 0) && (joystick_droit[0] < 0)){
+   }else if((joystick_droit[0] > 0) && (joystick_droit[0] > 0)){}
 }
 
 /****
