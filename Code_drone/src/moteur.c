@@ -134,7 +134,7 @@ static void deplacement(void){
    if(joystick_gauche[0] < 0){
       for(int i = 0; i<2; i++){
          p->id = i;
-         p->puissance = joystick_gauche[1] - joystick_gauche[0];
+         p->puissance = joystick_gauche[1] + joystick_gauche[0];
       }
       for(int i = 2; i<4; i++){
          p->id = i;
