@@ -140,7 +140,7 @@ static void deplacement(void){
          p->id = i;
          p->puissance = joystick_gauche[1] - joystick_gauche[0];
       }
-   }esle{
+   }else if(joystick_gauche[0] > 0){
       for(int i=0; i<3; i++){
          p->id = i;
          p->puissance = joystick_gauche[1] - joystick_gauche[0];
