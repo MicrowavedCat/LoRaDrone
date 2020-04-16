@@ -141,15 +141,13 @@ static void deplacement(void){
          p->puissance = joystick_gauche[1] - joystick_gauche[0];
       }
    }else if(joystick_gauche[0] > 0)  && (joystick_droit[0] == 0)){
-      for(volatile unsigned short int i=0; i<3; i++){
+      for(volatile unsigned short int i=0; i<3; i+=2){
          p->id = i;
          p->puissance = joystick_gauche[1] - joystick_gauche[0];
-         i += 2;
       }
-      for(volatile unsigned short int i=1; i<4; i++){
+      for(volatile unsigned short int i=1; i<4; i+=2){
          p->id = i;
          p->puissance = joystick_gauche[1] - joystick_gauche[0];
-         i += 2;
       }
    }
    
