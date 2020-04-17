@@ -129,8 +129,6 @@ static void deplacement(void){
    /* Controle avant-arriere */
    joystick_droit[0] = conversion(coordonnee[3], -5, 5);
 
-   p->puissance = joystick_gauche[1];
-
    /* Orientation vers la gauche */
    if((joystick_gauche[0] < 0) && (joystick_droit[0] == 0)){
       for(volatile unsigned short int i=0; i<2; i++){
