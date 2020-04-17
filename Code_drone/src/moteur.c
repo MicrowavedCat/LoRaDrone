@@ -172,12 +172,6 @@ static void deplacement(void){
          p->puissance = joystick_gauche[1] - joystick_droit[0];
       }
    }
-
-   /* Orientations laterales */
-   if((joystick_gauche[0] < 0) && (joystick_droit[0] < 0)){
-   }else if((joystick_gauche[0] < 0) && (joystick_droit[0] > 0)){
-   }else if((joystick_gauche[0] > 0) && (joystick_droit[0] < 0)){
-   }else if((joystick_gauche[0] > 0) && (joystick_droit[0] > 0)){}
 }
 
 /****
