@@ -63,7 +63,7 @@ static void calibration(void){
    On definit une valeur minimale et maximale qu'on emet sur une periode,
    pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
              MAX                       MAX
-    2s  _____________ 2s       2s _____________ 2s
+    1s  _____________ 1s       1s _____________ 1s
         |           |             |           |
     MIN |           |     MIN     |           |   MIN
    _____|           |_____________|           |_________
