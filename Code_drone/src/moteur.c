@@ -58,7 +58,7 @@ static void calibration(void){
       pinMode(PIN[i], PWM_OUTPUT);
 
    usleep(1000);
-  
+
    /* Permet la calibration des ESC par transmission.
    On definit une valeur minimale et maximale qu'on emet sur une periode,
    pour un certain temps donne, dans chacun des 2 etats definits par ces valeurs.
@@ -109,9 +109,9 @@ static void *moteur(void *args){
 * a celui de la puissance fournie dans les moteurs (de 480 a 511).
 * @return valeur : La vitesse convertie definissant la rotation des moteurs
 ****/
-static const unsigned short int conversion(volatile unsigned short int valeur,
-                                           const unsigned short int min, 
-                                           const unsigned short int max){
+static const unsigned short int conversion(
+       volatile unsigned short int valeur, const unsigned short int min, 
+       const unsigned short int max){
    return valeur * (max - min) / 4095 + min;
 }
 
@@ -184,8 +184,6 @@ extern void propulsion(void){
    calibration();
    /* Argument pointant vers la structure des parametres moteur */
    p = (struct parametre *)malloc(sizeof(struct parametre));
-   /* Vitesse de rotation des moteurs */
-   p->puissance = MIN;
    /* Thread a creer */
    static pthread_t th_moteur[NB_MOTEUR];
 
@@ -201,7 +199,7 @@ extern void propulsion(void){
       usleep(100000);
       deplacement();
    }
-   
+
    /* Lancement de tous les moteurs */
    for(volatile unsigned short int i=0; i<NB_MOTEUR; i++)
       pthread_join(th_moteur[i], NULL);
@@ -220,7 +218,7 @@ extern void atterrissage(void){
    if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation, jusqu'a ce qu'il atterisse. */
-      for(volatile unsigned short int i = p->puissance; i >= 480; i--){
+      for(volatile unsigned short int i=p->puissance; i>=480; i--){
          sleep(2);
          cycle(i);
       }
