@@ -218,9 +218,11 @@ extern void atterrissage(void){
    if((volatile unsigned short int)distance <= 100){
       /* On fait baisser progressivement dans tous les moteurs,
       la puissance de rotation, jusqu'a ce qu'il atterisse. */
-      for(volatile unsigned short int i=p->puissance; i>=480; i--)
+      for(volatile unsigned short int i=p->puissance; i>=480; i--){
+         cycle(i);
          sleep(2);
+      }
    }else if((volatile unsigned short int)distance <= 15)
       /* Coupe les moteurs si on est au niveau du sol */
-      p->puissance = 0;
+      cycle(MIN);
 }
