@@ -3,7 +3,7 @@
 #include "../header/acceleration.h"
 #include "../header/distance.h"
 
-/* Impulsion maximale 2^9 = 512 soit de 0 a 511 valeurs */
+/* Impulsion maximale 2^9 = 512 valeurs soit de 0 a 511 */
 #define MAX 511
 #define MIN 0
 #define NB_MOTEUR 4
