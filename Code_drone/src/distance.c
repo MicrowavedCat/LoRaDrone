@@ -48,7 +48,7 @@ static void etalonnage(void){
   et inversement sur le PIN recepteur.
   * Ainsi, de 0 a 1, on determine l'impulsion par signal de l'horloge interne.
   * Tant qu'on est a 1, on attend la reception.
-  * Une fois la reception effectuee, on repasse a 0 pourla terminer.
+  * Une fois la reception effectuee, on repasse a 0 pour la terminer.
       |-----|
       |  1  | (Etat haut du signal logique)
       A     V
