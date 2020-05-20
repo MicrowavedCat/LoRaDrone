@@ -46,7 +46,7 @@ static void etalonnage(void){
   /* Ici on effectue un front descendant suite a un front montant,
   soit respectivement le fait de passer de l'etat du signal logique bas a haut,
   et inversement sur le PIN recepteur.
-  * Ainsi, de 0 a 1, on dertermine l'impulsion par signal de l'horloge interne.
+  * Ainsi, de 0 a 1, on determine l'impulsion par signal de l'horloge interne.
   * Tant qu'on est a 1, on attend la reception.
   * Une fois la reception effectuee, on repasse a 0 pourla terminer.
       |-----|
