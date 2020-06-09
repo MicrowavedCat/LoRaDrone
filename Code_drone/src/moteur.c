@@ -130,6 +130,7 @@ static void deplacement(void){
    joystick_droit[0] = conversion(coordonnee[3], -5, 5);
    joystick_gauche[1] = conversion(coordonnee[4], -5, 5);
 
+   /* Une certaine altitude est nécessaire pour effectuer d'autres directions */
    p->puissance = joystick_gauche[1];
 
    /* Orientation vers la gauche */
