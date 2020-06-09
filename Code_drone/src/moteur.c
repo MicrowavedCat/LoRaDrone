@@ -11,9 +11,9 @@
 /* GPIO du raspberry sur lequel on branche l'ESC relie a un moteur */
 static const unsigned short int PIN[NB_MOTEUR] = {
    1, /* Correspond au PIN physique 12 (BCM18), */
+   26, /* Correspond au PIN physique 32 (BCM12) */ 
    23, /* Correspond au PIN physique 33 (BCM13) */
-   24, /* Correspond au PIN physique 35 (BCM19) */
-   26 /* Correspond au PIN physique 32 (BCM12) */
+   24 /* Correspond au PIN physique 35 (BCM19) */
 };
 /* Parametre d'un moteur, avec la position de son PIN,
 sa puissance de rotation, et une securisation de donnee */
@@ -137,21 +137,21 @@ static void deplacement(void){
    if((joystick_gauche[0] < 0) && (joystick_droit[0] == 0)){
       for(volatile unsigned short int i=0; i<2; i++){
          p->id = i;
-         p->puissance = joystick_gauche[1] + joystick_gauche[0];
+         p->puissance = joystick_gauche[1] - joystick_gauche[0];
       }
       for(volatile unsigned short int i=2; i<NB_MOTEUR; i++){
          p->id = i;
-         p->puissance = joystick_gauche[1] - joystick_gauche[0];
+         p->puissance = joystick_gauche[1] + joystick_gauche[0];
       }
    /* Orientation vers la droite */
    }else if((joystick_gauche[0] > 0) && (joystick_droit[0] == 0)){
       for(volatile unsigned short int i=0; i<2; i++){
          p->id = i;
-         p->puissance = joystick_gauche[1] - joystick_gauche[0];
+         p->puissance = joystick_gauche[1] + joystick_gauche[0];
       }
       for(volatile unsigned short int i=2; i<NB_MOTEUR; i++){
          p->id = i;
-         p->puissance = joystick_gauche[1] + joystick_gauche[0];
+         p->puissance = joystick_gauche[1] - joystick_gauche[0];
       }
    }
 
@@ -159,21 +159,21 @@ static void deplacement(void){
    if((joystick_droit[0] < 0) && (joystick_gauche[0] == 0)){
      for(volatile unsigned short int i=0; i<NB_MOTEUR; i+=2){
          p->id = i;
-         p->puissance = joystick_gauche[1] - joystick_droit[0];
+         p->puissance = joystick_gauche[1] + joystick_droit[0];
       }
       for(volatile unsigned short int i=1; i<NB_MOTEUR; i+=2){
          p->id = i;
-         p->puissance = joystick_gauche[1] + joystick_droit[0];
+         p->puissance = joystick_gauche[1] - joystick_droit[0];
       }
    /* Orientation arriere */
    }else if((joystick_droit[0] < 0) && (joystick_gauche[0] == 0)){
      for(volatile unsigned short int i=0; i<NB_MOTEUR; i+=2){
          p->id = i;
-         p->puissance = joystick_gauche[1] + joystick_droit[0];
+         p->puissance = joystick_gauche[1] - joystick_droit[0];
       }
       for(volatile unsigned short int i=1; i<NB_MOTEUR; i+=2){
          p->id = i;
-         p->puissance = joystick_gauche[1] - joystick_droit[0];
+         p->puissance = joystick_gauche[1] + joystick_droit[0];
       }
    }
 }
