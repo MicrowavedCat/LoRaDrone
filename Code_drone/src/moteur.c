@@ -21,7 +21,7 @@ struct parametre{
    volatile unsigned short int puissance;
    volatile unsigned short int id;
    volatile pthread_mutex_t mutex;
-};
+} *p;
 /* Tableau de coordonnees a convertir */
 extern volatile unsigned short int coordonnee[6];
 /* Tableau de valeurs d'acceleration lineaire */
@@ -75,9 +75,6 @@ static void calibration(void){
    cycle(MIN);
    sleep(1);
 }
-
-/* Argument pointant vers la structure des parametre moteur */
-static volatile struct parametre *p;
 
 /****
 * @function *moteur
