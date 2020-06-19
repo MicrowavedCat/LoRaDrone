@@ -52,12 +52,12 @@ static void filtrage(void){
             coordonnee[i] = 0;
     /* Si on recoit le message SECURITE, on stabilise le drone en mode stationaire */
     }else if(!(strcmp(msg_recu, SECURITE))){
-        for(volatile unsigned short int i=0; i<2; i++)
+        for(volatile unsigned short int i=0, j=3; ((i<2) && (j<5)); i++, j++){
             coordonnee[i] = 2048;
-        coordonnee[2] = 0;
-        for(volatile unsigned short int i=3; i<5; i++)
-            coordonnee[i] = 2048;
-         coordonnee[5] = 0;
+	    coordonnee[j] = 2048;
+        }
+	for(volatile unsigned short int i=2; i<6; i+=3)
+            coordonnee[i] = 0;
     /* Verification que le message soit bien du format :
     XA----YA----BA-XB----YB----BB- */
     }else if(!(strcmp(substr(msg_recu, 0, 2), "XA")) && !(strcmp(substr(msg_recu, 6, 8), "YA")) &&
@@ -68,12 +68,12 @@ static void filtrage(void){
         /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse et ordonnee du joystick de gauche */
-	for(volatile unsigned short int i=0, j=2; i<2; i++; j+=6)
+	for(volatile unsigned short int i=0, j=2; i<2; i++, j+=6)
             tmp[i] = (const unsigned short int)strtol(substr(msg_recu, j, j+4), NULL, 10);
         /* Position enfoncee ou non du joystick de gauche */
         tmp[2] = (const unsigned short int)strtol(substr(msg_recu, 14, 15), NULL, 10);
         /* Position en abscisse et ordonnee du joystick de droite */
-	for(volatile unsigned short int i=3, j=17; i<5; i++; j+=6)
+	for(volatile unsigned short int i=3, j=17; i<5; i++, j+=6)
             tmp[i] = (const unsigned short int)strtol(substr(msg_recu, j, j+4), NULL, 10);
         /* Position enfoncee ou non du joystick de droite */
         tmp[5] = (const unsigned short int)strtol(substr(msg_recu, 29, 30), NULL, 10);
