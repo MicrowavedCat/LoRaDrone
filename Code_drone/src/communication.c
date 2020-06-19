@@ -68,12 +68,12 @@ static void filtrage(void){
         /* Variable tampon de verification des coordonnees de pilotage dans le message */
 	static volatile unsigned short int tmp[6] = {0};
 	/* Position en abscisse et ordonnee du joystick de gauche */
-	for(volatile unsigned short int i=0, j=2; i<2; i++, j+=6)
+	for(volatile unsigned short int i=0, j=2; ((i<2) && (j<13); i++, j+=6)
             tmp[i] = (const unsigned short int)strtol(substr(msg_recu, j, j+4), NULL, 10);
         /* Position enfoncee ou non du joystick de gauche */
         tmp[2] = (const unsigned short int)strtol(substr(msg_recu, 14, 15), NULL, 10);
         /* Position en abscisse et ordonnee du joystick de droite */
-	for(volatile unsigned short int i=3, j=17; i<5; i++, j+=6)
+	for(volatile unsigned short int i=3, j=17; ((i<5) && (j<28)); i++, j+=6)
             tmp[i] = (const unsigned short int)strtol(substr(msg_recu, j, j+4), NULL, 10);
         /* Position enfoncee ou non du joystick de droite */
         tmp[5] = (const unsigned short int)strtol(substr(msg_recu, 29, 30), NULL, 10);
