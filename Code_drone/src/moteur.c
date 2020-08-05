@@ -82,22 +82,23 @@ static void calibration(void){
 * Definie l'action pouvant etre effectuee sur un moteur 
 ****/
 static void *moteur(void *args){
-   pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
-   /* Securiser la transmission des donnees */
-   pthread_mutex_lock(&securisation);
-   
    /* Variable tampon servant à définir si la vitesse est constante */
    volatile short int tmp = -1;
 
    while(1){
+      pthread_mutex_t securisation = ((struct parametre*)args)->mutex;
+      /* Securiser la transmission des donnees */
+      pthread_mutex_lock(&securisation);
+
       /* On ne change la vitesse que si elle est differente de la precedente */
       if(p->puissance != tmp){
          tmp = p->puissance;
          pwmWrite(PIN[p->id], tmp);
       }else{ usleep(10000); }
+
+      /* Deverouiller la securite de transmission des donnees */
+      pthread_mutex_unlock(&securisation);
    }
-   /* Deverouiller la securite de transmission des donnees */
-   pthread_mutex_unlock(&securisation);
 }
 
 /****
