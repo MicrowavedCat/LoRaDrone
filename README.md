@@ -1,5 +1,5 @@
 <h1>Cahier des charges</h1>
-<h2>Julien CARCAU, Alicia FALCON, Arthur CHENU et Thomas GUILLEMOT</h2>
+<h2>Julien C., Alicia F., Arthur C. et Thomas G.</h2>
 <h2>Tuteur : Denis MONNERAT</h2>
 
 <p>
